@@ -1,51 +1,44 @@
-// Bu funksiya ADMIN PANEL orqali yuborilgan yangi kontentni saqlaydi.
-// Parol process.env.ADMIN_PASSWORD orqali Netlify Environment Variables'da saqlanadi
-// va hech qachon frontend kodida ko'rinmaydi.
-
 const { getStore } = require('@netlify/blobs');
 
-exports.handler = async function (event) {
+exports.handler = async (event, context) => {
+  // CORS soʻrovlari uchun sarlavhalar
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+  };
+
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers, body: '' };
+  }
+
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
-  }
-
-  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-
-  if (!ADMIN_PASSWORD) {
-    console.error('ADMIN_PASSWORD environment variable topilmadi.');
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ ok: false, error: 'Server sozlamalari to\'liq emas (ADMIN_PASSWORD yo\'q).' })
-    };
-  }
-
-  let data;
-  try {
-    data = JSON.parse(event.body);
-  } catch (e) {
-    return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Noto\'g\'ri so\'rov formati.' }) };
-  }
-
-  const { password, content } = data || {};
-
-  if (password !== ADMIN_PASSWORD) {
-    return { statusCode: 401, body: JSON.stringify({ ok: false, error: 'Parol noto\'g\'ri.' }) };
-  }
-
-  if (!content || typeof content !== 'object') {
-    return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Kontent ma\'lumoti topilmadi.' }) };
+    return { statusCode: 405, headers, body: 'Metod ruxsat etilmagan' };
   }
 
   try {
-    const store = getStore('ahsan-talim-content');
-    await store.setJSON('main', content);
+    const data = JSON.parse(event.body);
+    
+    // Netlify konfiguratsiyasini kod ichida qo'lda ulaymiz
+    const store = getStore({
+      name: 'site-content',
+      siteID: '6a4ab46ee5622c00089c12a3', // Skrinshotingizdagi aniq yuklanish identifikatori
+      token: process.env.NETLIFY_AUTH_TOKEN || context.clientContext?.custom?.netlifyToken
+    });
+
+    await store.set('content', JSON.stringify(data));
+
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ok: true })
+      headers,
+      body: JSON.stringify({ message: 'Maʼlumotlar muvaffaqiyatli saqlandi!' })
     };
-  } catch (err) {
-    console.error('Kontentni saqlashda xatolik:', err);
-    return { statusCode: 500, body: JSON.stringify({ ok: false, error: 'Serverga saqlashda xatolik yuz berdi.' }) };
+  } catch (error) {
+    console.error('Kontentni saqlashda xatolik:', error);
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ error: error.message })
+    };
   }
 };

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | Ahsan Ta'lim</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="admin.css?v=1">
+</head>
+<body class="admin-body">
+
+  <!-- --- Login ekrani --- -->
+  <div class="admin-login-wrapper" id="admin-login-wrapper">
+    <div class="admin-login-card glass-card-gold">
+      <img src="logo.jpg" alt="Ahsan Ta'lim" style="height:64px; border-radius: 12px; margin-bottom: 16px;">
+      <h1>Admin Panel</h1>
+      <p>Saytni tahrirlash uchun parolni kiriting</p>
+      <form id="admin-login-form">
+        <div class="admin-field-group">
+          <input type="password" id="admin-password-input" class="form-control" placeholder="Parol" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Kirish</button>
+        <div class="admin-error" id="admin-login-error"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- --- Asosiy admin panel (parol to'g'ri kiritilgach ko'rinadi) --- -->
+  <div id="admin-app" style="display:none;">
+    <div class="container">
+      <div class="admin-header">
+        <div class="admin-title">
+          <img src="logo.jpg" alt="Ahsan Ta'lim">
+          Ahsan Ta'lim — Admin Panel
+        </div>
+        <div style="display:flex; align-items:center; gap:16px;">
+          <a href="index.html" target="_blank" class="btn btn-secondary" style="padding:8px 16px; font-size:0.85rem;">Saytni ko'rish &#8599;</a>
+          <button class="admin-logout-link" id="admin-logout-btn">Chiqish</button>
+        </div>
+      </div>
+
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" data-tab="hero">Umumiy matnlar</button>
+        <button class="admin-tab-btn" data-tab="courses">Kurslar</button>
+        <button class="admin-tab-btn" data-tab="news">Yangiliklar</button>
+        <button class="admin-tab-btn" data-tab="quiz">Test savollari</button>
+      </div>
+
+      <!-- === TAB 1: Umumiy matnlar (Hero) === -->
+      <div class="admin-tab-panel active" id="tab-hero">
+        <div class="admin-item-card glass-card">
+          <div class="admin-field-group">
+            <label>Kichik teg (hero-tag) — masalan "Zamonaviy va Tizimli Ta'lim"</label>
+            <input type="text" id="hero-tag-input" class="form-control">
+          </div>
+          <div class="admin-field-row">
+            <div class="admin-field-group">
+              <label>Sarlavha — birinchi qism</label>
+              <input type="text" id="hero-titleBefore-input" class="form-control" placeholder="Masalan: Kelajagingiz uchun">
+            </div>
+            <div class="admin-field-group">
+              <label>Sarlavha — oltin rangdagi qism</label>
+              <input type="text" id="hero-titleGold-input" class="form-control" placeholder="Masalan: eng yaxshi">
+            </div>
+          </div>
+          <div class="admin-field-group">
+            <label>Sarlavha — oxirgi qism</label>
+            <input type="text" id="hero-titleAfter-input" class="form-control" placeholder="Masalan: ta'lim">
+          </div>
+          <div class="admin-field-group">
+            <label>Tasvir matni (hero-desc)</label>
+            <textarea id="hero-desc-input" class="form-control" rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- === TAB 2: Kurslar === -->
+      <div class="admin-tab-panel" id="tab-courses">
+        <div id="courses-list"></div>
+        <button class="admin-add-btn" id="add-course-btn">+ Yangi kurs qo'shish</button>
+      </div>
+
+      <!-- === TAB 3: Yangiliklar === -->
+      <div class="admin-tab-panel" id="tab-news">
+        <div id="news-list"></div>
+        <button class="admin-add-btn" id="add-news-btn">+ Yangi xabar qo'shish</button>
+      </div>
+
+      <!-- === TAB 4: Test savollari === -->
+      <div class="admin-tab-panel" id="tab-quiz">
+        <div id="quiz-list"></div>
+        <button class="admin-add-btn" id="add-quiz-btn">+ Yangi savol qo'shish</button>
+      </div>
+
+      <div class="admin-save-bar">
+        <span class="admin-save-status" id="admin-save-status"></span>
+        <button class="btn btn-primary" id="admin-save-btn">Barcha o'zgarishlarni saqlash</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js?v=1"></script>
+</body>
+</html>

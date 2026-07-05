@@ -1,0 +1,230 @@
+/* Ahsan Ta'lim - Admin Panel uslublari */
+/* Bu fayl faqat admin.html sahifasida ishlatiladi, asosiy saytga ta'sir qilmaydi */
+
+body.admin-body {
+  min-height: 100vh;
+  padding: 0;
+}
+
+.admin-header {
+  border-bottom: 1px solid var(--border-light);
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.admin-header .admin-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.admin-header .admin-title img {
+  height: 40px;
+  border-radius: 8px;
+}
+
+/* --- Login ekrani --- */
+.admin-login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.admin-login-card {
+  max-width: 400px;
+  width: 100%;
+  padding: 40px;
+  text-align: center;
+}
+
+.admin-login-card h1 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.admin-login-card p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+}
+
+.admin-error {
+  color: #f87171;
+  font-size: 0.88rem;
+  margin-top: 12px;
+  min-height: 20px;
+}
+
+/* --- Tab navigatsiya --- */
+.admin-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 0;
+}
+
+.admin-tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 12px 20px;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: var(--transition-normal);
+}
+
+.admin-tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.admin-tab-btn.active {
+  color: var(--accent-gold);
+  border-bottom-color: var(--accent-gold);
+}
+
+.admin-tab-panel {
+  display: none;
+}
+
+.admin-tab-panel.active {
+  display: block;
+}
+
+/* --- Formalar --- */
+.admin-field-group {
+  margin-bottom: 18px;
+}
+
+.admin-field-group label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.admin-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .admin-field-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Kartalar ro'yxati (kurslar, yangiliklar, savollar) --- */
+.admin-item-card {
+  padding: 24px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.admin-item-card .admin-item-remove {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #f87171;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.admin-item-card .admin-item-remove:hover {
+  background: rgba(248, 113, 113, 0.22);
+}
+
+.admin-add-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed var(--border-light-hover);
+  color: var(--text-secondary);
+  padding: 14px;
+  width: 100%;
+  border-radius: var(--radius-md, 12px);
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  transition: var(--transition-normal);
+  margin-bottom: 24px;
+}
+
+.admin-add-btn:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.admin-quiz-option-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.admin-quiz-option-row input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--accent-gold);
+}
+
+.admin-quiz-option-row .form-control {
+  flex-grow: 1;
+}
+
+/* --- Saqlash tugmasi paneli --- */
+.admin-save-bar {
+  position: sticky;
+  bottom: 0;
+  background: rgba(8, 12, 20, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border-light);
+  padding: 16px 0;
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.admin-save-status {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.admin-save-status.success {
+  color: #4ade80;
+}
+
+.admin-save-status.error {
+  color: #f87171;
+}
+
+.admin-logout-link {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.85rem;
+}

@@ -1,8 +1,9 @@
 {
   "name": "ahsantalim",
   "version": "1.0.0",
-  "description": "Ahsan Talim loyihasi",
-  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Building site...'"
+  },
   "dependencies": {
     "@netlify/blobs": "^8.2.0"
   }

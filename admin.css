@@ -112,8 +112,15 @@ body { font-family: 'Outfit', sans-serif; background-color: var(--bg-main); colo
 }
 .toast.show { transform: translateY(0); opacity: 1; }
 @media (max-width: 768px) {
-  body { flex-direction: column; }
-  .sidebar { width: 100%; flex-direction: row; align-items: center; justify-content: space-between; padding: 10px 20px; height: auto; }
-  .sidebar-header { padding: 0; border: none; }
-  .sidebar-nav { display: none; } /* On mobile, you might want a simple dropdown or offcanvas, but for simplicity, we keep it desktop focused for admin */
+  body { flex-direction: column; overflow-y: auto; }
+  .sidebar { width: 100%; height: auto; flex-direction: column; padding: 15px; border-right: none; border-bottom: 1px solid var(--border-color); }
+  .sidebar-header { padding: 0 0 15px 0; justify-content: center; border-bottom: 1px solid var(--border-color); }
+  .sidebar-nav { padding: 15px 0 0 0; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .nav-btn { width: auto; padding: 10px 15px; font-size: 0.9rem; }
+  .nav-btn svg { display: none; } /* Hide icons on mobile for space */
+  
+  .main-content { padding: 20px; overflow-y: visible; }
+  .form-row { flex-direction: column; gap: 0; }
+  
+  .login-box { margin: 20px; padding: 30px 20px; }
 }

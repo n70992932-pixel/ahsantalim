@@ -17,6 +17,26 @@ let siteData = JSON.parse(localStorage.getItem('siteData')) || DEFAULT_SITE_DATA
 let advData = JSON.parse(localStorage.getItem('advantages')) || DEFAULT_ADVANTAGES;
 let courses = JSON.parse(localStorage.getItem('courses')) || [];
 let teachers = JSON.parse(localStorage.getItem('teachers')) || [];
+// --- LOGIN LOGIC ---
+const PASS = "Ahsan2026!";
+const isLoggedIn = sessionStorage.getItem('admin_logged_in') === 'true';
+if (isLoggedIn) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-app').style.display = 'flex';
+} else {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-app').style.display = 'none';
+}
+document.getElementById('btn-login')?.addEventListener('click', () => {
+  const pwd = document.getElementById('admin-password').value;
+  if (pwd === PASS) {
+    sessionStorage.setItem('admin_logged_in', 'true');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-app').style.display = 'flex';
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+});
 // Replace <br> with \n for textareas
 function brToNl(str) { return str ? str.replace(/<br\s*\/?>/gi, '\n') : ''; }
 function nlToBr(str) { return str ? str.replace(/\n/g, '<br>') : ''; }

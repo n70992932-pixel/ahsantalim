@@ -223,25 +223,16 @@ document.addEventListener('click', (e) => {
 });
 closeBtn?.addEventListener('click', () => modal.classList.remove('active'));
 modal?.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
-function getTgSettings() {
-  return {
-    token: localStorage.getItem('tg_token') || '',
-    chatId: localStorage.getItem('tg_chat_id') || ''
-  };
-}
 async function sendToTelegram(data) {
-  const { token, chatId } = getTgSettings();
-  if (!token || !chatId) return; 
-  
-  const text = `🌟 <b>YANGI ARIZA</b>\n\n👤 <b>Ism:</b> ${data.name}\n📞 <b>Telefon:</b> ${data.phone}\n🎓 <b>Kurs:</b> ${data.course}`;
-  
   try {
-    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    // Endi so'rovlar to'g'ridan-to'g'ri telegramga emas,
+    // o'zimizning xavfsiz Vercel API imizga boradi (/api/submit)
+    await fetch('/api/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' })
+      body: JSON.stringify(data)
     });
-  } catch(e) { console.error("Telegram API xatosi:", e); }
+  } catch(e) { console.error("API xatosi:", e); }
 }
 document.getElementById('modal-form')?.addEventListener('submit', async (e) => {
   e.preventDefault();

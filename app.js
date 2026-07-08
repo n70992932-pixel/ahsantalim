@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // DIQQAT: Bot tokeni va Chat ID endi bu yerda YO'Q.
   // Xavfsizlik uchun ular Netlify Function ichida, serverda saqlanadi.
   const TELEGRAM_ENDPOINT = '/api/send-telegram';
-  const CONTENT_ENDPOINT = '/.netlify/functions/get-content';
+  const CONTENT_ENDPOINT = '/api/send-telegram';
 
   // Global o'zgaruvchi - foydalanuvchi tanlagan kurs nomini eslab qolish uchun
   let globalSelectedCourse = "Noma'lum kurs";

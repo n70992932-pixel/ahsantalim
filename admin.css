@@ -15,6 +15,12 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Outfit', sans-serif; background-color: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+/* LOGIN SCREEN */
+.login-wrapper { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--bg-main); z-index: 9999; }
+.login-box { background: var(--bg-card); padding: 40px; border-radius: var(--radius); border: 1px solid var(--border-color); text-align: center; width: 100%; max-width: 360px; }
+.login-logo img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 20px; }
+.login-box h2 { font-size: 1.5rem; margin-bottom: 10px; }
+.login-box p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px; }
 /* LAYOUT */
 .sidebar { width: var(--sidebar-w); background: var(--bg-card); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
 .sidebar-header { padding: 30px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border-color); }

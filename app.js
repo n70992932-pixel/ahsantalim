@@ -225,14 +225,22 @@ closeBtn?.addEventListener('click', () => modal.classList.remove('active'));
 modal?.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
 async function sendToTelegram(data) {
   try {
-    // Endi so'rovlar to'g'ridan-to'g'ri telegramga emas,
-    // o'zimizning xavfsiz Vercel API imizga boradi (/api/submit)
-    await fetch('/api/submit', {
+    const res = await fetch('/api/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-  } catch(e) { console.error("API xatosi:", e); }
+    
+    if (!res.ok) {
+      alert("Xato yuz berdi. Iltimos Vercel sozlamalarini tekshiring!");
+      return false;
+    }
+    return true;
+  } catch(e) { 
+    console.error("API xatosi:", e); 
+    alert("Internet yoki Serverda xatolik yuz berdi.");
+    return false; 
+  }
 }
 document.getElementById('modal-form')?.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -246,19 +254,19 @@ document.getElementById('modal-form')?.addEventListener('submit', async (e) => {
   
   const data = { name, phone, course };
   
-  // We no longer save to Admin panel applications since it's removed in the new admin panel,
-  // But we can keep saving it silently in localStorage just in case.
   const apps = JSON.parse(localStorage.getItem('applications') || '[]');
   apps.unshift({ id: Date.now(), ...data, status: 'new', date: new Date().toISOString() });
   localStorage.setItem('applications', JSON.stringify(apps));
   
   // Send to TG
-  await sendToTelegram(data);
+  const success = await sendToTelegram(data);
   
-  // Show success view
-  document.getElementById('modal-form-view').style.display = 'none';
-  document.getElementById('modal-success-view').style.display = 'block';
-  document.getElementById('modal-form').reset();
+  if (success) {
+    // Show success view
+    document.getElementById('modal-form-view').style.display = 'none';
+    document.getElementById('modal-success-view').style.display = 'block';
+    document.getElementById('modal-form').reset();
+  }
   
   btn.textContent = 'Arizani yuborish';
   btn.disabled = false;

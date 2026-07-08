@@ -1,7 +1,7 @@
 // ============================================
-// AHSAN TA'LIM — Yangi Dizayn Javascript
+// AHSAN TA'LIM — PREMIUM JAVASCRIPT
 // ============================================
-// --- DEFAULT COURSES ---
+// --- DEFAULT DATA ---
 const DEFAULT_COURSES = [
   {
     category: "Arab tili",
@@ -10,54 +10,74 @@ const DEFAULT_COURSES = [
     title: "Noldan o'rganuvchilar uchun Arab tili",
     desc: "Harflar va tovushlar talaffuzidan boshlab, boshlang'ich so'zlashuv va o'qish qoidalarini mustahkam o'rganasiz.",
     duration: "3 oy davomiyligida",
-    freq: "Haftada 3 marta dars"
+    freq: "Haftada 3 marta dars",
+    price: "Oyiga 300,000 so'm"
   },
   {
     category: "Arab tili",
-    badge: "O'rta",
-    iconText: "النَّحْو وَالصَّرْف",
+    badge: "O'rta daraja",
+    iconText: "النَّحْو",
     title: "Grammatika (Sarf va Nahv asoslari)",
     desc: "Matnlarni mustaqil tushunish, so'z o'zgarishlari va gap tuzish qoidalarini chuqurroq o'rganishni istaganlar uchun.",
     duration: "4 oy davomiyligida",
-    freq: "Haftada 3 marta dars"
+    freq: "Haftada 3 marta dars",
+    price: "Oyiga 350,000 so'm"
   },
   {
     category: "Bolalar",
-    badge: "Bolalar",
+    badge: "6-12 yosh",
     iconText: "الصغار",
     title: "Bolalar uchun interaktiv Arab tili",
-    desc: "Qiziqarli o'yinlar, ko'rgazmali qurollar va sodda metodlar orqali bolalarga arab alifbosi va asosiy so'zlashuv darslari.",
-    duration: "3 oy davomiyligida",
-    freq: "Haftada 2 marta dars"
+    desc: "Qiziqarli o'yinlar, ko'rgazmali qurollar va sodda metodlar orqali bolalarga arab alifbosi va asosiy so'zlashuv.",
+    duration: "6 oy davomiyligida",
+    freq: "Haftada 2 marta dars",
+    price: "Oyiga 250,000 so'm"
   },
   {
     category: "Tarix",
     badge: "Abituriyent",
     iconText: "TARIX",
-    title: "Tarix fanidan chuqurlashtirilgan darslar",
-    desc: "Milliy OTMlar va xalqaro universitetlarga kiruvchi abituriyentlar uchun tarix fanidan chuqurlashtirilgan tayyorgarlik kursi.",
-    duration: "Imtihongacha tayyorgarlik",
-    freq: "Haftada 3 marta dars"
+    title: "Tarix fanidan chuqurlashtirilgan tayyorgarlik",
+    desc: "Milliy OTMlar va xalqaro universitetlarga kiruvchi abituriyentlar uchun maxsus intensiv darslar.",
+    duration: "Imtihongacha",
+    freq: "Haftada 3-4 marta dars",
+    price: "Oyiga 350,000 so'm"
   },
   {
     category: "Ingliz tili",
-    badge: "IELTS",
+    badge: "Pre-IELTS",
+    iconText: "ENG",
+    title: "General English (Umumiy Ingliz tili)",
+    desc: "Grammatika, tinglab tushunish va so'zlashuv qobiliyatini A1 dan B2 darajasigacha ko'tarish.",
+    duration: "6-8 oy davomiyligida",
+    freq: "Haftada 3 marta dars",
+    price: "Oyiga 300,000 so'm"
+  },
+  {
+    category: "Ingliz tili",
+    badge: "IELTS 7.0+",
     iconText: "IELTS",
-    title: "Ingliz tili (IELTS)",
-    desc: "IELTS imtihoniga to'liq tayyorlov. Maqsad 6.0 dan 8.0 gacha. Intensiv amaliyot va Mock testlar.",
-    duration: "6 oy davomiyligida",
-    freq: "Haftada 3 marta dars"
+    title: "IELTS Intensive Kurslari",
+    desc: "IELTS imtihoniga to'liq tayyorlov. Mock testlar, shaxsiy tekshiruvlar va yuqori ball olish strategiyalari.",
+    duration: "3 oy davomiyligida",
+    freq: "Haftada 3 marta dars",
+    price: "Oyiga 400,000 so'm"
   }
 ];
-// --- RENDER COURSES & FILTERS ---
-function getCourses() {
-  const saved = localStorage.getItem('courses');
-  return saved ? JSON.parse(saved) : DEFAULT_COURSES;
-}
+const TEACHERS = [
+  { name: "Abdurahmon ustoz", subject: "Arab tili", exp: "5 yillik tajriba" },
+  { name: "Sardor ustoz", subject: "Ingliz tili (IELTS 8.0)", exp: "4 yillik tajriba" },
+  { name: "Zuhiddin ustoz", subject: "Tarix", exp: "7 yillik tajriba" },
+  { name: "Ahmad ustoz", subject: "Arab tili (Bolalar uchun)", exp: "3 yillik tajriba" }
+];
+// --- RENDER FUNCTIONS ---
 function renderCourses(filter = 'all') {
   const grid = document.getElementById('courses-grid');
   if (!grid) return;
-  let courses = getCourses();
+  
+  // Read from localStorage if admin added new ones, else fallback to default
+  const saved = localStorage.getItem('courses');
+  let courses = saved ? JSON.parse(saved) : DEFAULT_COURSES;
   
   if (filter !== 'all') {
     courses = courses.filter(c => c.category === filter || c.title.includes(filter));
@@ -78,26 +98,99 @@ function renderCourses(filter = 'all') {
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
           <span>${c.freq || 'Belgilanmagan'}</span>
         </div>
+        ${c.price ? `
+        <div>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span style="color:var(--text-main); font-weight:600;">${c.price}</span>
+        </div>` : ''}
       </div>
       <button class="btn-gold open-modal" data-course="${c.title}">Yozilish</button>
     </div>
   `).join('');
 }
-// Filter click events
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-    renderCourses(e.target.getAttribute('data-filter'));
+function renderTeachers() {
+  const grid = document.getElementById('teachers-grid');
+  if(!grid) return;
+  grid.innerHTML = TEACHERS.map(t => `
+    <div class="teacher-card">
+      <div class="teacher-img-wrapper">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+        <!-- If you have real photos, you can add them later via admin or changing this array -->
+      </div>
+      <h3 class="teacher-name">${t.name}</h3>
+      <div class="teacher-subject">${t.subject}</div>
+      <p class="teacher-exp">${t.exp}</p>
+    </div>
+  `).join('');
+}
+// --- INTERACTIVITY ---
+document.addEventListener('DOMContentLoaded', () => {
+  renderCourses('all');
+  renderTeachers();
+  // Navbar scroll effect
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
   });
+  // Filters
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      renderCourses(e.target.getAttribute('data-filter'));
+    });
+  });
+  // FAQ Accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.querySelector('.faq-q').addEventListener('click', () => {
+      const isActive = item.classList.contains('active');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+      if (!isActive) item.classList.add('active');
+    });
+  });
+  // Animated Counters
+  const counters = document.querySelectorAll('.stat-num');
+  let started = false;
+  
+  function startCounters() {
+    if (started) return;
+    const statsSection = document.getElementById('stats');
+    if(!statsSection) return;
+    const rect = statsSection.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 100) {
+      started = true;
+      counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        const duration = 2000; // 2 seconds
+        const increment = target / (duration / 16);
+        let current = 0;
+        
+        const update = () => {
+          current += increment;
+          if (current < target) {
+            counter.innerText = Math.ceil(current) + "+";
+            requestAnimationFrame(update);
+          } else {
+            counter.innerText = target + "+";
+          }
+        };
+        update();
+      });
+    }
+  }
+  window.addEventListener('scroll', startCounters);
+  startCounters(); // Check initially
 });
-// --- MODAL LOGIC ---
+// --- MODAL & TELEGRAM ---
 const modal = document.getElementById('reg-modal');
 const closeBtn = document.getElementById('modal-close-btn');
 document.addEventListener('click', (e) => {
-  if (e.target.classList.contains('open-modal')) {
-    const course = e.target.getAttribute('data-course');
+  if (e.target.closest('.open-modal')) {
+    const btn = e.target.closest('.open-modal');
+    const course = btn.getAttribute('data-course');
     const select = document.getElementById('m-course');
+    
     if(select && course) {
       let found = false;
       for (let i = 0; i < select.options.length; i++) {
@@ -111,6 +204,7 @@ document.addEventListener('click', (e) => {
         select.add(opt); select.value = course;
       }
     }
+    
     document.getElementById('modal-form-view').style.display = 'block';
     document.getElementById('modal-success-view').style.display = 'none';
     modal.classList.add('active');
@@ -118,23 +212,17 @@ document.addEventListener('click', (e) => {
 });
 closeBtn?.addEventListener('click', () => modal.classList.remove('active'));
 modal?.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
-// --- TELEGRAM LOGIC ---
 function getTgSettings() {
   return {
     token: localStorage.getItem('tg_token') || '',
     chatId: localStorage.getItem('tg_chat_id') || ''
   };
 }
-function saveApplication(data) {
-  const apps = JSON.parse(localStorage.getItem('applications') || '[]');
-  apps.unshift({ id: Date.now(), ...data, status: 'new', date: new Date().toISOString() });
-  localStorage.setItem('applications', JSON.stringify(apps));
-}
 async function sendToTelegram(data) {
   const { token, chatId } = getTgSettings();
-  if (!token || !chatId) return;
+  if (!token || !chatId) return; // Silent if no config
   
-  const text = `📚 <b>YANGI ARIZA</b>\n\n👤 <b>Ism:</b> ${data.name}\n📞 <b>Telefon:</b> ${data.phone}\n🎓 <b>Kurs:</b> ${data.course}`;
+  const text = `🌟 <b>YANGI ARIZA (Premium Saytdan)</b>\n\n👤 <b>Ism:</b> ${data.name}\n📞 <b>Telefon:</b> ${data.phone}\n🎓 <b>Kurs / Maqsad:</b> ${data.course}`;
   
   try {
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -142,7 +230,7 @@ async function sendToTelegram(data) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' })
     });
-  } catch(e) { console.error(e); }
+  } catch(e) { console.error("Telegram API xatosi:", e); }
 }
 document.getElementById('modal-form')?.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -155,17 +243,20 @@ document.getElementById('modal-form')?.addEventListener('submit', async (e) => {
   btn.disabled = true;
   
   const data = { name, phone, course };
-  saveApplication(data);
+  
+  // Save to Admin panel
+  const apps = JSON.parse(localStorage.getItem('applications') || '[]');
+  apps.unshift({ id: Date.now(), ...data, status: 'new', date: new Date().toISOString() });
+  localStorage.setItem('applications', JSON.stringify(apps));
+  
+  // Send to TG
   await sendToTelegram(data);
   
+  // Show success view
   document.getElementById('modal-form-view').style.display = 'none';
   document.getElementById('modal-success-view').style.display = 'block';
   document.getElementById('modal-form').reset();
   
-  btn.textContent = 'Yuborish';
+  btn.textContent = 'Arizani yuborish';
   btn.disabled = false;
-});
-// Init
-document.addEventListener('DOMContentLoaded', () => {
-  renderCourses('all');
 });

@@ -37,9 +37,9 @@
         <div class="hero-logo-glow"></div>
         <img src="logo.jpg" alt="Logo Big" class="hero-logo-img">
       </div>
-      <div class="hero-badge">Zamonaviy va Tizimli Ta'lim</div>
-      <h1 class="hero-title">Kelajagingiz uchun <span class="text-gold">eng yaxshi</span> ta'lim markazi</h1>
-      <p class="hero-desc">Biz bilan Arab tili, Ingliz tili (IELTS) hamda Tarix fanlarini tajribali ustozlar yordamida chuqurlashtirilgan innovatsion dasturlar asosida o'rganing.</p>
+      <div class="hero-badge" id="dyn-hero-badge"></div>
+      <h1 class="hero-title" id="dyn-hero-title"></h1>
+      <p class="hero-desc" id="dyn-hero-desc"></p>
       <div class="hero-btns">
         <button class="btn-gold" onclick="document.getElementById('courses').scrollIntoView()">
           Kurslarni ko'rish
@@ -56,28 +56,8 @@
         <div class="section-subtitle">BIZNING AFZALLIKLARIMIZ</div>
         <h2 class="section-title">Nega aynan «Ahsan Ta'lim»<br>markazini tanlashadi?</h2>
       </div>
-      <div class="adv-grid">
-        <div class="adv-card">
-          <div class="adv-icon">
-            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-          </div>
-          <h3 class="adv-title">Tizimli Dastur</h3>
-          <p class="adv-desc">Darslarimiz boshlang'ich tushunchalardan boshlab, imtihonlarga tayyorgarlik va ravon nutqqacha bo'lgan bosqichlarni qamrab oladi.</p>
-        </div>
-        <div class="adv-card">
-          <div class="adv-icon">
-            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-          </div>
-          <h3 class="adv-title">Malakali Ustozlar</h3>
-          <p class="adv-desc">Ko'p yillik tajribaga ega, o'z mutaxassisligi bo'yicha kuchli natijalarga erishgan ustozlar sizga ta'lim berishadi.</p>
-        </div>
-        <div class="adv-card">
-          <div class="adv-icon">
-            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          </div>
-          <h3 class="adv-title">Qulay Dars Jadvallari</h3>
-          <p class="adv-desc">Ertamgi, tushlikdan keyingi va kechki guruhlar mavjudligi tufayli o'qish yoki ish bilan birga olib borish juda qulay.</p>
-        </div>
+      <div class="adv-grid" id="adv-grid">
+        <!-- JS render -->
       </div>
     </div>
   </section>
@@ -129,7 +109,7 @@
             </div>
             <div class="contact-item-content">
               <h4>Telefon raqam</h4>
-              <p>+998 (77) 300-90-90<br>+998 (90) 123-45-67</p>
+              <p id="dyn-contact-phones"></p>
             </div>
           </div>
           
@@ -139,7 +119,7 @@
             </div>
             <div class="contact-item-content">
               <h4>Manzil</h4>
-              <p>Dang'ara tumani, Qiyali qo'rg'oncha qishlog'i.<br>Mo'ljal: Maktab yonida.</p>
+              <p id="dyn-contact-address"></p>
             </div>
           </div>
           
@@ -149,7 +129,7 @@
             </div>
             <div class="contact-item-content">
               <h4>Ish vaqti</h4>
-              <p>Dushanba - Shanba: 09:00 - 20:00<br>Yakshanba: Dam olish kuni</p>
+              <p id="dyn-contact-hours"></p>
             </div>
           </div>
         </div>
@@ -167,11 +147,10 @@
               <span class="logo-sub">TA'LIM</span>
             </div>
           </div>
-          <p>Bizning maqsadimiz — har bir o'quvchiga sifatli va zamonaviy bilim berib, ularning yorqin kelajagini qurishiga ko'maklashish.</p>
+          <p id="dyn-footer-desc"></p>
           <div class="social-links">
-            <a href="https://t.me/ahsantalim0571" target="_blank" aria-label="Telegram"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"></path></svg></a>
-            <a href="https://instagram.com/ahsan.talim" target="_blank" aria-label="Instagram"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
-            <a href="#" aria-label="Facebook"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path></svg></a>
+            <a href="#" target="_blank" aria-label="Telegram" id="dyn-tg-link"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"></path></svg></a>
+            <a href="#" target="_blank" aria-label="Instagram" id="dyn-ig-link"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
           </div>
         </div>
         

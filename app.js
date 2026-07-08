@@ -75,7 +75,6 @@ function renderCourses(filter = 'all') {
   const grid = document.getElementById('courses-grid');
   if (!grid) return;
   
-  // Read from localStorage if admin added new ones, else fallback to default
   const saved = localStorage.getItem('courses');
   let courses = saved ? JSON.parse(saved) : DEFAULT_COURSES;
   
@@ -115,7 +114,6 @@ function renderTeachers() {
     <div class="teacher-card">
       <div class="teacher-img-wrapper">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-        <!-- If you have real photos, you can add them later via admin or changing this array -->
       </div>
       <h3 class="teacher-name">${t.name}</h3>
       <div class="teacher-subject">${t.subject}</div>
@@ -141,46 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
       renderCourses(e.target.getAttribute('data-filter'));
     });
   });
-  // FAQ Accordion
-  document.querySelectorAll('.faq-item').forEach(item => {
-    item.querySelector('.faq-q').addEventListener('click', () => {
-      const isActive = item.classList.contains('active');
-      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-      if (!isActive) item.classList.add('active');
-    });
-  });
-  // Animated Counters
-  const counters = document.querySelectorAll('.stat-num');
-  let started = false;
-  
-  function startCounters() {
-    if (started) return;
-    const statsSection = document.getElementById('stats');
-    if(!statsSection) return;
-    const rect = statsSection.getBoundingClientRect();
-    if (rect.top < window.innerHeight - 100) {
-      started = true;
-      counters.forEach(counter => {
-        const target = +counter.getAttribute('data-target');
-        const duration = 2000; // 2 seconds
-        const increment = target / (duration / 16);
-        let current = 0;
-        
-        const update = () => {
-          current += increment;
-          if (current < target) {
-            counter.innerText = Math.ceil(current) + "+";
-            requestAnimationFrame(update);
-          } else {
-            counter.innerText = target + "+";
-          }
-        };
-        update();
-      });
-    }
-  }
-  window.addEventListener('scroll', startCounters);
-  startCounters(); // Check initially
 });
 // --- MODAL & TELEGRAM ---
 const modal = document.getElementById('reg-modal');
@@ -220,9 +178,9 @@ function getTgSettings() {
 }
 async function sendToTelegram(data) {
   const { token, chatId } = getTgSettings();
-  if (!token || !chatId) return; // Silent if no config
+  if (!token || !chatId) return; 
   
-  const text = `🌟 <b>YANGI ARIZA (Premium Saytdan)</b>\n\n👤 <b>Ism:</b> ${data.name}\n📞 <b>Telefon:</b> ${data.phone}\n🎓 <b>Kurs / Maqsad:</b> ${data.course}`;
+  const text = `🌟 <b>YANGI ARIZA</b>\n\n👤 <b>Ism:</b> ${data.name}\n📞 <b>Telefon:</b> ${data.phone}\n🎓 <b>Kurs:</b> ${data.course}`;
   
   try {
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {

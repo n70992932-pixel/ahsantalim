@@ -1,4 +1,12 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
@@ -7,10 +15,10 @@ export default async function handler(req, res) {
   const TG_CHAT_ID = process.env.TG_CHAT_ID;
 
   if (!TG_TOKEN || !TG_CHAT_ID) {
-    return res.status(500).json({ ok: false, error: 'Server sozlamalari to\'liq emas.' });
+    return res.status(500).json({ ok: false, error: 'Environment variables yoq' });
   }
 
-  const { studentName, studentPhone, course } = req.body;
+  const { studentName, studentPhone, course } = req.body || {};
 
   const message = `📚 Yangi ariza!\n\n👤 Ism: ${studentName}\n📞 Telefon: ${studentPhone}\n🎓 Kurs: ${course}`;
 
@@ -25,4 +33,4 @@ export default async function handler(req, res) {
   } catch (err) {
     return res.status(500).json({ ok: false, error: err.message });
   }
-}
+};

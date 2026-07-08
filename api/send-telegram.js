@@ -3,33 +3,34 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
-
-  const TG_TOKEN = process.env.TG_BOT_TOKEN;
-  const TG_CHAT_ID = process.env.TG_CHAT_ID;
-
-  if (!TG_TOKEN || !TG_CHAT_ID) {
-    return res.status(500).json({ ok: false, error: 'Environment variables yoq' });
-  }
-
-  const { studentName, studentPhone, course } = req.body || {};
-
-  const message = `📚 Yangi ariza!\n\n👤 Ism: ${studentName}\n📞 Telefon: ${studentPhone}\n🎓 Kurs: ${course}`;
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).end();
 
   try {
-    const response = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+    // Body ni qo'lda parse qilamiz
+    let body = req.body;
+    if (typeof body === 'string') {
+      body = JSON.parse(body);
+    }
+
+    const TG_TOKEN = process.env.TG_BOT_TOKEN;
+    const TG_CHAT_ID = process.env.TG_CHAT_ID;
+
+    const studentName = body.studentName || 'Noma\'lum';
+    const studentPhone = body.studentPhone || 'Noma\'lum';
+    const course = body.course || 'Noma\'lum kurs';
+
+    const message = `📚 Yangi ariza!\n\n👤 Ism: ${studentName}\n📞 Telefon: ${studentPhone}\n🎓 Kurs: ${course}`;
+
+    const tgRes = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: TG_CHAT_ID, text: message })
     });
-    const result = await response.json();
+
+    const result = await tgRes.json();
     return res.status(200).json({ ok: result.ok });
+
   } catch (err) {
     return res.status(500).json({ ok: false, error: err.message });
   }

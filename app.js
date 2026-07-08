@@ -1,76 +1,124 @@
 // ============================================
-// AHSAN TA'LIM — PREMIUM JAVASCRIPT
+// AHSAN TA'LIM — PREMIUM JAVASCRIPT (DYNAMIC)
 // ============================================
-// --- DEFAULT DATA ---
-const DEFAULT_COURSES = [
+// --- DEFAULT SITE DATA ---
+const DEFAULT_SITE_DATA = {
+  hero: {
+    badge: "Zamonaviy va Tizimli Ta'lim",
+    title: "Kelajagingiz uchun <span class=\"text-gold\">eng yaxshi</span> ta'lim markazi",
+    desc: "Biz bilan Arab tili, Ingliz tili (IELTS) hamda Tarix fanlarini tajribali ustozlar yordamida chuqurlashtirilgan innovatsion dasturlar asosida o'rganing."
+  },
+  contact: {
+    phones: "+998 (77) 300-90-90<br>+998 (90) 123-45-67",
+    address: "Dang'ara tumani, Qiyali qo'rg'oncha qishlog'i.<br>Mo'ljal: Maktab yonida.",
+    hours: "Dushanba - Shanba: 09:00 - 20:00<br>Yakshanba: Dam olish kuni"
+  },
+  social: {
+    tg: "https://t.me/ahsantalim0571",
+    ig: "https://instagram.com/ahsan.talim"
+  },
+  footerDesc: "Bizning maqsadimiz — har bir o'quvchiga sifatli va zamonaviy bilim berib, ularning yorqin kelajagini qurishiga ko'maklashish."
+};
+const DEFAULT_ADVANTAGES = [
   {
-    category: "Arab tili",
-    badge: "Boshlang'ich",
-    iconText: "العَرَبِيَّة",
-    title: "Noldan o'rganuvchilar uchun Arab tili",
-    desc: "Harflar va tovushlar talaffuzidan boshlab, boshlang'ich so'zlashuv va o'qish qoidalarini mustahkam o'rganasiz.",
-    duration: "3 oy davomiyligida",
-    freq: "Haftada 3 marta dars",
-    price: "Oyiga 300,000 so'm"
+    iconSvg: '<path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>',
+    title: "Tizimli Dastur",
+    desc: "Darslarimiz boshlang'ich tushunchalardan boshlab, imtihonlarga tayyorgarlik va ravon nutqqacha bo'lgan bosqichlarni qamrab oladi."
   },
   {
-    category: "Arab tili",
-    badge: "O'rta daraja",
-    iconText: "النَّحْو",
-    title: "Grammatika (Sarf va Nahv asoslari)",
-    desc: "Matnlarni mustaqil tushunish, so'z o'zgarishlari va gap tuzish qoidalarini chuqurroq o'rganishni istaganlar uchun.",
-    duration: "4 oy davomiyligida",
-    freq: "Haftada 3 marta dars",
-    price: "Oyiga 350,000 so'm"
+    iconSvg: '<path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>',
+    title: "Malakali Ustozlar",
+    desc: "Ko'p yillik tajribaga ega, o'z mutaxassisligi bo'yicha kuchli natijalarga erishgan ustozlar sizga ta'lim berishadi."
   },
   {
-    category: "Bolalar",
-    badge: "6-12 yosh",
-    iconText: "الصغار",
-    title: "Bolalar uchun interaktiv Arab tili",
-    desc: "Qiziqarli o'yinlar, ko'rgazmali qurollar va sodda metodlar orqali bolalarga arab alifbosi va asosiy so'zlashuv.",
-    duration: "6 oy davomiyligida",
-    freq: "Haftada 2 marta dars",
-    price: "Oyiga 250,000 so'm"
-  },
-  {
-    category: "Tarix",
-    badge: "Abituriyent",
-    iconText: "TARIX",
-    title: "Tarix fanidan chuqurlashtirilgan tayyorgarlik",
-    desc: "Milliy OTMlar va xalqaro universitetlarga kiruvchi abituriyentlar uchun maxsus intensiv darslar.",
-    duration: "Imtihongacha",
-    freq: "Haftada 3-4 marta dars",
-    price: "Oyiga 350,000 so'm"
-  },
-  {
-    category: "Ingliz tili",
-    badge: "Pre-IELTS",
-    iconText: "ENG",
-    title: "General English (Umumiy Ingliz tili)",
-    desc: "Grammatika, tinglab tushunish va so'zlashuv qobiliyatini A1 dan B2 darajasigacha ko'tarish.",
-    duration: "6-8 oy davomiyligida",
-    freq: "Haftada 3 marta dars",
-    price: "Oyiga 300,000 so'm"
-  },
-  {
-    category: "Ingliz tili",
-    badge: "IELTS 7.0+",
-    iconText: "IELTS",
-    title: "IELTS Intensive Kurslari",
-    desc: "IELTS imtihoniga to'liq tayyorlov. Mock testlar, shaxsiy tekshiruvlar va yuqori ball olish strategiyalari.",
-    duration: "3 oy davomiyligida",
-    freq: "Haftada 3 marta dars",
-    price: "Oyiga 400,000 so'm"
+    iconSvg: '<path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>',
+    title: "Qulay Dars Jadvallari",
+    desc: "Ertamgi, tushlikdan keyingi va kechki guruhlar mavjudligi tufayli o'qish yoki ish bilan birga olib borish juda qulay."
   }
 ];
-const TEACHERS = [
+const DEFAULT_COURSES = [
+  {
+    category: "Arab tili", badge: "Boshlang'ich", iconText: "العَرَبِيَّة",
+    title: "Noldan o'rganuvchilar uchun Arab tili", desc: "Harflar va tovushlar talaffuzidan boshlab, boshlang'ich so'zlashuv va o'qish qoidalarini mustahkam o'rganasiz.",
+    duration: "3 oy davomiyligida", freq: "Haftada 3 marta dars", price: "Oyiga 300,000 so'm"
+  },
+  {
+    category: "Arab tili", badge: "O'rta daraja", iconText: "النَّحْو",
+    title: "Grammatika (Sarf va Nahv asoslari)", desc: "Matnlarni mustaqil tushunish, so'z o'zgarishlari va gap tuzish qoidalarini chuqurroq o'rganishni istaganlar uchun.",
+    duration: "4 oy davomiyligida", freq: "Haftada 3 marta dars", price: "Oyiga 350,000 so'm"
+  },
+  {
+    category: "Bolalar", badge: "6-12 yosh", iconText: "الصغار",
+    title: "Bolalar uchun interaktiv Arab tili", desc: "Qiziqarli o'yinlar, ko'rgazmali qurollar va sodda metodlar orqali bolalarga arab alifbosi va asosiy so'zlashuv.",
+    duration: "6 oy davomiyligida", freq: "Haftada 2 marta dars", price: "Oyiga 250,000 so'm"
+  },
+  {
+    category: "Tarix", badge: "Abituriyent", iconText: "TARIX",
+    title: "Tarix fanidan chuqurlashtirilgan tayyorgarlik", desc: "Milliy OTMlar va xalqaro universitetlarga kiruvchi abituriyentlar uchun maxsus intensiv darslar.",
+    duration: "Imtihongacha", freq: "Haftada 3-4 marta dars", price: "Oyiga 350,000 so'm"
+  },
+  {
+    category: "Ingliz tili", badge: "Pre-IELTS", iconText: "ENG",
+    title: "General English (Umumiy Ingliz tili)", desc: "Grammatika, tinglab tushunish va so'zlashuv qobiliyatini A1 dan B2 darajasigacha ko'tarish.",
+    duration: "6-8 oy davomiyligida", freq: "Haftada 3 marta dars", price: "Oyiga 300,000 so'm"
+  },
+  {
+    category: "Ingliz tili", badge: "IELTS 7.0+", iconText: "IELTS",
+    title: "IELTS Intensive Kurslari", desc: "IELTS imtihoniga to'liq tayyorlov. Mock testlar, shaxsiy tekshiruvlar va yuqori ball olish strategiyalari.",
+    duration: "3 oy davomiyligida", freq: "Haftada 3 marta dars", price: "Oyiga 400,000 so'm"
+  }
+];
+const DEFAULT_TEACHERS = [
   { name: "Abdurahmon ustoz", subject: "Arab tili", exp: "5 yillik tajriba" },
   { name: "Sardor ustoz", subject: "Ingliz tili (IELTS 8.0)", exp: "4 yillik tajriba" },
   { name: "Zuhiddin ustoz", subject: "Tarix", exp: "7 yillik tajriba" },
   { name: "Ahmad ustoz", subject: "Arab tili (Bolalar uchun)", exp: "3 yillik tajriba" }
 ];
 // --- RENDER FUNCTIONS ---
+function loadSiteData() {
+  const savedData = localStorage.getItem('siteData');
+  const siteData = savedData ? JSON.parse(savedData) : DEFAULT_SITE_DATA;
+  
+  // Hero
+  const elBadge = document.getElementById('dyn-hero-badge');
+  const elTitle = document.getElementById('dyn-hero-title');
+  const elDesc = document.getElementById('dyn-hero-desc');
+  if(elBadge) { elBadge.innerHTML = siteData.hero.badge; elBadge.style.display = siteData.hero.badge ? 'inline-flex' : 'none'; }
+  if(elTitle) elTitle.innerHTML = siteData.hero.title;
+  if(elDesc) elDesc.innerHTML = siteData.hero.desc;
+  
+  // Contact
+  const cPhone = document.getElementById('dyn-contact-phones');
+  const cAddr = document.getElementById('dyn-contact-address');
+  const cHours = document.getElementById('dyn-contact-hours');
+  if(cPhone) cPhone.innerHTML = siteData.contact.phones;
+  if(cAddr) cAddr.innerHTML = siteData.contact.address;
+  if(cHours) cHours.innerHTML = siteData.contact.hours;
+  
+  // Footer
+  const fDesc = document.getElementById('dyn-footer-desc');
+  const tgLink = document.getElementById('dyn-tg-link');
+  const igLink = document.getElementById('dyn-ig-link');
+  if(fDesc) fDesc.innerHTML = siteData.footerDesc;
+  if(tgLink) tgLink.href = siteData.social.tg;
+  if(igLink) igLink.href = siteData.social.ig;
+}
+function renderAdvantages() {
+  const grid = document.getElementById('adv-grid');
+  if (!grid) return;
+  const saved = localStorage.getItem('advantages');
+  let advs = saved ? JSON.parse(saved) : DEFAULT_ADVANTAGES;
+  
+  grid.innerHTML = advs.map(a => `
+    <div class="adv-card">
+      <div class="adv-icon">
+        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">${a.iconSvg}</svg>
+      </div>
+      <h3 class="adv-title">${a.title}</h3>
+      <p class="adv-desc">${a.desc}</p>
+    </div>
+  `).join('');
+}
 function renderCourses(filter = 'all') {
   const grid = document.getElementById('courses-grid');
   if (!grid) return;
@@ -110,7 +158,10 @@ function renderCourses(filter = 'all') {
 function renderTeachers() {
   const grid = document.getElementById('teachers-grid');
   if(!grid) return;
-  grid.innerHTML = TEACHERS.map(t => `
+  const saved = localStorage.getItem('teachers');
+  let teachers = saved ? JSON.parse(saved) : DEFAULT_TEACHERS;
+  
+  grid.innerHTML = teachers.map(t => `
     <div class="teacher-card">
       <div class="teacher-img-wrapper">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
@@ -123,6 +174,8 @@ function renderTeachers() {
 }
 // --- INTERACTIVITY ---
 document.addEventListener('DOMContentLoaded', () => {
+  loadSiteData();
+  renderAdvantages();
   renderCourses('all');
   renderTeachers();
   // Navbar scroll effect
@@ -202,7 +255,8 @@ document.getElementById('modal-form')?.addEventListener('submit', async (e) => {
   
   const data = { name, phone, course };
   
-  // Save to Admin panel
+  // We no longer save to Admin panel applications since it's removed in the new admin panel,
+  // But we can keep saving it silently in localStorage just in case.
   const apps = JSON.parse(localStorage.getItem('applications') || '[]');
   apps.unshift({ id: Date.now(), ...data, status: 'new', date: new Date().toISOString() });
   localStorage.setItem('applications', JSON.stringify(apps));

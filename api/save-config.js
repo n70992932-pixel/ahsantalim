@@ -14,14 +14,15 @@ export default async function handler(req, res) {
     return res.status(500).json({ message: 'KV ulanmagan. Vercel sozlamalarini tekshiring.' });
   }
   try {
-    // Upstash pipeline: SET key value
-    const response = await fetch(url, {
+    // Upstash REST API: bitta buyruq - SET key value
+    const response = await fetch(`${url}/set/site_config`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify([["SET", "site_config", JSON.stringify(config)]])
+      // Value ni alohida string sifatida yuboramiz
+      body: JSON.stringify(config)
     });
     if (response.ok) {
       return res.status(200).json({ message: 'Saqlandi!' });

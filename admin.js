@@ -1,278 +1,264 @@
 // ============================================
-// AHSAN TA'LIM — Admin JavaScript
+// AHSAN ADMIN PANEL JAVASCRIPT
 // ============================================
-// ---- AUTHENTICATION ----
-const DEFAULT_PWD = 'admin'; // Dastlabki parol
-function checkAuth() {
-  return sessionStorage.getItem('admin_auth') === 'true';
-}
-function getPassword() {
-  return localStorage.getItem('admin_pwd') || DEFAULT_PWD;
-}
-// ---- INIT ----
-document.addEventListener('DOMContentLoaded', () => {
-  if (checkAuth()) {
-    showAdmin();
-  } else {
-    document.getElementById('login-page').style.display = 'flex';
-    document.getElementById('admin-app').style.display = 'none';
-  }
-});
-// ---- LOGIN LOGIC ----
-document.getElementById('login-form')?.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const pwd = document.getElementById('admin-pwd').value;
-  if (pwd === getPassword()) {
-    sessionStorage.setItem('admin_auth', 'true');
-    showAdmin();
-  } else {
-    const err = document.getElementById('login-error');
-    err.style.display = 'block';
-    setTimeout(() => err.style.display = 'none', 3000);
-  }
-});
-function showAdmin() {
-  document.getElementById('login-page').style.display = 'none';
-  document.getElementById('admin-app').style.display = 'block';
-  loadData();
-  switchPage('dashboard');
-  loadSettings();
-}
-// ---- LOGOUT ----
-document.getElementById('logout-btn')?.addEventListener('click', () => {
-  sessionStorage.removeItem('admin_auth');
-  window.location.reload();
-});
-// ---- NAVIGATION ----
-const pages = {
-  dashboard: { title: 'Dashboard', sub: 'Umumiy statistika va ma\'lumotlar' },
-  applications: { title: 'Arizalar', sub: 'Barcha kelib tushgan arizalar ro\'yxati' },
-  courses: { title: 'Kurslar', sub: 'O\'quv markazi kurslarini boshqarish' },
-  settings: { title: 'Sozlamalar', sub: 'Tizim va xavfsizlik sozlamalari' }
+// --- DEFAULT DATA FOR RESET ---
+const DEFAULT_SITE_DATA = {
+  hero: { badge: "Zamonaviy va Tizimli Ta'lim", title: "Kelajagingiz uchun <span class=\"text-gold\">eng yaxshi</span> ta'lim markazi", desc: "Biz bilan Arab tili, Ingliz tili (IELTS) hamda Tarix fanlarini tajribali ustozlar yordamida chuqurlashtirilgan innovatsion dasturlar asosida o'rganing." },
+  contact: { phones: "+998 (77) 300-90-90\n+998 (90) 123-45-67", address: "Dang'ara tumani, Qiyali qo'rg'oncha qishlog'i.\nMo'ljal: Maktab yonida.", hours: "Dushanba - Shanba: 09:00 - 20:00\nYakshanba: Dam olish kuni" },
+  social: { tg: "https://t.me/ahsantalim0571", ig: "https://instagram.com/ahsan.talim" },
+  footerDesc: "Bizning maqsadimiz — har bir o'quvchiga sifatli va zamonaviy bilim berib, ularning yorqin kelajagini qurishiga ko'maklashish."
 };
-function switchPage(pageId) {
-  // Update Nav
-  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-  document.querySelector(`[data-page="${pageId}"]`)?.classList.add('active');
-  
-  // Update Title
-  document.getElementById('page-title').textContent = pages[pageId].title;
-  document.getElementById('page-subtitle').textContent = pages[pageId].sub;
-  
-  // Show Page
-  document.querySelectorAll('.admin-page').forEach(el => el.classList.remove('active'));
-  document.getElementById(`page-${pageId}`).classList.add('active');
-  
-  if (pageId === 'courses') renderCoursesAdmin();
-}
-document.querySelectorAll('.nav-item').forEach(el => {
-  el.addEventListener('click', () => switchPage(el.dataset.page));
-});
-// ---- DATA MANAGEMENT ----
-function getApplications() {
-  return JSON.parse(localStorage.getItem('applications') || '[]');
-}
-function saveApplications(data) {
-  localStorage.setItem('applications', JSON.stringify(data));
-  loadData(); // Re-render
-}
-function loadData() {
-  const apps = getApplications();
-  
-  // Dashboard Stats
-  const newApps = apps.filter(a => a.status === 'new').length;
-  document.getElementById('stat-new').textContent = newApps;
-  document.getElementById('nav-new-count').textContent = newApps;
-  if(newApps === 0) document.getElementById('nav-new-count').style.display = 'none';
-  else document.getElementById('nav-new-count').style.display = 'block';
-  
-  document.getElementById('stat-called').textContent = apps.filter(a => a.status === 'called').length;
-  document.getElementById('stat-enrolled').textContent = apps.filter(a => a.status === 'enrolled').length;
-  
-  // Dashboard Table (Recent 5)
-  renderTable(apps.slice(0, 5), 'dashboard-recent-table', true);
-  
-  // Applications Table
-  filterAndRenderApps();
-}
-const statusLabels = {
-  new: '<span class="status-badge new">Yangi</span>',
-  called: '<span class="status-badge called">Bog\'lanildi</span>',
-  enrolled: '<span class="status-badge enrolled">Qabul</span>',
-  cancelled: '<span class="status-badge cancelled">Bekor</span>'
-};
-function renderTable(data, tbodyId, isCompact = false) {
-  const tbody = document.getElementById(tbodyId);
-  if (!tbody) return;
-  
-  if (data.length === 0) {
-    if(!isCompact) document.getElementById('app-empty').style.display = 'block';
-    tbody.innerHTML = '';
-    return;
-  }
-  
-  if(!isCompact) document.getElementById('app-empty').style.display = 'none';
-  
-  tbody.innerHTML = data.map(app => {
-    const date = new Date(app.date).toLocaleString('uz-UZ', { 
-      month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' 
-    });
-    
-    if (isCompact) {
-      return `
-        <tr>
-          <td style="font-weight: 600;">${app.name}</td>
-          <td>${app.phone}</td>
-          <td><span style="font-size: 0.75rem; background: var(--bg); padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-l);">${app.course}</span></td>
-          <td>${statusLabels[app.status]}</td>
-          <td style="color: var(--text2);">${date}</td>
-        </tr>
-      `;
-    }
-    
-    return `
-      <tr>
-        <td style="color: var(--text2); font-size: 0.75rem;">#${app.id.toString().slice(-6)}</td>
-        <td>
-          <div style="font-weight: 600; margin-bottom: 4px;">${app.name}</div>
-          <a href="tel:${app.phone}" style="color: var(--gold); font-size: 0.8rem; font-weight: 500;">📞 ${app.phone}</a>
-        </td>
-        <td>
-          <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 4px;">${app.course}</div>
-          <div style="color: var(--text3); font-size: 0.8rem; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${app.msg || 'Xabar yo\'q'}">
-            ${app.msg || '—'}
-          </div>
-        </td>
-        <td>${statusLabels[app.status]}</td>
-        <td>
-          <div class="action-btns">
-            <button class="act-btn" onclick="openStatusModal(${app.id}, '${app.status}')" title="Holatni o'zgartirish">✏️</button>
-            <button class="act-btn delete" onclick="deleteApp(${app.id})" title="O'chirish">🗑</button>
-          </div>
-        </td>
-      </tr>
-    `;
-  }).join('');
-}
-// ---- APPLICATIONS FILTER & SEARCH ----
-function filterAndRenderApps() {
-  const apps = getApplications();
-  const search = document.getElementById('app-search')?.value.toLowerCase();
-  const filter = document.getElementById('app-filter')?.value;
-  
-  let filtered = apps;
-  
-  if (filter && filter !== 'all') {
-    filtered = filtered.filter(a => a.status === filter);
-  }
-  
-  if (search) {
-    filtered = filtered.filter(a => 
-      a.name.toLowerCase().includes(search) || 
-      a.phone.includes(search)
-    );
-  }
-  
-  renderTable(filtered, 'app-table-body', false);
-}
-document.getElementById('app-search')?.addEventListener('input', filterAndRenderApps);
-document.getElementById('app-filter')?.addEventListener('change', filterAndRenderApps);
-// ---- ACTIONS ----
-function deleteApp(id) {
-  if(confirm('Rostdan ham bu arizani o\'chirmoqchimisiz?')) {
-    let apps = getApplications();
-    apps = apps.filter(a => a.id !== id);
-    saveApplications(apps);
-    showNotify('success', 'O\'chirildi!');
-  }
-}
-function clearAllData() {
-  if(confirm('DIQQAT! Barcha arizalar o\'chib ketadi. Ishonchingiz komilmi?')) {
-    localStorage.removeItem('applications');
-    loadData();
-    showNotify('success', 'Barcha ma\'lumotlar tozalandi!');
-  }
-}
-// ---- STATUS MODAL ----
-function openStatusModal(id, currentStatus) {
-  document.getElementById('status-modal-id').value = id;
-  document.getElementById('status-modal-select').value = currentStatus;
-  document.getElementById('status-modal').classList.add('active');
-}
-function closeStatusModal() {
-  document.getElementById('status-modal').classList.remove('active');
-}
-function saveStatus() {
-  const id = parseInt(document.getElementById('status-modal-id').value);
-  const newStatus = document.getElementById('status-modal-select').value;
-  
-  let apps = getApplications();
-  const index = apps.findIndex(a => a.id === id);
-  if (index !== -1) {
-    apps[index].status = newStatus;
-    saveApplications(apps);
-    showNotify('success', 'Holat yangilandi!');
-  }
-  closeStatusModal();
-}
-// ---- COURSES ADMIN RENDER ----
-const DEFAULT_COURSES = [
-  { icon: '🕌', title: 'Arab tili (boshlang\'ich)', price: '350,000' },
-  { icon: '📖', title: 'Arab tili (o\'rta daraja)', price: '400,000' },
-  { icon: '🇬🇧', title: 'Ingliz tili (IELTS)', price: '500,000' },
-  { icon: '💬', title: 'Ingliz tili (umumiy)', price: '400,000' },
-  { icon: '📜', title: 'Tarix (DTM)', price: '350,000' },
-  { icon: '🎁', title: 'Bepul konsultatsiya', price: '0' }
+const DEFAULT_ADVANTAGES = [
+  { iconSvg: '<path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>', title: "Tizimli Dastur", desc: "Darslarimiz boshlang'ich tushunchalardan boshlab, imtihonlarga tayyorgarlik va ravon nutqqacha bo'lgan bosqichlarni qamrab oladi." },
+  { iconSvg: '<path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>', title: "Malakali Ustozlar", desc: "Ko'p yillik tajribaga ega, o'z mutaxassisligi bo'yicha kuchli natijalarga erishgan ustozlar sizga ta'lim berishadi." },
+  { iconSvg: '<path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>', title: "Qulay Dars Jadvallari", desc: "Ertamgi, tushlikdan keyingi va kechki guruhlar mavjudligi tufayli o'qish yoki ish bilan birga olib borish juda qulay." }
 ];
-function renderCoursesAdmin() {
-  const wrap = document.getElementById('courses-admin-list');
-  if(!wrap) return;
+let siteData = JSON.parse(localStorage.getItem('siteData')) || DEFAULT_SITE_DATA;
+let advData = JSON.parse(localStorage.getItem('advantages')) || DEFAULT_ADVANTAGES;
+let courses = JSON.parse(localStorage.getItem('courses')) || [];
+let teachers = JSON.parse(localStorage.getItem('teachers')) || [];
+// Replace <br> with \n for textareas
+function brToNl(str) { return str ? str.replace(/<br\s*\/?>/gi, '\n') : ''; }
+function nlToBr(str) { return str ? str.replace(/\n/g, '<br>') : ''; }
+// --- TAB NAVIGATION ---
+document.querySelectorAll('.nav-btn[data-tab]').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    
+    const target = e.currentTarget;
+    target.classList.add('active');
+    document.getElementById(target.dataset.tab).classList.add('active');
+  });
+});
+// --- LOAD TAB 1: SETTINGS ---
+function loadSettings() {
+  document.getElementById('s-hero-badge').value = siteData.hero.badge;
+  document.getElementById('s-hero-title').value = siteData.hero.title;
+  document.getElementById('s-hero-desc').value = siteData.hero.desc;
   
-  wrap.innerHTML = DEFAULT_COURSES.map(c => `
-    <div class="course-admin-card">
-      <div class="cac-head">
-        <div class="cac-icon">${c.icon}</div>
-        <div class="cac-actions">
-          <button class="act-btn" title="Tahrirlash" onclick="alert('Saytning kodidan o\'zgartirish mumkin')">✏️</button>
-        </div>
+  document.getElementById('s-contact-phones').value = brToNl(siteData.contact.phones);
+  document.getElementById('s-contact-address').value = brToNl(siteData.contact.address);
+  document.getElementById('s-contact-hours').value = brToNl(siteData.contact.hours);
+  
+  document.getElementById('s-social-tg').value = siteData.social.tg;
+  document.getElementById('s-social-ig').value = siteData.social.ig;
+  document.getElementById('s-footer-desc').value = siteData.footerDesc;
+  
+  document.getElementById('s-tg-token').value = localStorage.getItem('tg_token') || '';
+  document.getElementById('s-tg-chat').value = localStorage.getItem('tg_chat_id') || '';
+}
+document.getElementById('btn-save-settings').addEventListener('click', () => {
+  siteData.hero.badge = document.getElementById('s-hero-badge').value;
+  siteData.hero.title = document.getElementById('s-hero-title').value;
+  siteData.hero.desc = document.getElementById('s-hero-desc').value;
+  
+  siteData.contact.phones = nlToBr(document.getElementById('s-contact-phones').value);
+  siteData.contact.address = nlToBr(document.getElementById('s-contact-address').value);
+  siteData.contact.hours = nlToBr(document.getElementById('s-contact-hours').value);
+  
+  siteData.social.tg = document.getElementById('s-social-tg').value;
+  siteData.social.ig = document.getElementById('s-social-ig').value;
+  siteData.footerDesc = document.getElementById('s-footer-desc').value;
+  
+  localStorage.setItem('siteData', JSON.stringify(siteData));
+  
+  localStorage.setItem('tg_token', document.getElementById('s-tg-token').value);
+  localStorage.setItem('tg_chat_id', document.getElementById('s-tg-chat').value);
+  
+  showToast();
+});
+// --- LOAD TAB 2: ADVANTAGES ---
+function renderAdvForm() {
+  const container = document.getElementById('adv-container');
+  container.innerHTML = advData.map((adv, i) => `
+    <div class="card" style="margin-bottom: 20px;">
+      <h3>${i+1} - Afzallik</h3>
+      <div class="form-group">
+        <label>Sarlavha</label>
+        <input type="text" id="adv-title-${i}" value="${adv.title}">
       </div>
-      <div class="cac-title">${c.title}</div>
-      <div class="cac-price">${c.price} so'm</div>
+      <div class="form-group">
+        <label>Ta'rif</label>
+        <textarea id="adv-desc-${i}" rows="2">${adv.desc}</textarea>
+      </div>
+      <div class="form-group">
+        <label>Ikonka (SVG path - O'zgartirish shart emas)</label>
+        <input type="text" id="adv-svg-${i}" value='${adv.iconSvg}' style="font-family: monospace; font-size: 0.8rem; opacity: 0.7;">
+      </div>
     </div>
   `).join('');
 }
-// ---- SETTINGS ----
-function loadSettings() {
-  document.getElementById('set-tg-token').value = localStorage.getItem('tg_token') || '';
-  document.getElementById('set-tg-chat').value = localStorage.getItem('tg_chat_id') || '';
-}
-document.getElementById('tg-settings-form')?.addEventListener('submit', (e) => {
-  e.preventDefault();
-  localStorage.setItem('tg_token', document.getElementById('set-tg-token').value.trim());
-  localStorage.setItem('tg_chat_id', document.getElementById('set-tg-chat').value.trim());
-  showNotify('success', 'Telegram sozlamalari saqlandi!');
+document.getElementById('btn-save-adv').addEventListener('click', () => {
+  advData = advData.map((adv, i) => ({
+    title: document.getElementById(`adv-title-${i}`).value,
+    desc: document.getElementById(`adv-desc-${i}`).value,
+    iconSvg: document.getElementById(`adv-svg-${i}`).value,
+  }));
+  localStorage.setItem('advantages', JSON.stringify(advData));
+  showToast();
 });
-document.getElementById('pwd-settings-form')?.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const oldP = document.getElementById('set-pwd-old').value;
-  const newP = document.getElementById('set-pwd-new').value;
-  
-  if (oldP === getPassword()) {
-    if (newP.length < 4) {
-      showNotify('error', 'Parol kamida 4 ta belgidan iborat bo\'lishi kerak!');
-      return;
-    }
-    localStorage.setItem('admin_pwd', newP);
-    showNotify('success', 'Parol muvaffaqiyatli o\'zgartirildi!');
-    document.getElementById('pwd-settings-form').reset();
-  } else {
-    showNotify('error', 'Joriy parol xato!');
+// --- LOAD TAB 3: COURSES ---
+function renderCoursesList() {
+  const list = document.getElementById('courses-list');
+  if(!courses.length) {
+    // If empty, load defaults (this handles first time admin visit if app.js didn't save yet)
+    courses = [
+      { category: "Arab tili", badge: "Boshlang'ich", iconText: "العَرَبِيَّة", title: "Noldan o'rganuvchilar uchun Arab tili", desc: "Harflar va tovushlar talaffuzidan boshlab, boshlang'ich so'zlashuv va o'qish qoidalarini mustahkam o'rganasiz.", duration: "3 oy davomiyligida", freq: "Haftada 3 marta dars", price: "Oyiga 300,000 so'm" },
+      { category: "Arab tili", badge: "O'rta daraja", iconText: "النَّحْو", title: "Grammatika (Sarf va Nahv asoslari)", desc: "Matnlarni mustaqil tushunish, so'z o'zgarishlari va gap tuzish qoidalarini chuqurroq o'rganishni istaganlar uchun.", duration: "4 oy davomiyligida", freq: "Haftada 3 marta dars", price: "Oyiga 350,000 so'm" },
+      { category: "Bolalar", badge: "6-12 yosh", iconText: "الصغار", title: "Bolalar uchun interaktiv Arab tili", desc: "Qiziqarli o'yinlar, ko'rgazmali qurollar va sodda metodlar orqali bolalarga arab alifbosi va asosiy so'zlashuv.", duration: "6 oy davomiyligida", freq: "Haftada 2 marta dars", price: "Oyiga 250,000 so'm" },
+      { category: "Tarix", badge: "Abituriyent", iconText: "TARIX", title: "Tarix fanidan chuqurlashtirilgan tayyorgarlik", desc: "Milliy OTMlar va xalqaro universitetlarga kiruvchi abituriyentlar uchun maxsus intensiv darslar.", duration: "Imtihongacha", freq: "Haftada 3-4 marta dars", price: "Oyiga 350,000 so'm" },
+      { category: "Ingliz tili", badge: "Pre-IELTS", iconText: "ENG", title: "General English (Umumiy Ingliz tili)", desc: "Grammatika, tinglab tushunish va so'zlashuv qobiliyatini A1 dan B2 darajasigacha ko'tarish.", duration: "6-8 oy davomiyligida", freq: "Haftada 3 marta dars", price: "Oyiga 300,000 so'm" },
+      { category: "Ingliz tili", badge: "IELTS 7.0+", iconText: "IELTS", title: "IELTS Intensive Kurslari", desc: "IELTS imtihoniga to'liq tayyorlov. Mock testlar, shaxsiy tekshiruvlar va yuqori ball olish strategiyalari.", duration: "3 oy davomiyligida", freq: "Haftada 3 marta dars", price: "Oyiga 400,000 so'm" }
+    ];
+    localStorage.setItem('courses', JSON.stringify(courses));
   }
-});
-// ---- NOTIFY UTILS ----
-function showNotify(type, text) {
-  const el = document.getElementById('a-notify');
-  el.className = `a-notify ${type} show`;
-  document.getElementById('a-notify-msg').innerHTML = `${type === 'success' ? '✅' : '❌'} &nbsp; ${text}`;
-  setTimeout(() => el.classList.remove('show'), 3000);
+  
+  list.innerHTML = courses.map((c, i) => `
+    <div class="list-card">
+      <div>
+        <h4 style="color:var(--gold); font-size:0.8rem; margin-bottom:5px; text-transform:uppercase;">${c.category}</h4>
+        <h4>${c.title}</h4>
+        <p>${c.desc}</p>
+        <p style="font-size:0.8rem; color:var(--text-main);">💸 ${c.price}</p>
+      </div>
+      <div class="actions">
+        <button class="btn-edit" onclick="editCourse(${i})">Tahrirlash</button>
+        <button class="btn-danger" onclick="deleteCourse(${i})">O'chirish</button>
+      </div>
+    </div>
+  `).join('');
 }
+function openCourseModal(index = -1) {
+  const form = document.getElementById('course-form');
+  form.reset();
+  document.getElementById('c-index').value = index;
+  document.getElementById('course-modal-title').textContent = index >= 0 ? "Kursni tahrirlash" : "Yangi kurs qo'shish";
+  
+  if (index >= 0) {
+    const c = courses[index];
+    document.getElementById('c-title').value = c.title;
+    document.getElementById('c-category').value = c.category;
+    document.getElementById('c-badge').value = c.badge || '';
+    document.getElementById('c-iconText').value = c.iconText || '';
+    document.getElementById('c-desc').value = c.desc;
+    document.getElementById('c-duration').value = c.duration;
+    document.getElementById('c-freq').value = c.freq;
+    document.getElementById('c-price').value = c.price;
+  }
+  
+  document.getElementById('course-modal').classList.add('active');
+}
+function editCourse(i) { openCourseModal(i); }
+function deleteCourse(i) {
+  if(confirm("Ushbu kursni o'chirmoqchimisiz?")) {
+    courses.splice(i, 1);
+    localStorage.setItem('courses', JSON.stringify(courses));
+    renderCoursesList();
+  }
+}
+document.getElementById('course-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const index = document.getElementById('c-index').value;
+  const newData = {
+    title: document.getElementById('c-title').value,
+    category: document.getElementById('c-category').value,
+    badge: document.getElementById('c-badge').value,
+    iconText: document.getElementById('c-iconText').value,
+    desc: document.getElementById('c-desc').value,
+    duration: document.getElementById('c-duration').value,
+    freq: document.getElementById('c-freq').value,
+    price: document.getElementById('c-price').value
+  };
+  
+  if (index >= 0 && index !== "") { courses[index] = newData; }
+  else { courses.push(newData); }
+  
+  localStorage.setItem('courses', JSON.stringify(courses));
+  renderCoursesList();
+  closeModals();
+  showToast();
+});
+// --- LOAD TAB 4: TEACHERS ---
+function renderTeachersList() {
+  const list = document.getElementById('teachers-list');
+  if(!teachers.length) {
+    teachers = [
+      { name: "Abdurahmon ustoz", subject: "Arab tili", exp: "5 yillik tajriba" },
+      { name: "Sardor ustoz", subject: "Ingliz tili (IELTS 8.0)", exp: "4 yillik tajriba" },
+      { name: "Zuhiddin ustoz", subject: "Tarix", exp: "7 yillik tajriba" },
+      { name: "Ahmad ustoz", subject: "Arab tili (Bolalar uchun)", exp: "3 yillik tajriba" }
+    ];
+    localStorage.setItem('teachers', JSON.stringify(teachers));
+  }
+  
+  list.innerHTML = teachers.map((t, i) => `
+    <div class="list-card">
+      <div>
+        <h4>${t.name}</h4>
+        <p style="color:var(--gold); font-weight:600; margin-bottom:5px;">${t.subject}</p>
+        <p>${t.exp}</p>
+      </div>
+      <div class="actions">
+        <button class="btn-edit" onclick="editTeacher(${i})">Tahrirlash</button>
+        <button class="btn-danger" onclick="deleteTeacher(${i})">O'chirish</button>
+      </div>
+    </div>
+  `).join('');
+}
+function openTeacherModal(index = -1) {
+  const form = document.getElementById('teacher-form');
+  form.reset();
+  document.getElementById('t-index').value = index;
+  document.getElementById('teacher-modal-title').textContent = index >= 0 ? "Ustozni tahrirlash" : "Yangi ustoz qo'shish";
+  
+  if (index >= 0) {
+    const t = teachers[index];
+    document.getElementById('t-name').value = t.name;
+    document.getElementById('t-subject').value = t.subject;
+    document.getElementById('t-exp').value = t.exp;
+  }
+  
+  document.getElementById('teacher-modal').classList.add('active');
+}
+function editTeacher(i) { openTeacherModal(i); }
+function deleteTeacher(i) {
+  if(confirm("Ushbu ustozni o'chirmoqchimisiz?")) {
+    teachers.splice(i, 1);
+    localStorage.setItem('teachers', JSON.stringify(teachers));
+    renderTeachersList();
+  }
+}
+document.getElementById('teacher-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const index = document.getElementById('t-index').value;
+  const newData = {
+    name: document.getElementById('t-name').value,
+    subject: document.getElementById('t-subject').value,
+    exp: document.getElementById('t-exp').value
+  };
+  
+  if (index >= 0 && index !== "") { teachers[index] = newData; }
+  else { teachers.push(newData); }
+  
+  localStorage.setItem('teachers', JSON.stringify(teachers));
+  renderTeachersList();
+  closeModals();
+  showToast();
+});
+// --- UTILS ---
+function closeModals() {
+  document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+}
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+// INIT
+window.addEventListener('DOMContentLoaded', () => {
+  loadSettings();
+  renderAdvForm();
+  renderCoursesList();
+  renderTeachersList();
+});

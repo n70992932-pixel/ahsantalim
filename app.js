@@ -74,111 +74,93 @@ const DEFAULT_TEACHERS = [
   { name: "Zuhiddin ustoz", subject: "Tarix", exp: "7 yillik tajriba" },
   { name: "Ahmad ustoz", subject: "Arab tili (Bolalar uchun)", exp: "3 yillik tajriba" }
 ];
-// --- RENDER FUNCTIONS ---
-function loadSiteData() {
-  const savedData = localStorage.getItem('siteData');
-  const siteData = savedData ? JSON.parse(savedData) : DEFAULT_SITE_DATA;
-  
+// --- INTERACTIVITY ---
+document.addEventListener('DOMContentLoaded', async () => {
+  // API dan config yuklash
+  let config = null;
+  try {
+    const res = await fetch('/api/get-config');
+    const data = await res.json();
+    config = data.config;
+  } catch(e) {
+    console.log("API ulanmadi, default ma'lumotlar ishlatildi.");
+  }
+  const siteData = (config && config.siteData) ? config.siteData : DEFAULT_SITE_DATA;
+  const advData  = (config && config.advantages) ? config.advantages : DEFAULT_ADVANTAGES;
+  const courseData = (config && config.courses) ? config.courses : DEFAULT_COURSES;
+  const teacherData = (config && config.teachers) ? config.teachers : DEFAULT_TEACHERS;
   // Hero
   const elBadge = document.getElementById('dyn-hero-badge');
   const elTitle = document.getElementById('dyn-hero-title');
-  const elDesc = document.getElementById('dyn-hero-desc');
+  const elDesc  = document.getElementById('dyn-hero-desc');
   if(elBadge) { elBadge.innerHTML = siteData.hero.badge; elBadge.style.display = siteData.hero.badge ? 'inline-flex' : 'none'; }
   if(elTitle) elTitle.innerHTML = siteData.hero.title;
-  if(elDesc) elDesc.innerHTML = siteData.hero.desc;
-  
+  if(elDesc)  elDesc.innerHTML  = siteData.hero.desc;
   // Contact
   const cPhone = document.getElementById('dyn-contact-phones');
-  const cAddr = document.getElementById('dyn-contact-address');
+  const cAddr  = document.getElementById('dyn-contact-address');
   const cHours = document.getElementById('dyn-contact-hours');
   if(cPhone) cPhone.innerHTML = siteData.contact.phones;
-  if(cAddr) cAddr.innerHTML = siteData.contact.address;
+  if(cAddr)  cAddr.innerHTML  = siteData.contact.address;
   if(cHours) cHours.innerHTML = siteData.contact.hours;
-  
   // Footer
-  const fDesc = document.getElementById('dyn-footer-desc');
+  const fDesc  = document.getElementById('dyn-footer-desc');
   const tgLink = document.getElementById('dyn-tg-link');
   const igLink = document.getElementById('dyn-ig-link');
-  if(fDesc) fDesc.innerHTML = siteData.footerDesc;
+  if(fDesc)  fDesc.innerHTML = siteData.footerDesc;
   if(tgLink) tgLink.href = siteData.social.tg;
   if(igLink) igLink.href = siteData.social.ig;
-}
-function renderAdvantages() {
-  const grid = document.getElementById('adv-grid');
-  if (!grid) return;
-  const saved = localStorage.getItem('advantages');
-  let advs = saved ? JSON.parse(saved) : DEFAULT_ADVANTAGES;
-  
-  grid.innerHTML = advs.map(a => `
-    <div class="adv-card">
-      <div class="adv-icon">
-        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">${a.iconSvg}</svg>
+  // Advantages
+  const advGrid = document.getElementById('adv-grid');
+  if(advGrid) {
+    advGrid.innerHTML = advData.map(a => `
+      <div class="adv-card">
+        <div class="adv-icon">
+          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">${a.iconSvg}</svg>
+        </div>
+        <h3 class="adv-title">${a.title}</h3>
+        <p class="adv-desc">${a.desc}</p>
       </div>
-      <h3 class="adv-title">${a.title}</h3>
-      <p class="adv-desc">${a.desc}</p>
-    </div>
-  `).join('');
-}
-function renderCourses(filter = 'all') {
-  const grid = document.getElementById('courses-grid');
-  if (!grid) return;
-  
-  const saved = localStorage.getItem('courses');
-  let courses = saved ? JSON.parse(saved) : DEFAULT_COURSES;
-  
-  if (filter !== 'all') {
-    courses = courses.filter(c => c.category === filter || c.title.includes(filter));
+    `).join('');
   }
-  
-  grid.innerHTML = courses.map(c => `
-    <div class="course-card">
-      ${c.badge ? `<div class="course-badge">${c.badge}</div>` : ''}
-      ${c.iconText ? `<div class="course-icon-text">${c.iconText}</div>` : ''}
-      <h3 class="course-title">${c.title}</h3>
-      <p class="course-desc">${c.desc}</p>
-      <div class="course-meta">
-        <div>
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          <span>${c.duration || 'Belgilanmagan'}</span>
+  // Courses
+  let activeCourseData = courseData;
+  function renderCoursesDOM(filter = 'all') {
+    const grid = document.getElementById('courses-grid');
+    if(!grid) return;
+    let filtered = activeCourseData;
+    if(filter !== 'all') filtered = activeCourseData.filter(c => c.category === filter || c.title.includes(filter));
+    grid.innerHTML = filtered.map(c => `
+      <div class="course-card">
+        ${c.badge ? `<div class="course-badge">${c.badge}</div>` : ''}
+        ${c.iconText ? `<div class="course-icon-text">${c.iconText}</div>` : ''}
+        <h3 class="course-title">${c.title}</h3>
+        <p class="course-desc">${c.desc}</p>
+        <div class="course-meta">
+          <div><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>${c.duration || ''}</span></div>
+          <div><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span>${c.freq || ''}</span></div>
+          ${c.price ? `<div><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span style="color:var(--text-main);font-weight:600;">${c.price}</span></div>` : ''}
         </div>
-        <div>
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-          <span>${c.freq || 'Belgilanmagan'}</span>
+        <button class="btn-gold open-modal" data-course="${c.title}">Yozilish</button>
+      </div>
+    `).join('');
+  }
+  renderCoursesDOM('all');
+  // Teachers
+  const teacherGrid = document.getElementById('teachers-grid');
+  if(teacherGrid) {
+    teacherGrid.innerHTML = teacherData.map(t => `
+      <div class="teacher-card">
+        <div class="teacher-img-wrapper">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
         </div>
-        ${c.price ? `
-        <div>
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          <span style="color:var(--text-main); font-weight:600;">${c.price}</span>
-        </div>` : ''}
+        <h3 class="teacher-name">${t.name}</h3>
+        <div class="teacher-subject">${t.subject}</div>
+        <p class="teacher-exp">${t.exp}</p>
       </div>
-      <button class="btn-gold open-modal" data-course="${c.title}">Yozilish</button>
-    </div>
-  `).join('');
-}
-function renderTeachers() {
-  const grid = document.getElementById('teachers-grid');
-  if(!grid) return;
-  const saved = localStorage.getItem('teachers');
-  let teachers = saved ? JSON.parse(saved) : DEFAULT_TEACHERS;
-  
-  grid.innerHTML = teachers.map(t => `
-    <div class="teacher-card">
-      <div class="teacher-img-wrapper">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-      </div>
-      <h3 class="teacher-name">${t.name}</h3>
-      <div class="teacher-subject">${t.subject}</div>
-      <p class="teacher-exp">${t.exp}</p>
-    </div>
-  `).join('');
-}
-// --- INTERACTIVITY ---
-document.addEventListener('DOMContentLoaded', () => {
-  loadSiteData();
-  renderAdvantages();
-  renderCourses('all');
-  renderTeachers();
-  // Navbar scroll effect
+    `).join('');
+  }
+  // Navbar scroll
   const header = document.getElementById('header');
   window.addEventListener('scroll', () => {
     if (window.scrollY > 50) header.classList.add('scrolled');
@@ -189,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', (e) => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       e.target.classList.add('active');
-      renderCourses(e.target.getAttribute('data-filter'));
+      renderCoursesDOM(e.target.getAttribute('data-filter'));
     });
   });
 });

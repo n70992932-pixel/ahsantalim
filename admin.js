@@ -1,387 +1,278 @@
+// ============================================
+// AHSAN TA'LIM — Admin JavaScript
+// ============================================
+// ---- AUTHENTICATION ----
+const DEFAULT_PWD = 'admin'; // Dastlabki parol
+function checkAuth() {
+  return sessionStorage.getItem('admin_auth') === 'true';
+}
+function getPassword() {
+  return localStorage.getItem('admin_pwd') || DEFAULT_PWD;
+}
+// ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
-
-  const CONTENT_ENDPOINT = '/.netlify/functions/get-content';
-  const SAVE_ENDPOINT = '/.netlify/functions/save-content';
-  const LOGIN_ENDPOINT = '/.netlify/functions/admin-login';
-  const SESSION_KEY = 'ahsan_admin_password';
-
-  const loginWrapper = document.getElementById('admin-login-wrapper');
-  const adminApp = document.getElementById('admin-app');
-  const loginForm = document.getElementById('admin-login-form');
-  const passwordInput = document.getElementById('admin-password-input');
-  const loginError = document.getElementById('admin-login-error');
-  const logoutBtn = document.getElementById('admin-logout-btn');
-  const saveBtn = document.getElementById('admin-save-btn');
-  const saveStatus = document.getElementById('admin-save-status');
-
-  let currentPassword = null;
-
-  // ==========================================
-  // Kichik yordamchi funksiyalar
-  // ==========================================
-  function uid() {
-    return Math.random().toString(36).slice(2, 9);
+  if (checkAuth()) {
+    showAdmin();
+  } else {
+    document.getElementById('login-page').style.display = 'flex';
+    document.getElementById('admin-app').style.display = 'none';
   }
-
-  function escapeAttr(str) {
-    return (str || '').toString().replace(/"/g, '&quot;');
+});
+// ---- LOGIN LOGIC ----
+document.getElementById('login-form')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const pwd = document.getElementById('admin-pwd').value;
+  if (pwd === getPassword()) {
+    sessionStorage.setItem('admin_auth', 'true');
+    showAdmin();
+  } else {
+    const err = document.getElementById('login-error');
+    err.style.display = 'block';
+    setTimeout(() => err.style.display = 'none', 3000);
   }
-
-  function field(container, name) {
-    return container.querySelector(`[data-field="${name}"]`);
+});
+function showAdmin() {
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('admin-app').style.display = 'block';
+  loadData();
+  switchPage('dashboard');
+  loadSettings();
+}
+// ---- LOGOUT ----
+document.getElementById('logout-btn')?.addEventListener('click', () => {
+  sessionStorage.removeItem('admin_auth');
+  window.location.reload();
+});
+// ---- NAVIGATION ----
+const pages = {
+  dashboard: { title: 'Dashboard', sub: 'Umumiy statistika va ma\'lumotlar' },
+  applications: { title: 'Arizalar', sub: 'Barcha kelib tushgan arizalar ro\'yxati' },
+  courses: { title: 'Kurslar', sub: 'O\'quv markazi kurslarini boshqarish' },
+  settings: { title: 'Sozlamalar', sub: 'Tizim va xavfsizlik sozlamalari' }
+};
+function switchPage(pageId) {
+  // Update Nav
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.querySelector(`[data-page="${pageId}"]`)?.classList.add('active');
+  
+  // Update Title
+  document.getElementById('page-title').textContent = pages[pageId].title;
+  document.getElementById('page-subtitle').textContent = pages[pageId].sub;
+  
+  // Show Page
+  document.querySelectorAll('.admin-page').forEach(el => el.classList.remove('active'));
+  document.getElementById(`page-${pageId}`).classList.add('active');
+  
+  if (pageId === 'courses') renderCoursesAdmin();
+}
+document.querySelectorAll('.nav-item').forEach(el => {
+  el.addEventListener('click', () => switchPage(el.dataset.page));
+});
+// ---- DATA MANAGEMENT ----
+function getApplications() {
+  return JSON.parse(localStorage.getItem('applications') || '[]');
+}
+function saveApplications(data) {
+  localStorage.setItem('applications', JSON.stringify(data));
+  loadData(); // Re-render
+}
+function loadData() {
+  const apps = getApplications();
+  
+  // Dashboard Stats
+  const newApps = apps.filter(a => a.status === 'new').length;
+  document.getElementById('stat-new').textContent = newApps;
+  document.getElementById('nav-new-count').textContent = newApps;
+  if(newApps === 0) document.getElementById('nav-new-count').style.display = 'none';
+  else document.getElementById('nav-new-count').style.display = 'block';
+  
+  document.getElementById('stat-called').textContent = apps.filter(a => a.status === 'called').length;
+  document.getElementById('stat-enrolled').textContent = apps.filter(a => a.status === 'enrolled').length;
+  
+  // Dashboard Table (Recent 5)
+  renderTable(apps.slice(0, 5), 'dashboard-recent-table', true);
+  
+  // Applications Table
+  filterAndRenderApps();
+}
+const statusLabels = {
+  new: '<span class="status-badge new">Yangi</span>',
+  called: '<span class="status-badge called">Bog\'lanildi</span>',
+  enrolled: '<span class="status-badge enrolled">Qabul</span>',
+  cancelled: '<span class="status-badge cancelled">Bekor</span>'
+};
+function renderTable(data, tbodyId, isCompact = false) {
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+  
+  if (data.length === 0) {
+    if(!isCompact) document.getElementById('app-empty').style.display = 'block';
+    tbody.innerHTML = '';
+    return;
   }
-
-  // ==========================================
-  // LOGIN
-  // ==========================================
-  function tryLogin(password) {
-    loginError.textContent = '';
-    return fetch(LOGIN_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password })
-    })
-      .then(res => res.json().then(data => ({ status: res.status, data })))
-      .then(({ status, data }) => {
-        if (status === 200 && data.ok) {
-          currentPassword = password;
-          sessionStorage.setItem(SESSION_KEY, password);
-          loginWrapper.style.display = 'none';
-          adminApp.style.display = 'block';
-          loadContent();
-          return true;
-        } else {
-          loginError.textContent = data.error || 'Parol noto\'g\'ri.';
-          return false;
-        }
-      })
-      .catch(() => {
-        loginError.textContent = 'Serverga ulanishda xatolik. Internetni tekshiring.';
-        return false;
-      });
-  }
-
-  if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      tryLogin(passwordInput.value);
+  
+  if(!isCompact) document.getElementById('app-empty').style.display = 'none';
+  
+  tbody.innerHTML = data.map(app => {
+    const date = new Date(app.date).toLocaleString('uz-UZ', { 
+      month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' 
     });
-  }
-
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      sessionStorage.removeItem(SESSION_KEY);
-      currentPassword = null;
-      adminApp.style.display = 'none';
-      loginWrapper.style.display = 'flex';
-      passwordInput.value = '';
-    });
-  }
-
-  // Sahifa qayta yuklanganda, agar shu brauzer sessiyasida avval parol
-  // kiritilgan bo'lsa, qayta so'ramaymiz - avtomatik kirib boradi.
-  const savedPassword = sessionStorage.getItem(SESSION_KEY);
-  if (savedPassword) {
-    tryLogin(savedPassword);
-  }
-
-  // ==========================================
-  // TAB NAVIGATSIYA
-  // ==========================================
-  const tabButtons = document.querySelectorAll('.admin-tab-btn');
-  tabButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      tabButtons.forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('tab-' + btn.getAttribute('data-tab')).classList.add('active');
-    });
-  });
-
-  // ==========================================
-  // KONTENTNI YUKLASH VA FORMALARGA TO'LDIRISH
-  // ==========================================
-  function loadContent() {
-    saveStatus.textContent = 'Kontent yuklanmoqda...';
-    saveStatus.className = 'admin-save-status';
-    fetch(CONTENT_ENDPOINT)
-      .then(res => res.json())
-      .then(content => {
-        fillHero(content.hero || {});
-        renderCourses(content.courses || []);
-        renderNews(content.news || []);
-        renderQuiz(content.quiz || []);
-        saveStatus.textContent = '';
-      })
-      .catch(() => {
-        saveStatus.textContent = 'Kontentni yuklashda xatolik yuz berdi.';
-        saveStatus.className = 'admin-save-status error';
-      });
-  }
-
-  function fillHero(hero) {
-    document.getElementById('hero-tag-input').value = hero.tag || '';
-    document.getElementById('hero-titleBefore-input').value = hero.titleBefore || '';
-    document.getElementById('hero-titleGold-input').value = hero.titleGold || '';
-    document.getElementById('hero-titleAfter-input').value = hero.titleAfter || '';
-    document.getElementById('hero-desc-input').value = hero.desc || '';
-  }
-
-  // ==========================================
-  // KURSLAR
-  // ==========================================
-  const coursesList = document.getElementById('courses-list');
-  const CATEGORY_OPTIONS = [
-    { value: 'arab', label: 'Arab tili' },
-    { value: 'english', label: 'Ingliz tili' },
-    { value: 'history', label: 'Tarix' },
-    { value: 'bolalar', label: "Bolalar uchun" }
-  ];
-
-  function courseCardHTML(course) {
-    const id = uid();
-    const categoryOptionsHtml = CATEGORY_OPTIONS.map(opt =>
-      `<option value="${opt.value}" ${course.category === opt.value ? 'selected' : ''}>${opt.label}</option>`
-    ).join('');
-
-    return `
-      <div class="admin-item-card glass-card" data-uid="${id}">
-        <button type="button" class="admin-item-remove" title="O'chirish">&times;</button>
-        <div class="admin-field-row">
-          <div class="admin-field-group">
-            <label>Kategoriya (filter uchun)</label>
-            <select class="form-control" data-field="category">${categoryOptionsHtml}</select>
-          </div>
-          <div class="admin-field-group">
-            <label>Belgi (badge) — masalan "Boshlang'ich"</label>
-            <input type="text" class="form-control" data-field="badge" value="${escapeAttr(course.badge)}">
-          </div>
-        </div>
-        <div class="admin-field-row">
-          <div class="admin-field-group">
-            <label>Arabcha/qisqa sarlavha (ixtiyoriy)</label>
-            <input type="text" class="form-control" data-field="titleArabic" value="${escapeAttr(course.titleArabic)}">
-          </div>
-          <div class="admin-field-group">
-            <label>Kurs nomi</label>
-            <input type="text" class="form-control" data-field="title" value="${escapeAttr(course.title)}">
-          </div>
-        </div>
-        <div class="admin-field-group">
-          <label>Tavsif</label>
-          <textarea class="form-control" rows="2" data-field="desc">${course.desc || ''}</textarea>
-        </div>
-        <div class="admin-field-row">
-          <div class="admin-field-group">
-            <label>Davomiyligi — masalan "3 oy davomiyligida"</label>
-            <input type="text" class="form-control" data-field="duration" value="${escapeAttr(course.duration)}">
-          </div>
-          <div class="admin-field-group">
-            <label>Dars jadvali — masalan "Haftada 3 marta dars"</label>
-            <input type="text" class="form-control" data-field="schedule" value="${escapeAttr(course.schedule)}">
-          </div>
-        </div>
-        <div class="admin-field-group">
-          <label>Narxi — masalan "450 000 so'm / oy"</label>
-          <input type="text" class="form-control" data-field="price" value="${escapeAttr(course.price)}">
-        </div>
-        <div class="admin-field-group">
-          <label>Ariza uchun kurs kaliti (Telegramga shu nom bilan yuboriladi)</label>
-          <input type="text" class="form-control" data-field="courseKey" value="${escapeAttr(course.courseKey)}">
-        </div>
-      </div>
-    `;
-  }
-
-  function renderCourses(courses) {
-    coursesList.innerHTML = courses.map(courseCardHTML).join('');
-  }
-
-  document.getElementById('add-course-btn').addEventListener('click', () => {
-    coursesList.insertAdjacentHTML('beforeend', courseCardHTML({}));
-  });
-
-  coursesList.addEventListener('click', (e) => {
-    if (e.target.classList.contains('admin-item-remove')) {
-      e.target.closest('.admin-item-card').remove();
+    
+    if (isCompact) {
+      return `
+        <tr>
+          <td style="font-weight: 600;">${app.name}</td>
+          <td>${app.phone}</td>
+          <td><span style="font-size: 0.75rem; background: var(--bg); padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-l);">${app.course}</span></td>
+          <td>${statusLabels[app.status]}</td>
+          <td style="color: var(--text2);">${date}</td>
+        </tr>
+      `;
     }
-  });
-
-  function collectCourses() {
-    return Array.from(coursesList.querySelectorAll('.admin-item-card')).map(card => {
-      const title = field(card, 'title').value.trim();
-      const courseKeyRaw = field(card, 'courseKey').value.trim();
-      return {
-        id: card.getAttribute('data-uid'),
-        category: field(card, 'category').value,
-        badge: field(card, 'badge').value.trim(),
-        titleArabic: field(card, 'titleArabic').value.trim(),
-        title: title,
-        desc: field(card, 'desc').value.trim(),
-        duration: field(card, 'duration').value.trim(),
-        schedule: field(card, 'schedule').value.trim(),
-        price: field(card, 'price').value.trim(),
-        courseKey: courseKeyRaw || title
-      };
-    });
-  }
-
-  // ==========================================
-  // YANGILIKLAR
-  // ==========================================
-  const newsList = document.getElementById('news-list');
-
-  function newsCardHTML(item) {
-    const id = uid();
+    
     return `
-      <div class="admin-item-card glass-card" data-uid="${id}">
-        <button type="button" class="admin-item-remove" title="O'chirish">&times;</button>
-        <div class="admin-field-row">
-          <div class="admin-field-group">
-            <label>Sarlavha</label>
-            <input type="text" class="form-control" data-field="title" value="${escapeAttr(item.title)}">
+      <tr>
+        <td style="color: var(--text2); font-size: 0.75rem;">#${app.id.toString().slice(-6)}</td>
+        <td>
+          <div style="font-weight: 600; margin-bottom: 4px;">${app.name}</div>
+          <a href="tel:${app.phone}" style="color: var(--gold); font-size: 0.8rem; font-weight: 500;">📞 ${app.phone}</a>
+        </td>
+        <td>
+          <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 4px;">${app.course}</div>
+          <div style="color: var(--text3); font-size: 0.8rem; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${app.msg || 'Xabar yo\'q'}">
+            ${app.msg || '—'}
           </div>
-          <div class="admin-field-group">
-            <label>Sana (ixtiyoriy) — masalan "2026-yil, 5-iyul"</label>
-            <input type="text" class="form-control" data-field="date" value="${escapeAttr(item.date)}">
+        </td>
+        <td>${statusLabels[app.status]}</td>
+        <td>
+          <div class="action-btns">
+            <button class="act-btn" onclick="openStatusModal(${app.id}, '${app.status}')" title="Holatni o'zgartirish">✏️</button>
+            <button class="act-btn delete" onclick="deleteApp(${app.id})" title="O'chirish">🗑</button>
           </div>
-        </div>
-        <div class="admin-field-group">
-          <label>Xabar matni</label>
-          <textarea class="form-control" rows="3" data-field="content">${item.content || ''}</textarea>
-        </div>
-      </div>
+        </td>
+      </tr>
     `;
+  }).join('');
+}
+// ---- APPLICATIONS FILTER & SEARCH ----
+function filterAndRenderApps() {
+  const apps = getApplications();
+  const search = document.getElementById('app-search')?.value.toLowerCase();
+  const filter = document.getElementById('app-filter')?.value;
+  
+  let filtered = apps;
+  
+  if (filter && filter !== 'all') {
+    filtered = filtered.filter(a => a.status === filter);
   }
-
-  function renderNews(news) {
-    newsList.innerHTML = news.map(newsCardHTML).join('');
+  
+  if (search) {
+    filtered = filtered.filter(a => 
+      a.name.toLowerCase().includes(search) || 
+      a.phone.includes(search)
+    );
   }
-
-  document.getElementById('add-news-btn').addEventListener('click', () => {
-    newsList.insertAdjacentHTML('beforeend', newsCardHTML({}));
-  });
-
-  newsList.addEventListener('click', (e) => {
-    if (e.target.classList.contains('admin-item-remove')) {
-      e.target.closest('.admin-item-card').remove();
-    }
-  });
-
-  function collectNews() {
-    return Array.from(newsList.querySelectorAll('.admin-item-card')).map(card => ({
-      id: card.getAttribute('data-uid'),
-      title: field(card, 'title').value.trim(),
-      date: field(card, 'date').value.trim(),
-      content: field(card, 'content').value.trim()
-    })).filter(item => item.title || item.content);
+  
+  renderTable(filtered, 'app-table-body', false);
+}
+document.getElementById('app-search')?.addEventListener('input', filterAndRenderApps);
+document.getElementById('app-filter')?.addEventListener('change', filterAndRenderApps);
+// ---- ACTIONS ----
+function deleteApp(id) {
+  if(confirm('Rostdan ham bu arizani o\'chirmoqchimisiz?')) {
+    let apps = getApplications();
+    apps = apps.filter(a => a.id !== id);
+    saveApplications(apps);
+    showNotify('success', 'O\'chirildi!');
   }
-
-  // ==========================================
-  // TEST SAVOLLARI
-  // ==========================================
-  const quizList = document.getElementById('quiz-list');
-
-  function quizCardHTML(item) {
-    const id = uid();
-    const options = (item.options && item.options.length === 3) ? item.options : ['', '', ''];
-    const correct = typeof item.correct === 'number' ? item.correct : 0;
-
-    const optionRows = options.map((opt, i) => `
-      <div class="admin-quiz-option-row">
-        <input type="radio" name="correct-${id}" data-field="correct-radio" value="${i}" ${correct === i ? 'checked' : ''} title="To'g'ri javob">
-        <input type="text" class="form-control" data-field="option-${i}" placeholder="${i + 1}-variant" value="${escapeAttr(opt)}">
-      </div>
-    `).join('');
-
-    return `
-      <div class="admin-item-card glass-card" data-uid="${id}">
-        <button type="button" class="admin-item-remove" title="O'chirish">&times;</button>
-        <div class="admin-field-group">
-          <label>Savol matni</label>
-          <input type="text" class="form-control" data-field="question" value="${escapeAttr(item.question)}">
+}
+function clearAllData() {
+  if(confirm('DIQQAT! Barcha arizalar o\'chib ketadi. Ishonchingiz komilmi?')) {
+    localStorage.removeItem('applications');
+    loadData();
+    showNotify('success', 'Barcha ma\'lumotlar tozalandi!');
+  }
+}
+// ---- STATUS MODAL ----
+function openStatusModal(id, currentStatus) {
+  document.getElementById('status-modal-id').value = id;
+  document.getElementById('status-modal-select').value = currentStatus;
+  document.getElementById('status-modal').classList.add('active');
+}
+function closeStatusModal() {
+  document.getElementById('status-modal').classList.remove('active');
+}
+function saveStatus() {
+  const id = parseInt(document.getElementById('status-modal-id').value);
+  const newStatus = document.getElementById('status-modal-select').value;
+  
+  let apps = getApplications();
+  const index = apps.findIndex(a => a.id === id);
+  if (index !== -1) {
+    apps[index].status = newStatus;
+    saveApplications(apps);
+    showNotify('success', 'Holat yangilandi!');
+  }
+  closeStatusModal();
+}
+// ---- COURSES ADMIN RENDER ----
+const DEFAULT_COURSES = [
+  { icon: '🕌', title: 'Arab tili (boshlang\'ich)', price: '350,000' },
+  { icon: '📖', title: 'Arab tili (o\'rta daraja)', price: '400,000' },
+  { icon: '🇬🇧', title: 'Ingliz tili (IELTS)', price: '500,000' },
+  { icon: '💬', title: 'Ingliz tili (umumiy)', price: '400,000' },
+  { icon: '📜', title: 'Tarix (DTM)', price: '350,000' },
+  { icon: '🎁', title: 'Bepul konsultatsiya', price: '0' }
+];
+function renderCoursesAdmin() {
+  const wrap = document.getElementById('courses-admin-list');
+  if(!wrap) return;
+  
+  wrap.innerHTML = DEFAULT_COURSES.map(c => `
+    <div class="course-admin-card">
+      <div class="cac-head">
+        <div class="cac-icon">${c.icon}</div>
+        <div class="cac-actions">
+          <button class="act-btn" title="Tahrirlash" onclick="alert('Saytning kodidan o\'zgartirish mumkin')">✏️</button>
         </div>
-        <div class="admin-field-group">
-          <label>Javob variantlari (to'g'ri javobning yonidagi doirachani belgilang)</label>
-          ${optionRows}
-        </div>
       </div>
-    `;
-  }
-
-  function renderQuiz(quiz) {
-    quizList.innerHTML = quiz.map(quizCardHTML).join('');
-  }
-
-  document.getElementById('add-quiz-btn').addEventListener('click', () => {
-    quizList.insertAdjacentHTML('beforeend', quizCardHTML({}));
-  });
-
-  quizList.addEventListener('click', (e) => {
-    if (e.target.classList.contains('admin-item-remove')) {
-      e.target.closest('.admin-item-card').remove();
-    }
-  });
-
-  function collectQuiz() {
-    return Array.from(quizList.querySelectorAll('.admin-item-card')).map(card => {
-      const question = field(card, 'question').value.trim();
-      const options = [0, 1, 2].map(i => field(card, `option-${i}`).value.trim());
-      const checkedRadio = card.querySelector('[data-field="correct-radio"]:checked');
-      const correct = checkedRadio ? parseInt(checkedRadio.value, 10) : 0;
-      return { question, options, correct };
-    }).filter(q => q.question);
-  }
-
-  // ==========================================
-  // SAQLASH
-  // ==========================================
-  saveBtn.addEventListener('click', () => {
-    if (!currentPassword) {
-      saveStatus.textContent = 'Avval tizimga kiring.';
-      saveStatus.className = 'admin-save-status error';
+      <div class="cac-title">${c.title}</div>
+      <div class="cac-price">${c.price} so'm</div>
+    </div>
+  `).join('');
+}
+// ---- SETTINGS ----
+function loadSettings() {
+  document.getElementById('set-tg-token').value = localStorage.getItem('tg_token') || '';
+  document.getElementById('set-tg-chat').value = localStorage.getItem('tg_chat_id') || '';
+}
+document.getElementById('tg-settings-form')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  localStorage.setItem('tg_token', document.getElementById('set-tg-token').value.trim());
+  localStorage.setItem('tg_chat_id', document.getElementById('set-tg-chat').value.trim());
+  showNotify('success', 'Telegram sozlamalari saqlandi!');
+});
+document.getElementById('pwd-settings-form')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const oldP = document.getElementById('set-pwd-old').value;
+  const newP = document.getElementById('set-pwd-new').value;
+  
+  if (oldP === getPassword()) {
+    if (newP.length < 4) {
+      showNotify('error', 'Parol kamida 4 ta belgidan iborat bo\'lishi kerak!');
       return;
     }
-
-    const content = {
-      hero: {
-        tag: document.getElementById('hero-tag-input').value.trim(),
-        titleBefore: document.getElementById('hero-titleBefore-input').value.trim(),
-        titleGold: document.getElementById('hero-titleGold-input').value.trim(),
-        titleAfter: document.getElementById('hero-titleAfter-input').value.trim(),
-        desc: document.getElementById('hero-desc-input').value.trim()
-      },
-      courses: collectCourses(),
-      news: collectNews(),
-      quiz: collectQuiz()
-    };
-
-    saveBtn.disabled = true;
-    saveStatus.textContent = 'Saqlanmoqda...';
-    saveStatus.className = 'admin-save-status';
-
-    fetch(SAVE_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: currentPassword, content })
-    })
-      .then(res => res.json().then(data => ({ status: res.status, data })))
-      .then(({ status, data }) => {
-        if (status === 200 && data.ok) {
-          saveStatus.textContent = 'Muvaffaqiyatli saqlandi! Sayt yangilandi.';
-          saveStatus.className = 'admin-save-status success';
-        } else {
-          saveStatus.textContent = data.error || 'Saqlashda xatolik yuz berdi.';
-          saveStatus.className = 'admin-save-status error';
-        }
-      })
-      .catch(() => {
-        saveStatus.textContent = 'Serverga ulanishda xatolik. Internetni tekshiring.';
-        saveStatus.className = 'admin-save-status error';
-      })
-      .finally(() => {
-        saveBtn.disabled = false;
-      });
-  });
-
+    localStorage.setItem('admin_pwd', newP);
+    showNotify('success', 'Parol muvaffaqiyatli o\'zgartirildi!');
+    document.getElementById('pwd-settings-form').reset();
+  } else {
+    showNotify('error', 'Joriy parol xato!');
+  }
 });
+// ---- NOTIFY UTILS ----
+function showNotify(type, text) {
+  const el = document.getElementById('a-notify');
+  el.className = `a-notify ${type} show`;
+  document.getElementById('a-notify-msg').innerHTML = `${type === 'success' ? '✅' : '❌'} &nbsp; ${text}`;
+  setTimeout(() => el.classList.remove('show'), 3000);
+}

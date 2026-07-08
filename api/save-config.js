@@ -5,7 +5,11 @@ export default async function handler(req, res) {
     return res.status(403).json({ message: "Ruxsat yo'q!" });
   }
   const url   = process.env.KV_REST_API_URL;
-  const token = process.env.KV_REST_API_TOKEN;
+  // Upstash integration turli nomlar bilan token qo'shishi mumkin
+  const token = process.env.KV_REST_API_TOKEN ||
+                process.env.KV_REST_Y_TOKEN ||
+                process.env.KV_REST_I_TOKEN ||
+                process.env.UPSTASH_REDIS_REST_TOKEN;
   if (!url || !token) {
     return res.status(500).json({ message: 'KV ulanmagan. Vercel sozlamalarini tekshiring.' });
   }

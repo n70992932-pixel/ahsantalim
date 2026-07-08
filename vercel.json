@@ -1,3 +1,27 @@
 {
-  "version": 2
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/send-telegram.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/send-telegram",
+      "dest": "/api/send-telegram.js"
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*\\.(js|css|jpg|jpeg|png|svg|ico))",
+      "dest": "/$1"
+    }
+  ]
 }

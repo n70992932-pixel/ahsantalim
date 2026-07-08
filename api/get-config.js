@@ -1,13 +1,20 @@
-import { kv } from '@vercel/kv';
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  
+  const url   = process.env.KV_REST_API_URL;
+  const token = process.env.KV_REST_API_TOKEN;
+  if (!url || !token) {
+    return res.status(200).json({ config: null });
+  }
   try {
-    const config = await kv.get('site_config');
-    return res.status(200).json({ config: config || null });
+    const response = await fetch(`${url}/get/site_config`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const data = await response.json();
+    // Upstash result is a string, parse it back to object
+    const config = data.result ? JSON.parse(data.result) : null;
+    return res.status(200).json({ config });
   } catch(e) {
-    // KV ulanmagan bo'lsa, null qaytaramiz (default ma'lumotlar ishlatiladi)
     return res.status(200).json({ config: null });
   }
 }

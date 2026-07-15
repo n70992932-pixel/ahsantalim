@@ -9,6 +9,7 @@
   <link rel="icon" href="logo.jpg" type="image/jpeg">
 </head>
 <body>
+
   <!-- LOGIN SCREEN -->
   <div id="login-screen" class="login-wrapper">
     <div class="login-box">
@@ -24,6 +25,7 @@
       <p id="login-error" style="color: #ef4444; font-size: 0.85rem; margin-top: 10px; display: none;">Parol xato, qaytadan urinib ko'ring.</p>
     </div>
   </div>
+
   <!-- ADMIN APP -->
   <div id="admin-app" style="display: none; width: 100%; height: 100%;">
     <!-- SIDEBAR -->
@@ -61,6 +63,7 @@
       </div>
     </nav>
   </aside>
+
   <!-- MAIN CONTENT -->
   <main class="main-content">
     
@@ -102,6 +105,7 @@
           <textarea id="s-contact-hours" rows="2"></textarea>
         </div>
       </div>
+
       <div class="card mt-4">
         <h3>Ijtimoiy Tarmoqlar & Footer</h3>
         <div class="form-group">
@@ -117,6 +121,7 @@
           <textarea id="s-footer-desc" rows="2"></textarea>
         </div>
       </div>
+
       <div class="card mt-4" style="border-color: rgba(245,197,24,0.3);">
         <h3 style="color: var(--gold);">Telegram Bot Sozlamalari (Arizalar uchun)</h3>
         <div class="form-group">
@@ -128,10 +133,12 @@
           <input type="text" id="s-tg-chat" placeholder="-1001234567890">
         </div>
       </div>
+
       <div class="mt-4 text-right">
         <button class="btn-gold" id="btn-save-settings">Saqlash</button>
       </div>
     </section>
+
     <!-- TAB 2: AFZALLIKLAR -->
     <section id="tab-advantages" class="tab-pane">
       <div class="page-header">
@@ -145,6 +152,7 @@
         <button class="btn-gold" id="btn-save-adv">Saqlash</button>
       </div>
     </section>
+
     <!-- TAB 3: KURSLAR -->
     <section id="tab-courses" class="tab-pane">
       <div class="page-header flex-between">
@@ -158,6 +166,7 @@
         <!-- JS render -->
       </div>
     </section>
+
     <!-- TAB 4: USTOZLAR -->
     <section id="tab-teachers" class="tab-pane">
       <div class="page-header flex-between">
@@ -171,7 +180,9 @@
         <!-- JS render -->
       </div>
     </section>
+
   </main>
+
   <!-- MODAL: KURS QO'SHISH/TAHRIRLASH -->
   <div class="modal-overlay" id="course-modal">
     <div class="modal-box">
@@ -219,6 +230,7 @@
       </form>
     </div>
   </div>
+
   <!-- MODAL: USTOZ QO'SHISH/TAHRIRLASH -->
   <div class="modal-overlay" id="teacher-modal">
     <div class="modal-box">
@@ -237,6 +249,10 @@
           <label>Tajribasi (Masalan: 5 yillik tajriba)</label>
           <input type="text" id="t-exp">
         </div>
+        <div class="form-group">
+          <label>Rasm havolasi (URL - Ixtiyoriy)</label>
+          <input type="text" id="t-image" placeholder="https://...">
+        </div>
         <div class="flex-between mt-4">
           <button type="button" class="btn-dark" onclick="closeModals()">Bekor qilish</button>
           <button type="submit" class="btn-gold">Saqlash</button>
@@ -244,10 +260,13 @@
       </form>
     </div>
   </div>
+
   </div>
   <!-- /ADMIN APP -->
+
   <!-- TOAST NOTIFICATION -->
   <div id="toast" class="toast">Saqlandi!</div>
+
   <script src="admin.js"></script>
 </body>
 </html>

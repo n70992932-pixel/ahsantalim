@@ -264,7 +264,16 @@ function openTeacherModal(index = -1) {
     document.getElementById('t-name').value = t.name;
     document.getElementById('t-subject').value = t.subject;
     document.getElementById('t-exp').value = t.exp;
-    document.getElementById('t-image').value = t.image || '';
+    document.getElementById('t-image-base64').value = t.image || '';
+    if(t.image) {
+      document.getElementById('t-image-preview').style.display = 'block';
+      document.querySelector('#t-image-preview img').src = t.image;
+    } else {
+      document.getElementById('t-image-preview').style.display = 'none';
+    }
+  } else {
+    document.getElementById('t-image-base64').value = '';
+    document.getElementById('t-image-preview').style.display = 'none';
   }
   document.getElementById('teacher-modal').classList.add('active');
 }
@@ -286,7 +295,7 @@ document.getElementById('teacher-form')?.addEventListener('submit', async (e) =>
     name: document.getElementById('t-name').value,
     subject: document.getElementById('t-subject').value,
     exp: document.getElementById('t-exp').value,
-    image: document.getElementById('t-image').value
+    image: document.getElementById('t-image-base64').value
   };
   if (index >= 0) { currentConfig.teachers[index] = newData; }
   else { currentConfig.teachers.push(newData); }
@@ -310,6 +319,48 @@ function showToast(msg = "✅ Saqlandi!", isError = false) {
 }
 
 // --- INIT ---
+// Image upload & compress logic
+document.getElementById('t-image-file')?.addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const MAX_WIDTH = 300;
+      const MAX_HEIGHT = 300;
+      let width = img.width;
+      let height = img.height;
+
+      if (width > height) {
+        if (width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        }
+      } else {
+        if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+      }
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      document.getElementById('t-image-base64').value = dataUrl;
+      document.getElementById('t-image-preview').style.display = 'block';
+      document.querySelector('#t-image-preview img').src = dataUrl;
+    }
+    img.src = event.target.result;
+  }
+  reader.readAsDataURL(file);
+});
+
+
+
 window.addEventListener('DOMContentLoaded', async () => {
   await loadConfigFromAPI();
   loadSettings();

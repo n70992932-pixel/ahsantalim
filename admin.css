@@ -13,20 +13,24 @@
   --sidebar-w: 280px;
   --radius: 12px;
 }
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Outfit', sans-serif; background-color: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
 /* LOGIN SCREEN */
 .login-wrapper { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--bg-main); z-index: 9999; }
 .login-box { background: var(--bg-card); padding: 40px; border-radius: var(--radius); border: 1px solid var(--border-color); text-align: center; width: 100%; max-width: 360px; }
 .login-logo img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 20px; }
 .login-box h2 { font-size: 1.5rem; margin-bottom: 10px; }
 .login-box p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px; }
+
 /* LAYOUT */
 .sidebar { width: var(--sidebar-w); background: var(--bg-card); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
 .sidebar-header { padding: 30px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border-color); }
 .sidebar-logo { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--gold); }
 .sidebar-title { display: flex; flex-direction: column; font-weight: 800; font-size: 1.1rem; line-height: 1.2; }
 .sidebar-title span:last-child { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; }
+
 .sidebar-nav { padding: 20px 10px; flex-grow: 1; display: flex; flex-direction: column; gap: 10px; }
 .nav-btn {
   display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 20px;
@@ -36,11 +40,14 @@ body { font-family: 'Outfit', sans-serif; background-color: var(--bg-main); colo
 .nav-btn svg { width: 20px; height: 20px; }
 .nav-btn:hover { background: rgba(255,255,255,0.05); color: #fff; }
 .nav-btn.active { background: rgba(245,197,24,0.1); color: var(--gold); }
+
 .main-content { flex-grow: 1; overflow-y: auto; padding: 40px; }
+
 /* TABS */
 .tab-pane { display: none; animation: fadeIn 0.3s ease; }
 .tab-pane.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
 /* COMMON COMPONENTS */
 .page-header { margin-bottom: 30px; }
 .page-header h2 { font-size: 2rem; font-weight: 700; margin-bottom: 5px; }
@@ -48,8 +55,10 @@ body { font-family: 'Outfit', sans-serif; background-color: var(--bg-main); colo
 .flex-between { display: flex; justify-content: space-between; align-items: center; }
 .mt-4 { margin-top: 24px; }
 .text-right { text-align: right; }
+
 .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 30px; }
 .card h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; color: var(--gold); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+
 /* FORMS */
 .form-group { margin-bottom: 20px; }
 .form-group label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem; }
@@ -61,6 +70,7 @@ body { font-family: 'Outfit', sans-serif; background-color: var(--bg-main); colo
 .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--gold); }
 .form-row { display: flex; gap: 20px; }
 .form-row .form-group { flex: 1; }
+
 /* BUTTONS */
 .btn-gold {
   background: var(--gold); color: #000; border: none; padding: 12px 24px;
@@ -82,6 +92,7 @@ body { font-family: 'Outfit', sans-serif; background-color: var(--bg-main); colo
   padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.85rem;
 }
 .btn-edit:hover { background: rgba(245, 197, 24, 0.2); }
+
 /* GRID LIST (Courses & Teachers) */
 .grid-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
 .list-card {
@@ -91,6 +102,7 @@ body { font-family: 'Outfit', sans-serif; background-color: var(--bg-main); colo
 .list-card h4 { font-size: 1.1rem; margin-bottom: 10px; color: #fff; }
 .list-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5; }
 .list-card .actions { display: flex; gap: 10px; border-top: 1px solid var(--border-color); padding-top: 15px; }
+
 /* MODALS */
 .modal-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
@@ -104,6 +116,7 @@ body { font-family: 'Outfit', sans-serif; background-color: var(--bg-main); colo
 }
 .modal-overlay.active .modal-box { transform: translateY(0); }
 .modal-title { font-size: 1.3rem; margin-bottom: 20px; color: #fff; }
+
 /* TOAST */
 .toast {
   position: fixed; bottom: 30px; right: 30px; background: var(--gold); color: #000;
@@ -111,16 +124,21 @@ body { font-family: 'Outfit', sans-serif; background-color: var(--bg-main); colo
   box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: translateY(100px); opacity: 0; transition: 0.3s; z-index: 9999;
 }
 .toast.show { transform: translateY(0); opacity: 1; }
+
 @media (max-width: 768px) {
-  body { flex-direction: column; overflow-y: auto; }
+  body { flex-direction: column; overflow-y: auto; height: auto; }
+  #admin-app { flex-direction: column !important; height: auto !important; overflow: visible; }
   .sidebar { width: 100%; height: auto; flex-direction: column; padding: 15px; border-right: none; border-bottom: 1px solid var(--border-color); }
   .sidebar-header { padding: 0 0 15px 0; justify-content: center; border-bottom: 1px solid var(--border-color); }
   .sidebar-nav { padding: 15px 0 0 0; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px; }
   .nav-btn { width: auto; padding: 10px 15px; font-size: 0.9rem; }
   .nav-btn svg { display: none; } /* Hide icons on mobile for space */
   
-  .main-content { padding: 20px; overflow-y: visible; }
+  .main-content { padding: 20px; overflow-y: visible; height: auto; }
   .form-row { flex-direction: column; gap: 0; }
   
   .login-box { margin: 20px; padding: 30px 20px; }
+  .page-header h2 { font-size: 1.5rem; }
+  .flex-between { flex-direction: column; align-items: flex-start; gap: 15px; }
+  .flex-between button { width: 100%; }
 }

@@ -1,6 +1,7 @@
 // ============================================
 // AHSAN TA'LIM — PREMIUM JAVASCRIPT (DYNAMIC)
 // ============================================
+
 // --- DEFAULT SITE DATA ---
 const DEFAULT_SITE_DATA = {
   hero: {
@@ -19,6 +20,7 @@ const DEFAULT_SITE_DATA = {
   },
   footerDesc: "Bizning maqsadimiz — har bir o'quvchiga sifatli va zamonaviy bilim berib, ularning yorqin kelajagini qurishiga ko'maklashish."
 };
+
 const DEFAULT_ADVANTAGES = [
   {
     iconSvg: '<path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>',
@@ -36,6 +38,7 @@ const DEFAULT_ADVANTAGES = [
     desc: "Ertamgi, tushlikdan keyingi va kechki guruhlar mavjudligi tufayli o'qish yoki ish bilan birga olib borish juda qulay."
   }
 ];
+
 const DEFAULT_COURSES = [
   {
     category: "Arab tili", badge: "Boshlang'ich", iconText: "العَرَبِيَّة",
@@ -68,12 +71,14 @@ const DEFAULT_COURSES = [
     duration: "3 oy davomiyligida", freq: "Haftada 3 marta dars", price: "Oyiga 400,000 so'm"
   }
 ];
+
 const DEFAULT_TEACHERS = [
   { name: "Abdurahmon ustoz", subject: "Arab tili", exp: "5 yillik tajriba" },
   { name: "Sardor ustoz", subject: "Ingliz tili (IELTS 8.0)", exp: "4 yillik tajriba" },
   { name: "Zuhiddin ustoz", subject: "Tarix", exp: "7 yillik tajriba" },
   { name: "Ahmad ustoz", subject: "Arab tili (Bolalar uchun)", exp: "3 yillik tajriba" }
 ];
+
 // --- INTERACTIVITY ---
 document.addEventListener('DOMContentLoaded', async () => {
   // API dan config yuklash
@@ -85,10 +90,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch(e) {
     console.log("API ulanmadi, default ma'lumotlar ishlatildi.");
   }
+
   const siteData = (config && config.siteData) ? config.siteData : DEFAULT_SITE_DATA;
   const advData  = (config && config.advantages) ? config.advantages : DEFAULT_ADVANTAGES;
   const courseData = (config && config.courses) ? config.courses : DEFAULT_COURSES;
   const teacherData = (config && config.teachers) ? config.teachers : DEFAULT_TEACHERS;
+
   // Hero
   const elBadge = document.getElementById('dyn-hero-badge');
   const elTitle = document.getElementById('dyn-hero-title');
@@ -96,6 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if(elBadge) { elBadge.innerHTML = siteData.hero.badge; elBadge.style.display = siteData.hero.badge ? 'inline-flex' : 'none'; }
   if(elTitle) elTitle.innerHTML = siteData.hero.title;
   if(elDesc)  elDesc.innerHTML  = siteData.hero.desc;
+
   // Contact
   const cPhone = document.getElementById('dyn-contact-phones');
   const cAddr  = document.getElementById('dyn-contact-address');
@@ -103,6 +111,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if(cPhone) cPhone.innerHTML = siteData.contact.phones;
   if(cAddr)  cAddr.innerHTML  = siteData.contact.address;
   if(cHours) cHours.innerHTML = siteData.contact.hours;
+
   // Footer
   const fDesc  = document.getElementById('dyn-footer-desc');
   const tgLink = document.getElementById('dyn-tg-link');
@@ -110,6 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if(fDesc)  fDesc.innerHTML = siteData.footerDesc;
   if(tgLink) tgLink.href = siteData.social.tg;
   if(igLink) igLink.href = siteData.social.ig;
+
   // Advantages
   const advGrid = document.getElementById('adv-grid');
   if(advGrid) {
@@ -123,6 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       </div>
     `).join('');
   }
+
   // Courses
   let activeCourseData = courseData;
   function renderCoursesDOM(filter = 'all') {
@@ -146,13 +157,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     `).join('');
   }
   renderCoursesDOM('all');
+
   // Teachers
   const teacherGrid = document.getElementById('teachers-grid');
   if(teacherGrid) {
     teacherGrid.innerHTML = teacherData.map(t => `
       <div class="teacher-card">
         <div class="teacher-img-wrapper">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+          ${t.image ? `<img src="${t.image}" alt="${t.name}" class="teacher-img">` : `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>`}
         </div>
         <h3 class="teacher-name">${t.name}</h3>
         <div class="teacher-subject">${t.subject}</div>
@@ -160,12 +172,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       </div>
     `).join('');
   }
+
   // Navbar scroll
   const header = document.getElementById('header');
   window.addEventListener('scroll', () => {
     if (window.scrollY > 50) header.classList.add('scrolled');
     else header.classList.remove('scrolled');
   });
+
   // Filters
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -175,9 +189,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 });
+
+
 // --- MODAL & TELEGRAM ---
 const modal = document.getElementById('reg-modal');
 const closeBtn = document.getElementById('modal-close-btn');
+
 document.addEventListener('click', (e) => {
   if (e.target.closest('.open-modal')) {
     const btn = e.target.closest('.open-modal');
@@ -203,8 +220,10 @@ document.addEventListener('click', (e) => {
     modal.classList.add('active');
   }
 });
+
 closeBtn?.addEventListener('click', () => modal.classList.remove('active'));
 modal?.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+
 async function sendToTelegram(data) {
   try {
     const res = await fetch('/api/submit', {
@@ -224,6 +243,7 @@ async function sendToTelegram(data) {
     return false; 
   }
 }
+
 document.getElementById('modal-form')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = document.getElementById('modal-submit-btn');

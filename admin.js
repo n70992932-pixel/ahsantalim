@@ -1,7 +1,9 @@
 // ============================================
 // AHSAN ADMIN PANEL JAVASCRIPT (API-based)
 // ============================================
+
 const ADMIN_PASS = "Ahsan2026!";
+
 // --- DEFAULT DATA ---
 const DEFAULTS = {
   siteData: {
@@ -38,11 +40,14 @@ const DEFAULTS = {
     { name: "Ahmad ustoz", subject: "Arab tili (Bolalar uchun)", exp: "3 yillik tajriba" }
   ]
 };
+
 // In-memory config (loaded from API on start)
 let currentConfig = JSON.parse(JSON.stringify(DEFAULTS));
+
 // Helpers
 function brToNl(str) { return str ? str.replace(/<br\s*\/?>/gi, '\n') : ''; }
 function nlToBr(str) { return str ? str.replace(/\n/g, '<br>') : ''; }
+
 // --- API FUNCTIONS ---
 async function loadConfigFromAPI() {
   try {
@@ -55,6 +60,7 @@ async function loadConfigFromAPI() {
     console.log("API ulanmadi, default ma'lumotlar ishlatildi.");
   }
 }
+
 async function saveConfigToAPI() {
   try {
     const res = await fetch('/api/save-config', {
@@ -71,9 +77,11 @@ async function saveConfigToAPI() {
     showToast("❌ Internet yoki Server xatosi!", true);
   }
 }
+
 // --- LOGIN ---
 const PASS = "Ahsan2026!";
 const isLoggedIn = sessionStorage.getItem('admin_logged_in') === 'true';
+
 if (isLoggedIn) {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('admin-app').style.display = 'flex';
@@ -81,6 +89,7 @@ if (isLoggedIn) {
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('admin-app').style.display = 'none';
 }
+
 document.getElementById('btn-login')?.addEventListener('click', () => {
   const pwd = document.getElementById('admin-password').value;
   if (pwd === PASS) {
@@ -91,9 +100,11 @@ document.getElementById('btn-login')?.addEventListener('click', () => {
     document.getElementById('login-error').style.display = 'block';
   }
 });
+
 document.getElementById('admin-password')?.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') document.getElementById('btn-login').click();
 });
+
 // --- TAB NAVIGATION ---
 document.querySelectorAll('.nav-btn[data-tab]').forEach(btn => {
   btn.addEventListener('click', (e) => {
@@ -104,6 +115,7 @@ document.querySelectorAll('.nav-btn[data-tab]').forEach(btn => {
     document.getElementById(target.dataset.tab).classList.add('active');
   });
 });
+
 // --- TAB 1: SETTINGS ---
 function loadSettings() {
   const sd = currentConfig.siteData;
@@ -117,6 +129,7 @@ function loadSettings() {
   document.getElementById('s-social-ig').value = sd.social.ig || '';
   document.getElementById('s-footer-desc').value = sd.footerDesc || '';
 }
+
 document.getElementById('btn-save-settings')?.addEventListener('click', async () => {
   currentConfig.siteData.hero.badge = document.getElementById('s-hero-badge').value;
   currentConfig.siteData.hero.title = document.getElementById('s-hero-title').value;
@@ -129,6 +142,7 @@ document.getElementById('btn-save-settings')?.addEventListener('click', async ()
   currentConfig.siteData.footerDesc = document.getElementById('s-footer-desc').value;
   await saveConfigToAPI();
 });
+
 // --- TAB 2: ADVANTAGES ---
 function renderAdvForm() {
   const container = document.getElementById('adv-container');
@@ -146,6 +160,7 @@ function renderAdvForm() {
     </div>
   `).join('');
 }
+
 document.getElementById('btn-save-adv')?.addEventListener('click', async () => {
   currentConfig.advantages = currentConfig.advantages.map((adv, i) => ({
     ...adv,
@@ -154,6 +169,7 @@ document.getElementById('btn-save-adv')?.addEventListener('click', async () => {
   }));
   await saveConfigToAPI();
 });
+
 // --- TAB 3: COURSES ---
 function renderCoursesList() {
   const list = document.getElementById('courses-list');
@@ -172,6 +188,7 @@ function renderCoursesList() {
     </div>
   `).join('');
 }
+
 function openCourseModal(index = -1) {
   document.getElementById('course-form').reset();
   document.getElementById('c-index').value = index;
@@ -189,7 +206,9 @@ function openCourseModal(index = -1) {
   }
   document.getElementById('course-modal').classList.add('active');
 }
+
 function editCourse(i) { openCourseModal(i); }
+
 async function deleteCourse(i) {
   if(confirm("Ushbu kursni o'chirmoqchimisiz?")) {
     currentConfig.courses.splice(i, 1);
@@ -197,6 +216,7 @@ async function deleteCourse(i) {
     await saveConfigToAPI();
   }
 }
+
 document.getElementById('course-form')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const index = parseInt(document.getElementById('c-index').value);
@@ -216,6 +236,7 @@ document.getElementById('course-form')?.addEventListener('submit', async (e) => 
   closeModals();
   await saveConfigToAPI();
 });
+
 // --- TAB 4: TEACHERS ---
 function renderTeachersList() {
   const list = document.getElementById('teachers-list');
@@ -233,6 +254,7 @@ function renderTeachersList() {
     </div>
   `).join('');
 }
+
 function openTeacherModal(index = -1) {
   document.getElementById('teacher-form').reset();
   document.getElementById('t-index').value = index;
@@ -242,10 +264,13 @@ function openTeacherModal(index = -1) {
     document.getElementById('t-name').value = t.name;
     document.getElementById('t-subject').value = t.subject;
     document.getElementById('t-exp').value = t.exp;
+    document.getElementById('t-image').value = t.image || '';
   }
   document.getElementById('teacher-modal').classList.add('active');
 }
+
 function editTeacher(i) { openTeacherModal(i); }
+
 async function deleteTeacher(i) {
   if(confirm("Ushbu ustozni o'chirmoqchimisiz?")) {
     currentConfig.teachers.splice(i, 1);
@@ -253,13 +278,15 @@ async function deleteTeacher(i) {
     await saveConfigToAPI();
   }
 }
+
 document.getElementById('teacher-form')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const index = parseInt(document.getElementById('t-index').value);
   const newData = {
     name: document.getElementById('t-name').value,
     subject: document.getElementById('t-subject').value,
-    exp: document.getElementById('t-exp').value
+    exp: document.getElementById('t-exp').value,
+    image: document.getElementById('t-image').value
   };
   if (index >= 0) { currentConfig.teachers[index] = newData; }
   else { currentConfig.teachers.push(newData); }
@@ -267,10 +294,12 @@ document.getElementById('teacher-form')?.addEventListener('submit', async (e) =>
   closeModals();
   await saveConfigToAPI();
 });
+
 // --- UTILS ---
 function closeModals() {
   document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
 }
+
 function showToast(msg = "✅ Saqlandi!", isError = false) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -279,6 +308,7 @@ function showToast(msg = "✅ Saqlandi!", isError = false) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3500);
 }
+
 // --- INIT ---
 window.addEventListener('DOMContentLoaded', async () => {
   await loadConfigFromAPI();

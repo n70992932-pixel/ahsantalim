@@ -3,12 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ahsan Ta'lim - O'zbekistondagi eng ilg'or o'quv markazi</title>
-  <meta name="description" content="Arab tili, Ingliz tili va Tarix fanlaridan mukammal tayyorgarlik kursi. Ahsan Ta'lim orqali kelajagingizni quring.">
+  <title>Ahsan Ta'lim - O'quv Markazi</title>
+  <meta name="description" content="Ahsan Ta'lim - Arab tili, Ingliz tili va Tarix fanlaridan mukammal tayyorgarlik kursi. Sifatli ta'lim orqali yorqin kelajak sari!">
+  <meta name="keywords" content="Ahsan Ta'lim, o'quv markazi, arab tili kursi, ingliz tili, tarix, abituriyent tayyorlash, repetitor, sifatli ta'lim, toshkent o'quv markazlari">
+  <meta name="author" content="Ahsan Ta'lim">
+  
+  <!-- Open Graph / Telegram / Facebook yuzlari uchun -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ahsantalim.uz/">
+  <meta property="og:title" content="Ahsan Ta'lim - Zamonaviy O'quv Markazi">
+  <meta property="og:description" content="Arab tili, Ingliz tili va Tarix fanlaridan mukammal tayyorgarlik kursi. Biz bilan kelajagingizni quring!">
+  <meta property="og:image" content="https://ahsantalim.uz/logo.jpg">
+  
+  <!-- Twitter / X uchun -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://ahsantalim.uz/">
+  <meta name="twitter:title" content="Ahsan Ta'lim - Zamonaviy O'quv Markazi">
+  <meta name="twitter:description" content="Arab tili, Ingliz tili va Tarix fanlaridan mukammal tayyorgarlik kursi. Biz bilan kelajagingizni quring!">
+  <meta name="twitter:image" content="https://ahsantalim.uz/logo.jpg">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="logo.jpg" type="image/jpeg">
 </head>
 <body>
+
   <!-- HEADER -->
   <header class="header" id="header">
     <div class="container">
@@ -26,43 +43,53 @@
         <a href="#courses">Kurslar</a>
         <a href="#teachers">Ustozlar</a>
       </nav>
-      <button class="menu-btn" aria-label="Menyu">≡</button>
+      
+      <div style="display: flex; gap: 15px; align-items: center;">
+        <button class="btn-gold open-modal" data-course="Bepul konsultatsiya">Yozilish</button>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menyu">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
     </div>
   </header>
-  <!-- HERO SECTION -->
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#home">Bosh sahifa</a>
+    <a href="#advantages">Afzalliklar</a>
+    <a href="#courses">Kurslar</a>
+    <a href="#teachers">Ustozlar</a>
+    <a href="#contact">Aloqa</a>
+    <button class="btn-gold open-modal" data-course="Bepul konsultatsiya" style="margin-top: 20px;">Kursga yozilish</button>
+  </div>
+
+  <!-- HERO -->
   <section class="hero" id="home">
-    <div class="hero-bg-glow"></div>
-    <div class="container">
-            <div class="hero-logo-wrapper">
-        <div class="hero-logo-glow"></div>
-        <img src="logo.jpg" alt="Logo Big" class="hero-logo-img">
-      </div>
-      <div class="hero-badge" id="dyn-hero-badge"></div>
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+      <span class="badge" id="dyn-hero-badge"></span>
       <h1 class="hero-title" id="dyn-hero-title"></h1>
       <p class="hero-desc" id="dyn-hero-desc"></p>
-      <div class="hero-btns">
-        <button class="btn-gold" onclick="document.getElementById('courses').scrollIntoView()">
-          Kurslarni ko'rish
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-        </button>
-        <button class="btn-dark open-modal" data-course="Bepul konsultatsiya">Bepul darsga yozilish</button>
-      </div>
+      <button class="btn-gold open-modal" data-course="Bepul konsultatsiya" style="padding: 16px 40px; font-size: 18px;">Bepul konsultatsiya</button>
     </div>
   </section>
-  <!-- ADVANTAGES SECTION -->
+
+  <!-- ADVANTAGES -->
   <section id="advantages">
     <div class="container">
       <div class="section-header">
-        <div class="section-subtitle">BIZNING AFZALLIKLARIMIZ</div>
-        <h2 class="section-title">Nega aynan «Ahsan Ta'lim»<br>markazini tanlashadi?</h2>
+        <div class="section-subtitle">NIMA UCHUN BIZ?</div>
+        <h2 class="section-title">Ahsan Ta'lim bilan<br>maqsadlar sari</h2>
       </div>
-      <div class="adv-grid" id="adv-grid">
+      
+      <div class="advantages-grid" id="advantages-grid">
         <!-- JS render -->
       </div>
     </div>
   </section>
+
   <!-- COURSES SECTION -->
-  <section id="courses" style="background: rgba(255,255,255,0.01);">
+  <section id="courses" style="background: var(--bg-alt);">
     <div class="container">
       <div class="section-header">
         <div class="section-subtitle">BIZNING KURSLAR</div>
@@ -76,11 +103,13 @@
         <button class="filter-btn" data-filter="Tarix">Tarix</button>
         <button class="filter-btn" data-filter="Bolalar">Bolalar uchun</button>
       </div>
+
       <div class="courses-grid" id="courses-grid">
         <!-- JS render -->
       </div>
     </div>
   </section>
+
   <!-- TEACHERS SECTION -->
   <section id="teachers">
     <div class="container">
@@ -88,11 +117,13 @@
         <div class="section-subtitle">BIZNING JAMOAMIZ</div>
         <h2 class="section-title">Malakali va Tajribali<br>Ustozlarimiz</h2>
       </div>
+
       <div class="teachers-grid" id="teachers-grid">
         <!-- JS render -->
       </div>
     </div>
   </section>
+
   <!-- CONTACT & FOOTER -->
   <section id="contact" style="padding-bottom: 0;">
     <div class="container">
@@ -100,6 +131,7 @@
         <div class="section-subtitle">ALOQA</div>
         <h2 class="section-title">Biz bilan bog'lanish</h2>
       </div>
+
       <div class="contact-wrapper" style="margin-bottom: 80px; max-width: 800px; margin-left: auto; margin-right: auto; text-align: center;">
         <div class="contact-info" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px;">
           
@@ -132,10 +164,12 @@
               <p id="dyn-contact-hours"></p>
             </div>
           </div>
+
         </div>
       </div>
     </div>
   </section>
+
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
@@ -180,6 +214,7 @@
       </div>
     </div>
   </footer>
+
   <!-- MODAL -->
   <div class="modal-overlay" id="reg-modal">
     <div class="modal-box">
@@ -212,6 +247,7 @@
           <button type="submit" class="btn-gold" id="modal-submit-btn" style="width: 100%;">Arizani yuborish</button>
         </form>
       </div>
+
       <div id="modal-success-view" style="display: none; text-align: center; padding: 20px 0;">
         <div style="font-size: 60px; margin-bottom: 20px; color: #4ade80;">✓</div>
         <h3 class="modal-title">Arizangiz qabul qilindi!</h3>
@@ -220,6 +256,7 @@
       </div>
     </div>
   </div>
+
   <script src="app.js"></script>
 </body>
 </html>

@@ -1,275 +1,336 @@
 // ============================================
-// AHSAN TA'LIM — PREMIUM JAVASCRIPT (DYNAMIC)
+// AHSAN TA'LIM — Main JavaScript
+// Telegram: To'g'ridan-to'g'ri API
 // ============================================
 
-// --- DEFAULT SITE DATA ---
-const DEFAULT_SITE_DATA = {
-  hero: {
-    badge: "Zamonaviy va Tizimli Ta'lim",
-    title: "Kelajagingiz uchun <span class=\"text-gold\">eng yaxshi</span> ta'lim markazi",
-    desc: "Biz bilan Arab tili, Ingliz tili (IELTS) hamda Tarix fanlarini tajribali ustozlar yordamida chuqurlashtirilgan innovatsion dasturlar asosida o'rganing."
-  },
-  contact: {
-    phones: "+998 (77) 300-90-90<br>+998 (90) 123-45-67",
-    address: "Dang'ara tumani, Qiyali qo'rg'oncha qishlog'i.<br>Mo'ljal: Maktab yonida.",
-    hours: "Dushanba - Shanba: 09:00 - 20:00<br>Yakshanba: Dam olish kuni"
-  },
-  social: {
-    tg: "https://t.me/ahsantalim0571",
-    ig: "https://instagram.com/ahsan.talim"
-  },
-  footerDesc: "Bizning maqsadimiz — har bir o'quvchiga sifatli va zamonaviy bilim berib, ularning yorqin kelajagini qurishiga ko'maklashish."
-};
+// ---- TELEGRAM SOZLAMALARI ----
+// Admin panel orqali o'rnatiladi (localStorage)
+function getTgSettings() {
+  return {
+    token: localStorage.getItem('tg_token') || '',
+    chatId: localStorage.getItem('tg_chat_id') || ''
+  };
+}
 
-const DEFAULT_ADVANTAGES = [
+// ---- KURSLAR MA'LUMOTLARI ----
+const COURSES = [
   {
-    iconSvg: '<path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>',
-    title: "Tizimli Dastur",
-    desc: "Darslarimiz boshlang'ich tushunchalardan boshlab, imtihonlarga tayyorgarlik va ravon nutqqacha bo'lgan bosqichlarni qamrab oladi."
+    id: 1,
+    icon: '🕌',
+    tag: 'Boshlang\'ich',
+    title: 'Arab tili — Boshlang\'ich',
+    desc: 'Arabcha alifbo, asosiy grammatika (Sarf va Nahv), kundalik muloqot va qur\'on imlo qoidalari.',
+    features: ['Arabcha alifbo va harflar', 'Asosiy Sarf va Nahv', 'Kundalik muloqot', 'Qur\'on o\'qish asoslari'],
+    price: '350,000 so\'m/oy',
+    course: 'Arab tili (boshlang\'ich)'
   },
   {
-    iconSvg: '<path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>',
-    title: "Malakali Ustozlar",
-    desc: "Ko'p yillik tajribaga ega, o'z mutaxassisligi bo'yicha kuchli natijalarga erishgan ustozlar sizga ta'lim berishadi."
+    id: 2,
+    icon: '📖',
+    tag: 'O\'rta daraja',
+    title: 'Arab tili — O\'rta daraja',
+    desc: 'Murakkab grammatika, matn tahlili, yozma va og\'zaki muloqotni kuchaytirish.',
+    features: ['Murakkab Nahv qoidalari', 'Matn tahlili', 'Essе yozish', 'Og\'zaki suhbat'],
+    price: '400,000 so\'m/oy',
+    course: 'Arab tili (o\'rta daraja)'
   },
   {
-    iconSvg: '<path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>',
-    title: "Qulay Dars Jadvallari",
-    desc: "Ertamgi, tushlikdan keyingi va kechki guruhlar mavjudligi tufayli o'qish yoki ish bilan birga olib borish juda qulay."
+    id: 3,
+    icon: '🇬🇧',
+    tag: 'IELTS',
+    title: 'Ingliz tili — IELTS',
+    desc: 'IELTS imtihoniga to\'liq tayyorlov. Maqsad 6.0 dan 8.0 gacha. Intensiv amaliyot.',
+    features: ['Listening & Reading', 'Writing Task 1 & 2', 'Speaking tayyorlov', 'Mock test sinovlari'],
+    price: '500,000 so\'m/oy',
+    course: 'Ingliz tili — IELTS tayyorlov'
+  },
+  {
+    id: 4,
+    icon: '💬',
+    tag: 'General',
+    title: 'Ingliz tili — Umumiy',
+    desc: 'Kundalik muloqot, biznes ingliz tili, grammatika va talaffuz ustida ishlash.',
+    features: ['Grammar & Vocabulary', 'Speaking skills', 'Listening practice', 'Business English'],
+    price: '400,000 so\'m/oy',
+    course: 'Ingliz tili (umumiy)'
+  },
+  {
+    id: 5,
+    icon: '📜',
+    tag: 'DTM',
+    title: 'Tarix — DTM Tayyorlov',
+    desc: 'O\'zbekiston tarixi va Jahon tarixi bo\'yicha DTM imtihoniga intensiv tayyorlov kursi.',
+    features: ['O\'zbekiston tarixi', 'Jahon tarixi', 'Test ishlash metodikasi', 'Arxiv hujjatlar tahlili'],
+    price: '350,000 so\'m/oy',
+    course: 'Tarix — DTM tayyorlov'
+  },
+  {
+    id: 6,
+    icon: '🎁',
+    tag: 'Bepul',
+    title: 'Bepul Konsultatsiya',
+    desc: 'Qaysi kurs sizga mos ekanligini bilib oling. Tajribali mutaxassis bilan yuzma-yuz suhbat.',
+    features: ['Daraja aniqlash testi', 'Shaxsiy yo\'l xaritasi', 'Kurs tavsiyasi', '30 daqiqa bepul'],
+    price: 'BEPUL',
+    course: 'Bepul konsultatsiya'
   }
 ];
 
-const DEFAULT_COURSES = [
-  {
-    category: "Arab tili", badge: "Boshlang'ich", iconText: "العَرَبِيَّة",
-    title: "Noldan o'rganuvchilar uchun Arab tili", desc: "Harflar va tovushlar talaffuzidan boshlab, boshlang'ich so'zlashuv va o'qish qoidalarini mustahkam o'rganasiz.",
-    duration: "3 oy davomiyligida", freq: "Haftada 3 marta dars", price: "Oyiga 300,000 so'm"
-  },
-  {
-    category: "Arab tili", badge: "O'rta daraja", iconText: "النَّحْو",
-    title: "Grammatika (Sarf va Nahv asoslari)", desc: "Matnlarni mustaqil tushunish, so'z o'zgarishlari va gap tuzish qoidalarini chuqurroq o'rganishni istaganlar uchun.",
-    duration: "4 oy davomiyligida", freq: "Haftada 3 marta dars", price: "Oyiga 350,000 so'm"
-  },
-  {
-    category: "Bolalar", badge: "6-12 yosh", iconText: "الصغار",
-    title: "Bolalar uchun interaktiv Arab tili", desc: "Qiziqarli o'yinlar, ko'rgazmali qurollar va sodda metodlar orqali bolalarga arab alifbosi va asosiy so'zlashuv.",
-    duration: "6 oy davomiyligida", freq: "Haftada 2 marta dars", price: "Oyiga 250,000 so'm"
-  },
-  {
-    category: "Tarix", badge: "Abituriyent", iconText: "TARIX",
-    title: "Tarix fanidan chuqurlashtirilgan tayyorgarlik", desc: "Milliy OTMlar va xalqaro universitetlarga kiruvchi abituriyentlar uchun maxsus intensiv darslar.",
-    duration: "Imtihongacha", freq: "Haftada 3-4 marta dars", price: "Oyiga 350,000 so'm"
-  },
-  {
-    category: "Ingliz tili", badge: "Pre-IELTS", iconText: "ENG",
-    title: "General English (Umumiy Ingliz tili)", desc: "Grammatika, tinglab tushunish va so'zlashuv qobiliyatini A1 dan B2 darajasigacha ko'tarish.",
-    duration: "6-8 oy davomiyligida", freq: "Haftada 3 marta dars", price: "Oyiga 300,000 so'm"
-  },
-  {
-    category: "Ingliz tili", badge: "IELTS 7.0+", iconText: "IELTS",
-    title: "IELTS Intensive Kurslari", desc: "IELTS imtihoniga to'liq tayyorlov. Mock testlar, shaxsiy tekshiruvlar va yuqori ball olish strategiyalari.",
-    duration: "3 oy davomiyligida", freq: "Haftada 3 marta dars", price: "Oyiga 400,000 so'm"
-  }
-];
+// ---- PRELOADER ----
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('preloader').classList.add('hidden');
+  }, 800);
+});
 
-const DEFAULT_TEACHERS = [
-  { name: "Abdurahmon ustoz", subject: "Arab tili", exp: "5 yillik tajriba" },
-  { name: "Sardor ustoz", subject: "Ingliz tili (IELTS 8.0)", exp: "4 yillik tajriba" },
-  { name: "Zuhiddin ustoz", subject: "Tarix", exp: "7 yillik tajriba" },
-  { name: "Ahmad ustoz", subject: "Arab tili (Bolalar uchun)", exp: "3 yillik tajriba" }
-];
-
-// --- INTERACTIVITY ---
-document.addEventListener('DOMContentLoaded', async () => {
-  // API dan config yuklash
-  let config = null;
-  try {
-    const res = await fetch('/api/get-config');
-    const data = await res.json();
-    config = data.config;
-  } catch(e) {
-    console.log("API ulanmadi, default ma'lumotlar ishlatildi.");
-  }
-
-  const siteData = (config && config.siteData) ? config.siteData : DEFAULT_SITE_DATA;
-  const advData  = (config && config.advantages) ? config.advantages : DEFAULT_ADVANTAGES;
-  const courseData = (config && config.courses) ? config.courses : DEFAULT_COURSES;
-  const teacherData = (config && config.teachers) ? config.teachers : DEFAULT_TEACHERS;
-
-  // Hero
-  const elBadge = document.getElementById('dyn-hero-badge');
-  const elTitle = document.getElementById('dyn-hero-title');
-  const elDesc  = document.getElementById('dyn-hero-desc');
-  if(elBadge) { elBadge.innerHTML = siteData.hero.badge; elBadge.style.display = siteData.hero.badge ? 'inline-flex' : 'none'; }
-  if(elTitle) elTitle.innerHTML = siteData.hero.title;
-  if(elDesc)  elDesc.innerHTML  = siteData.hero.desc;
-
-  // Contact
-  const cPhone = document.getElementById('dyn-contact-phones');
-  const cAddr  = document.getElementById('dyn-contact-address');
-  const cHours = document.getElementById('dyn-contact-hours');
-  if(cPhone) cPhone.innerHTML = siteData.contact.phones;
-  if(cAddr)  cAddr.innerHTML  = siteData.contact.address;
-  if(cHours) cHours.innerHTML = siteData.contact.hours;
-
-  // Footer
-  const fDesc  = document.getElementById('dyn-footer-desc');
-  const tgLink = document.getElementById('dyn-tg-link');
-  const igLink = document.getElementById('dyn-ig-link');
-  if(fDesc)  fDesc.innerHTML = siteData.footerDesc;
-  if(tgLink) tgLink.href = siteData.social.tg;
-  if(igLink) igLink.href = siteData.social.ig;
-
-  // Advantages
-  const advGrid = document.getElementById('adv-grid');
-  if(advGrid) {
-    advGrid.innerHTML = advData.map(a => `
-      <div class="adv-card">
-        <div class="adv-icon">
-          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">${a.iconSvg}</svg>
-        </div>
-        <h3 class="adv-title">${a.title}</h3>
-        <p class="adv-desc">${a.desc}</p>
+// ---- KURSLARNI RENDER QILISH ----
+function renderCourses() {
+  const grid = document.getElementById('courses-grid');
+  if (!grid) return;
+  
+  // LocalStorage'dan ham kurslarni olish (admin qo'shishi uchun)
+  const savedCourses = JSON.parse(localStorage.getItem('courses') || '[]');
+  const allCourses = [...COURSES, ...savedCourses];
+  
+  grid.innerHTML = allCourses.map(c => `
+    <div class="course-card fade-in">
+      <div class="cc-icon">${c.icon}</div>
+      <div class="cc-tag">${c.tag}</div>
+      <div class="cc-title">${c.title}</div>
+      <div class="cc-desc">${c.desc}</div>
+      <ul class="cc-features">
+        ${c.features.map(f => `<li>${f}</li>`).join('')}
+      </ul>
+      <div class="cc-footer">
+        <div class="cc-price">${c.price}</div>
+        <button class="cc-btn open-modal" data-course="${c.course}">Yozilish →</button>
       </div>
-    `).join('');
-  }
+    </div>
+  `).join('');
+  
+  initFadeIn();
+}
 
-  // Courses
-  let activeCourseData = courseData;
-  function renderCoursesDOM(filter = 'all') {
-    const grid = document.getElementById('courses-grid');
-    if(!grid) return;
-    let filtered = activeCourseData;
-    if(filter !== 'all') filtered = activeCourseData.filter(c => c.category === filter || c.title.includes(filter));
-    grid.innerHTML = filtered.map(c => `
-      <div class="course-card">
-        ${c.badge ? `<div class="course-badge">${c.badge}</div>` : ''}
-        ${c.iconText ? `<div class="course-icon-text">${c.iconText}</div>` : ''}
-        <h3 class="course-title">${c.title}</h3>
-        <p class="course-desc">${c.desc}</p>
-        <div class="course-meta">
-          <div><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>${c.duration || ''}</span></div>
-          <div><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span>${c.freq || ''}</span></div>
-          ${c.price ? `<div><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span style="color:var(--text-main);font-weight:600;">${c.price}</span></div>` : ''}
-        </div>
-        <button class="btn-gold open-modal" data-course="${c.title}">Yozilish</button>
-      </div>
-    `).join('');
-  }
-  renderCoursesDOM('all');
+// ---- HEADER SCROLL ----
+const header = document.getElementById('main-header');
+window.addEventListener('scroll', () => {
+  header?.classList.toggle('scrolled', window.scrollY > 30);
+});
 
-  // Teachers
-  const teacherGrid = document.getElementById('teachers-grid');
-  if(teacherGrid) {
-    teacherGrid.innerHTML = teacherData.map(t => `
-      <div class="teacher-card">
-        <div class="teacher-img-wrapper">
-          ${t.image ? `<img src="${t.image}" alt="${t.name}" class="teacher-img">` : `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>`}
-        </div>
-        <h3 class="teacher-name">${t.name}</h3>
-        <div class="teacher-subject">${t.subject}</div>
-        <p class="teacher-exp">${t.exp}</p>
-      </div>
-    `).join('');
-  }
-
-  // Navbar scroll
-  const header = document.getElementById('header');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) header.classList.add('scrolled');
-    else header.classList.remove('scrolled');
-  });
-
-  // Filters
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      e.target.classList.add('active');
-      renderCoursesDOM(e.target.getAttribute('data-filter'));
-    });
+// ---- MOBILE MENU ----
+const menuToggle = document.getElementById('menu-toggle');
+const navbar = document.getElementById('navbar');
+menuToggle?.addEventListener('click', () => {
+  navbar.classList.toggle('open');
+  menuToggle.textContent = navbar.classList.contains('open') ? '✕' : '☰';
+});
+navbar?.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    navbar.classList.remove('open');
+    menuToggle.textContent = '☰';
   });
 });
 
-
-// --- MODAL & TELEGRAM ---
+// ---- MODAL ----
 const modal = document.getElementById('reg-modal');
-const closeBtn = document.getElementById('modal-close-btn');
-
 document.addEventListener('click', (e) => {
-  if (e.target.closest('.open-modal')) {
-    const btn = e.target.closest('.open-modal');
-    const course = btn.getAttribute('data-course');
-    const select = document.getElementById('m-course');
-    
-    if(select && course) {
-      let found = false;
-      for (let i = 0; i < select.options.length; i++) {
-        if (select.options[i].text.includes(course) || course.includes(select.options[i].value)) {
-          select.selectedIndex = i;
-          found = true; break;
-        }
-      }
-      if(!found) {
-        const opt = new Option(course, course);
-        select.add(opt); select.value = course;
+  const btn = e.target.closest('.open-modal');
+  if (btn) {
+    const course = btn.dataset.course || '';
+    openModal(course);
+  }
+});
+
+function openModal(course) {
+  const sel = document.getElementById('modal-course-selected');
+  if (sel && course) {
+    for (let i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].value === course || sel.options[i].text.includes(course)) {
+        sel.selectedIndex = i; break;
       }
     }
-    
-    document.getElementById('modal-form-view').style.display = 'block';
-    document.getElementById('modal-success-view').style.display = 'none';
-    modal.classList.add('active');
   }
-});
+  document.getElementById('modal-form-view').style.display = 'block';
+  document.getElementById('modal-success').style.display = 'none';
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
 
-closeBtn?.addEventListener('click', () => modal.classList.remove('active'));
-modal?.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+function closeModal() {
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
 
+document.getElementById('modal-close-btn')?.addEventListener('click', closeModal);
+modal?.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+// ---- TELEGRAM YUBORISH ----
 async function sendToTelegram(data) {
+  const { token, chatId } = getTgSettings();
+  
+  if (!token || !chatId) {
+    // Token yo'q bo'lsa, faqat localStorage'ga saqlaydi
+    return { ok: true, offline: true };
+  }
+  
+  const time = new Date().toLocaleString('uz-UZ', { timeZone: 'Asia/Tashkent' });
+  const text = `📚 <b>YANGI ARIZA — Ahsan Ta'lim</b>
+
+👤 <b>Ism:</b> ${data.name}
+📞 <b>Telefon:</b> ${data.phone}
+🎓 <b>Kurs:</b> ${data.course}
+💬 <b>Izoh:</b> ${data.msg || '—'}
+🕐 <b>Vaqt:</b> ${time}`;
+
   try {
-    const res = await fetch('/api/submit', {
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' })
     });
-    
-    if (!res.ok) {
-      alert("Xato yuz berdi. Iltimos Vercel sozlamalarini tekshiring!");
-      return false;
-    }
-    return true;
-  } catch(e) { 
-    console.error("API xatosi:", e); 
-    alert("Internet yoki Serverda xatolik yuz berdi.");
-    return false; 
+    return await res.json();
+  } catch {
+    return { ok: false };
   }
 }
 
+function saveApplication(data) {
+  const apps = JSON.parse(localStorage.getItem('applications') || '[]');
+  apps.unshift({
+    id: Date.now(),
+    ...data,
+    status: 'new',
+    date: new Date().toISOString()
+  });
+  localStorage.setItem('applications', JSON.stringify(apps));
+}
+
+// ---- MODAL FORM ----
 document.getElementById('modal-form')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const btn = document.getElementById('modal-submit-btn');
-  const name = document.getElementById('m-name').value;
-  const phone = document.getElementById('m-phone').value;
-  const course = document.getElementById('m-course').value;
+  const btn = document.getElementById('modal-form-btn');
+  const name = document.getElementById('m-name').value.trim();
+  const phone = document.getElementById('m-phone').value.trim();
+  const course = document.getElementById('modal-course-selected').value;
   
-  btn.textContent = 'Yuborilmoqda...';
+  if (!name || !phone) return;
+  
+  btn.textContent = '⏳ Yuborilmoqda...';
   btn.disabled = true;
   
-  const data = { name, phone, course };
+  const data = { name, phone, course: course || 'Ko\'rsatilmagan', msg: '' };
+  saveApplication(data);
+  await sendToTelegram(data);
   
-  const apps = JSON.parse(localStorage.getItem('applications') || '[]');
-  apps.unshift({ id: Date.now(), ...data, status: 'new', date: new Date().toISOString() });
-  localStorage.setItem('applications', JSON.stringify(apps));
+  document.getElementById('modal-form-view').style.display = 'none';
+  document.getElementById('modal-success').style.display = 'block';
   
-  // Send to TG
-  const success = await sendToTelegram(data);
+  showNotify('success', '🎉 Muvaffaqiyat!', 'Arizangiz qabul qilindi!');
   
-  if (success) {
-    // Show success view
-    document.getElementById('modal-form-view').style.display = 'none';
-    document.getElementById('modal-success-view').style.display = 'block';
-    document.getElementById('modal-form').reset();
-  }
-  
-  btn.textContent = 'Arizani yuborish';
+  btn.textContent = '📨 Arizani yuborish';
   btn.disabled = false;
+});
+
+// ---- MAIN FORM ----
+document.getElementById('main-form')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('main-form-btn');
+  const name = document.getElementById('mf-name').value.trim();
+  const phone = document.getElementById('mf-phone').value.trim();
+  const course = document.getElementById('mf-course').value;
+  const msg = document.getElementById('mf-msg').value.trim();
+  
+  if (!name || !phone) return;
+  
+  btn.textContent = '⏳ Yuborilmoqda...';
+  btn.disabled = true;
+  
+  const data = { name, phone, course: course || 'Ko\'rsatilmagan', msg };
+  saveApplication(data);
+  await sendToTelegram(data);
+  
+  document.getElementById('reg-form-view').style.display = 'none';
+  document.getElementById('reg-success').style.display = 'block';
+  
+  showNotify('success', '🎉 Muvaffaqiyat!', 'Arizangiz qabul qilindi!');
+});
+
+window.resetMainForm = function() {
+  document.getElementById('reg-form-view').style.display = 'block';
+  document.getElementById('reg-success').style.display = 'none';
+  document.getElementById('main-form').reset();
+};
+
+// ---- FAQ ----
+document.querySelectorAll('.faq-question').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.closest('.faq-item');
+    const isOpen = item.classList.contains('active');
+    document.querySelectorAll('.faq-item').forEach(i => {
+      i.classList.remove('active');
+      i.querySelector('.faq-answer').style.maxHeight = '0';
+    });
+    if (!isOpen) {
+      item.classList.add('active');
+      item.querySelector('.faq-answer').style.maxHeight = '400px';
+    }
+  });
+});
+
+// ---- COUNTER ANIMATION ----
+function animateCounters() {
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    let current = 0;
+    const duration = 1500;
+    const step = target / (duration / 16);
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = Math.floor(current) + (el.closest('.hero-stat')?.querySelector('.label')?.textContent.includes('%') || el.closest('.stat-item')?.querySelector('.stat-label')?.textContent.includes('%') ? '' : '+');
+      if (current >= target) clearInterval(timer);
+    }, 16);
+  });
+}
+
+// ---- FADE IN ANIMATION ----
+function initFadeIn() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        if (e.target.querySelector('[data-count]')) animateCounters();
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+}
+
+// ---- NOTIFY ----
+function showNotify(type, title, msg) {
+  const el = document.getElementById('notify');
+  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  document.getElementById('notify-icon').textContent = icons[type] || '📢';
+  document.getElementById('notify-title').textContent = title;
+  document.getElementById('notify-msg').textContent = msg;
+  el.className = `notify ${type} show`;
+  setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+// ---- SMOOTH SCROLL ----
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// ---- INIT ----
+document.addEventListener('DOMContentLoaded', () => {
+  renderCourses();
+  initFadeIn();
+  animateCounters();
 });

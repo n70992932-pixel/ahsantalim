@@ -65,14 +65,14 @@
   <div class="container">
     <div class="hero-grid">
       <div class="hero-content fade-in">
-        <div class="gold-badge">O'quv Markazi #1 Toshkentda</div>
-        <h1>Kelajagingizga<br><span>Ahsan Ta'lim</span><br>bilan investitsiya qiling</h1>
-        <p>Arab tili, Ingliz tili (IELTS) va Tarix fanlaridan professional ta'lim oling. 500+ muvaffaqiyatli bitiruvchi!</p>
+        <div class="gold-badge" id="hero-badge">O'quv Markazi #1 Toshkentda</div>
+        <h1 id="hero-title">Kelajagingizga<br><span>Ahsan Ta'lim</span><br>bilan investitsiya qiling</h1>
+        <p id="hero-desc">Arab tili, Ingliz tili (IELTS) va Tarix fanlaridan professional ta'lim oling. 500+ muvaffaqiyatli bitiruvchi!</p>
         <div class="hero-btns">
           <button class="btn-primary open-modal" data-course="">🎓 Bepul darsga yozilish</button>
           <a href="#courses" class="btn-secondary">📚 Kurslarni ko'rish</a>
         </div>
-        <div class="hero-stats">
+        <div class="hero-stats" id="hero-stats-wrap">
           <div class="hero-stat">
             <span class="num" data-count="500">0</span>
             <span class="label">Bitiruvchi</span>
@@ -152,15 +152,15 @@
           <img src="logo.jpg?v=2" alt="Ahsan Ta'lim" class="about-logo-big">
         </div>
         <div class="about-badge">
-          <span class="ab-num">5+</span>
+          <span class="ab-num" id="about-years">5+</span>
           <span class="ab-label">Yil tajriba</span>
         </div>
       </div>
       <div class="about-content fade-in">
         <div class="gold-badge">Biz haqimizda</div>
-        <h2 class="section-title">Nima uchun <span>Ahsan Ta'lim?</span></h2>
-        <p class="section-subtitle">Biz har bir o'quvchining muvaffaqiyatini o'z muvaffaqiyatimiz deb bilamiz. Zamonaviy metodlar va tajribali ustoz-o'qituvchilar bilan sizni maqsadingizga yetkazamiz.</p>
-        <div class="about-features">
+        <h2 class="section-title" id="about-title">Nima uchun <span>Ahsan Ta'lim?</span></h2>
+        <p class="section-subtitle" id="about-desc">Biz har bir o'quvchining muvaffaqiyatini o'z muvaffaqiyatimiz deb bilamiz. Zamonaviy metodlar va tajribali ustoz-o'qituvchilar bilan sizni maqsadingizga yetkazamiz.</p>
+        <div class="about-features" id="about-features">
           <div class="about-feature">
             <div class="af-icon">👨‍🏫</div>
             <div class="af-text">
@@ -198,7 +198,7 @@
 <!-- STATS -->
 <section id="stats">
   <div class="container">
-    <div class="stats-grid">
+    <div class="stats-grid" id="stats-grid">
       <div class="stat-item fade-in">
         <span class="stat-num" data-count="500">0</span>
         <span class="stat-label">Muvaffaqiyatli bitiruvchi</span>
@@ -241,41 +241,7 @@
       <h2 class="section-title">Bizning <span>Ustoz-o'qituvchilar</span></h2>
       <p class="section-subtitle">Soha mutaxassislari sizni muvaffaqiyatga olib boradi</p>
     </div>
-    <div class="teachers-grid">
-      <div class="teacher-card fade-in">
-        <div class="teacher-avatar">🧑‍🏫</div>
-        <div class="teacher-name">Ustoz Abdulloh</div>
-        <div class="teacher-subject">Arab tili</div>
-        <div class="teacher-exp">Madina universiteti bitiruvchisi • 8 yil tajriba</div>
-        <div class="teacher-tags">
-          <span class="teacher-tag">Sarf</span>
-          <span class="teacher-tag">Nahv</span>
-          <span class="teacher-tag">Muloqot</span>
-        </div>
-      </div>
-      <div class="teacher-card fade-in">
-        <div class="teacher-avatar">👩‍🏫</div>
-        <div class="teacher-name">Muallima Nilufar</div>
-        <div class="teacher-subject">Ingliz tili (IELTS)</div>
-        <div class="teacher-exp">IELTS 8.5 ball • Cambridge sertifikati • 6 yil</div>
-        <div class="teacher-tags">
-          <span class="teacher-tag">Speaking</span>
-          <span class="teacher-tag">Writing</span>
-          <span class="teacher-tag">IELTS</span>
-        </div>
-      </div>
-      <div class="teacher-card fade-in">
-        <div class="teacher-avatar">👨‍🎓</div>
-        <div class="teacher-name">Ustoz Sherzod</div>
-        <div class="teacher-subject">Tarix (DTM)</div>
-        <div class="teacher-exp">Tarix fanlari nomzodi • 10 yil tajriba</div>
-        <div class="teacher-tags">
-          <span class="teacher-tag">O'zbekiston</span>
-          <span class="teacher-tag">Jahon</span>
-          <span class="teacher-tag">DTM</span>
-        </div>
-      </div>
-    </div>
+    <div class="teachers-grid" id="teachers-grid"></div>
   </div>
 </section>
 
@@ -287,41 +253,7 @@
       <h2 class="section-title">Ular nima <span>deydi?</span></h2>
       <p class="section-subtitle">500+ muvaffaqiyatli o'quvchining fikrlari</p>
     </div>
-    <div class="testimonials-grid">
-      <div class="testimonial-card fade-in">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"Ahsan Ta'limda arab tilini o'rganib, hozir Madina universitetida tahsil olmoqdaman. Ustoz Abdullohning dars usuli juda samarali!"</p>
-        <div class="testimonial-author">
-          <div class="ta-avatar">👦</div>
-          <div>
-            <div class="ta-name">Muhammadumar, 22 yosh</div>
-            <div class="ta-course">Arab tili kursi</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card fade-in">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"IELTS 7.5 oldim! Muallima Nilufarning metodikasi juda zo'r. 4 oyda shunday natijaga erishganimga o'zim ham ishonmadim."</p>
-        <div class="testimonial-author">
-          <div class="ta-avatar">👧</div>
-          <div>
-            <div class="ta-name">Zulfiya, 19 yosh</div>
-            <div class="ta-course">IELTS kursi</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card fade-in">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"DTM da tarixdan 82 ball oldim va universitetga kirdim! Ustoz Sherzodga juda minnatdorman. Kichik guruh sharofati bor."</p>
-        <div class="testimonial-author">
-          <div class="ta-avatar">👦</div>
-          <div>
-            <div class="ta-name">Jasur, 18 yosh</div>
-            <div class="ta-course">Tarix kursi</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="testimonials-grid" id="testimonials-grid"></div>
   </div>
 </section>
 
@@ -385,53 +317,7 @@
       <div class="gold-badge">Savollar</div>
       <h2 class="section-title">Ko'p so'raladigan <span>savollar</span></h2>
     </div>
-    <div class="faq-list">
-      <div class="faq-item fade-in">
-        <div class="faq-question">
-          Kurslar qaysi darajadan boshlanadi?
-          <div class="faq-arrow">▼</div>
-        </div>
-        <div class="faq-answer">
-          <p>Bizda boshlang'ich, o'rta va yuqori daraja guruhlari mavjud. Siz kelib test topshirasiz va sizga mos guruhga joylashtirilasiz.</p>
-        </div>
-      </div>
-      <div class="faq-item fade-in">
-        <div class="faq-question">
-          Dars jadvali qanday?
-          <div class="faq-arrow">▼</div>
-        </div>
-        <div class="faq-answer">
-          <p>Haftada 3 marta, har bir dars 1.5 soat. Ertalab (9:00-10:30), tushdan keyin (14:00-15:30) va kechki (18:00-19:30) guruhlar mavjud.</p>
-        </div>
-      </div>
-      <div class="faq-item fade-in">
-        <div class="faq-question">
-          Narxlar qancha?
-          <div class="faq-arrow">▼</div>
-        </div>
-        <div class="faq-answer">
-          <p>Kurs narxi oyiga 350,000 so'mdan boshlanadi. Birinchi hafta bepul sinov darsi mavjud. To'liq narx uchun biz bilan bog'laning.</p>
-        </div>
-      </div>
-      <div class="faq-item fade-in">
-        <div class="faq-question">
-          Sertifikat beriladimi?
-          <div class="faq-arrow">▼</div>
-        </div>
-        <div class="faq-answer">
-          <p>Ha! Har bir kursni muvaffaqiyatli tugatgandan so'ng rasmiy sertifikat beriladi. IELTS kursi bitiruvchilariga maxsus tavsiyanomalari ham tayyorlanadi.</p>
-        </div>
-      </div>
-      <div class="faq-item fade-in">
-        <div class="faq-question">
-          Onlayn dars mavjudmi?
-          <div class="faq-arrow">▼</div>
-        </div>
-        <div class="faq-answer">
-          <p>Ha, Zoom orqali onlayn formatda ham dars o'tkaziladi. Sifat jihatidan offline dars bilan bir xil darajada ta'minlanadi.</p>
-        </div>
-      </div>
-    </div>
+    <div class="faq-list" id="faq-list"></div>
   </div>
 </section>
 
@@ -444,37 +330,7 @@
     </div>
     <div class="contact-grid">
       <div class="contact-info fade-in">
-        <p>Savollaringiz bormi? Biz doimo yordamga tayyormiz!</p>
-        <div class="contact-items">
-          <div class="contact-item">
-            <div class="ci-icon">📍</div>
-            <div class="ci-text">
-              <h4>Manzil</h4>
-              <p>Toshkent shahar, Mirzo Ulug'bek tumani</p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="ci-icon">📞</div>
-            <div class="ci-text">
-              <h4>Telefon</h4>
-              <a href="tel:+998901234567">+998 90 123 45 67</a>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="ci-icon">⏰</div>
-            <div class="ci-text">
-              <h4>Ish vaqti</h4>
-              <p>Du-Shan: 08:00 — 21:00</p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="ci-icon">💬</div>
-            <div class="ci-text">
-              <h4>Telegram</h4>
-              <a href="https://t.me/ahsantalim" target="_blank">@ahsantalim</a>
-            </div>
-          </div>
-        </div>
+        <div id="contact-info-dynamic"></div>
         <div class="social-links">
           <a href="#" class="social-link" title="Telegram">✈️</a>
           <a href="#" class="social-link" title="Instagram">📸</a>
@@ -497,7 +353,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="footer-logo">
-          <img src="logo.jpg?v=2" alt="Ahsan Ta'lim">
+          <img src="logo.jpg" alt="Ahsan Ta'lim">
           <div class="logo-text-wrap">
             <span class="logo-text">AHSAN</span>
             <span class="logo-tagline">TA'LIM</span>

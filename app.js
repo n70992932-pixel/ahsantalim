@@ -76,6 +76,268 @@ const COURSES = [
   }
 ];
 
+// ---- DEFAULT DATA & RENDER FUNCTIONS ----
+const DEFAULT_HERO = {
+  "badge": "O'quv Markazi #1 Toshkentda",
+  "title": "Kelajagingizga<br><span>Ahsan Ta'lim</span><br>bilan investitsiya qiling",
+  "desc": "Arab tili, Ingliz tili (IELTS) va Tarix fanlaridan professional ta'lim oling. 500+ muvaffaqiyatli bitiruvchi!",
+  "stats": [
+    {"num": 500, "label": "Bitiruvchi"},
+    {"num": 5, "label": "Yil tajriba"},
+    {"num": 95, "label": "% muvaffaqiyat"}
+  ]
+};
+
+const DEFAULT_ABOUT = {
+  "title": "Nima uchun <span>Ahsan Ta'lim?</span>",
+  "desc": "Biz har bir o'quvchining muvaffaqiyatini o'z muvaffaqiyatimiz deb bilamiz. Zamonaviy metodlar va tajribali ustoz-o'qituvchilar bilan sizni maqsadingizga yetkazamiz.",
+  "years": "5+",
+  "features": [
+    {"icon": "👨‍🏫", "title": "Tajribali O'qituvchilar", "desc": "10+ yillik tajribaga ega, soha mutaxassislaridan ta'lim oling"},
+    {"icon": "📊", "title": "Natijaga Kafolat", "desc": "3 oy ichida natija ko'rsata olmasak, pul qaytariladi"},
+    {"icon": "🕐", "title": "Qulay Jadval", "desc": "Ertalab, tushdan keyin va kechki guruhlar mavjud"},
+    {"icon": "👥", "title": "Kichik Guruhlar", "desc": "8-12 kishilik guruhlarda individual e'tibor kafolatlanadi"}
+  ]
+};
+
+const DEFAULT_TEACHERS = [
+  {
+    "id": 1,
+    "name": "Ustoz Abdulloh",
+    "subject": "Arab tili",
+    "exp": "Madina universiteti bitiruvchisi • 8 yil tajriba",
+    "tags": ["Sarf", "Nahv", "Muloqot"],
+    "image": "",
+    "emoji": "🧑‍🏫"
+  },
+  {
+    "id": 2,
+    "name": "Muallima Nilufar",
+    "subject": "Ingliz tili (IELTS)",
+    "exp": "IELTS 8.5 ball • Cambridge sertifikati • 6 yil",
+    "tags": ["Speaking", "Writing", "IELTS"],
+    "image": "",
+    "emoji": "👩‍🏫"
+  },
+  {
+    "id": 3,
+    "name": "Ustoz Sherzod",
+    "subject": "Tarix (DTM)",
+    "exp": "Tarix fanlari nomzodi • 10 yil tajriba",
+    "tags": ["O'zbekiston", "Jahon", "DTM"],
+    "image": "",
+    "emoji": "👨‍🎓"
+  }
+];
+
+const DEFAULT_TESTIMONIALS = [
+  {
+    "id": 1,
+    "name": "Muhammadumar, 22 yosh",
+    "course": "Arab tili kursi",
+    "text": "Ahsan Ta'limda arab tilini o'rganib, hozir Madina universitetida tahsil olmoqdaman. Ustoz Abdullohning dars usuli juda samarali!",
+    "stars": 5,
+    "emoji": "👦"
+  },
+  {
+    "id": 2,
+    "name": "Zulfiya, 19 yosh",
+    "course": "IELTS kursi",
+    "text": "IELTS 7.5 oldim! Muallima Nilufarning metodikasi juda zo'r. 4 oyda shunday natijaga erishganimga o'zim ham ishonmadim.",
+    "stars": 5,
+    "emoji": "👧"
+  },
+  {
+    "id": 3,
+    "name": "Jasur, 18 yosh",
+    "course": "Tarix kursi",
+    "text": "DTM da tarixdan 82 ball oldim va universitetga kirdim! Ustoz Sherzodga juda minnatdorman. Kichik guruh sharofati bor.",
+    "stars": 5,
+    "emoji": "👦"
+  }
+];
+
+const DEFAULT_FAQ = [
+  {"id": 1, "question": "Kurslar qaysi darajadan boshlanadi?", "answer": "Bizda boshlang'ich, o'rta va yuqori daraja guruhlari mavjud. Siz kelib test topshirasiz va sizga mos guruhga joylashtirilasiz."},
+  {"id": 2, "question": "Dars jadvali qanday?", "answer": "Haftada 3 marta, har bir dars 1.5 soat. Ertalab (9:00-10:30), tushdan keyin (14:00-15:30) va kechki (18:00-19:30) guruhlar mavjud."},
+  {"id": 3, "question": "Narxlar qancha?", "answer": "Kurs narxi oyiga 350,000 so'mdan boshlanadi. Birinchi hafta bepul sinov darsi mavjud."},
+  {"id": 4, "question": "Sertifikat beriladimi?", "answer": "Ha! Har bir kursni muvaffaqiyatli tugatgandan so'ng rasmiy sertifikat beriladi."},
+  {"id": 5, "question": "Onlayn dars mavjudmi?", "answer": "Ha, Zoom orqali onlayn formatda ham dars o'tkaziladi."}
+];
+
+const DEFAULT_CONTACT = {
+  "address": "Toshkent shahar, Mirzo Ulug'bek tumani",
+  "phone": "+998 90 123 45 67",
+  "hours": "Du-Shan: 08:00 — 21:00",
+  "telegram": "@ahsantalim",
+  "telegram_link": "https://t.me/ahsantalim"
+};
+
+function getStoredData(key, defaultValue) {
+  const stored = localStorage.getItem(key);
+  return stored ? JSON.parse(stored) : defaultValue;
+}
+
+function renderHero() {
+  const data = getStoredData('site_hero', DEFAULT_HERO);
+  const badge = document.getElementById('hero-badge');
+  const title = document.getElementById('hero-title');
+  const desc = document.getElementById('hero-desc');
+  if (badge) badge.textContent = data.badge;
+  if (title) title.innerHTML = data.title;
+  if (desc) desc.textContent = data.desc;
+  
+  const statsWrap = document.getElementById('hero-stats-wrap');
+  if (statsWrap && data.stats) {
+    statsWrap.innerHTML = data.stats.map(s => `
+      <div class="hero-stat">
+        <span class="num" data-count="${s.num}">0</span>
+        <span class="label">${s.label}</span>
+      </div>
+    `).join('');
+  }
+}
+
+function renderAbout() {
+  const data = getStoredData('site_about', DEFAULT_ABOUT);
+  const title = document.getElementById('about-title');
+  const desc = document.getElementById('about-desc');
+  const years = document.getElementById('about-years');
+  const featuresWrap = document.getElementById('about-features');
+
+  if (title) title.innerHTML = data.title;
+  if (desc) desc.textContent = data.desc;
+  if (years) years.textContent = data.years;
+
+  if (featuresWrap && data.features) {
+    featuresWrap.innerHTML = data.features.map(f => `
+      <div class="about-feature">
+        <div class="af-icon">${f.icon}</div>
+        <div class="af-text">
+          <h4>${f.title}</h4>
+          <p>${f.desc}</p>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+function renderTeachers() {
+  const teachers = getStoredData('site_teachers', DEFAULT_TEACHERS);
+  const grid = document.getElementById('teachers-grid');
+  if (!grid) return;
+  grid.innerHTML = teachers.map(t => {
+    const avatarHTML = t.image 
+      ? `<img src="${t.image}" alt="${t.name}" class="teacher-photo">` 
+      : `<div class="teacher-avatar">${t.emoji || '👨‍🏫'}</div>`;
+    return `
+      <div class="teacher-card fade-in">
+        ${t.image ? `<div class="teacher-photo-wrap">${avatarHTML}</div>` : avatarHTML}
+        <div class="teacher-name">${t.name}</div>
+        <div class="teacher-subject">${t.subject}</div>
+        <div class="teacher-exp">${t.exp}</div>
+        <div class="teacher-tags">
+          ${t.tags.map(tag => `<span class="teacher-tag">${tag}</span>`).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderTestimonials() {
+  const testimonials = getStoredData('site_testimonials', DEFAULT_TESTIMONIALS);
+  const grid = document.getElementById('testimonials-grid');
+  if (!grid) return;
+  grid.innerHTML = testimonials.map(t => {
+    const stars = '★'.repeat(t.stars || 5) + '☆'.repeat(5 - (t.stars || 5));
+    return `
+      <div class="testimonial-card fade-in">
+        <div class="stars">${stars}</div>
+        <p class="testimonial-text">"${t.text}"</p>
+        <div class="testimonial-author">
+          <div class="ta-avatar">${t.emoji || '👤'}</div>
+          <div>
+            <div class="ta-name">${t.name}</div>
+            <div class="ta-course">${t.course}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderFAQ() {
+  const faq = getStoredData('site_faq', DEFAULT_FAQ);
+  const list = document.getElementById('faq-list');
+  if (!list) return;
+  list.innerHTML = faq.map(f => `
+    <div class="faq-item fade-in">
+      <div class="faq-question">
+        ${f.question}
+        <div class="faq-arrow">▼</div>
+      </div>
+      <div class="faq-answer">
+        <p>${f.answer}</p>
+      </div>
+    </div>
+  `).join('');
+
+  document.querySelectorAll('.faq-question').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.closest('.faq-item');
+      const isOpen = item.classList.contains('active');
+      document.querySelectorAll('.faq-item').forEach(i => {
+        i.classList.remove('active');
+        i.querySelector('.faq-answer').style.maxHeight = '0';
+      });
+      if (!isOpen) {
+        item.classList.add('active');
+        item.querySelector('.faq-answer').style.maxHeight = '400px';
+      }
+    });
+  });
+}
+
+function renderContact() {
+  const data = getStoredData('site_contact', DEFAULT_CONTACT);
+  const contactDynamic = document.getElementById('contact-info-dynamic');
+  if (!contactDynamic) return;
+  
+  contactDynamic.innerHTML = `
+    <p>Savollaringiz bormi? Biz doimo yordamga tayyormiz!</p>
+    <div class="contact-items">
+      <div class="contact-item">
+        <div class="ci-icon">📍</div>
+        <div class="ci-text">
+          <h4>Manzil</h4>
+          <p>${data.address}</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="ci-icon">📞</div>
+        <div class="ci-text">
+          <h4>Telefon</h4>
+          <a href="tel:${data.phone.replace(/\s/g, '')}">${data.phone}</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="ci-icon">⏰</div>
+        <div class="ci-text">
+          <h4>Ish vaqti</h4>
+          <p>${data.hours}</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="ci-icon">💬</div>
+        <div class="ci-text">
+          <h4>Telegram</h4>
+          <a href="${data.telegram_link}" target="_blank">${data.telegram}</a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 // ---- PRELOADER ----
 window.addEventListener('load', () => {
   setTimeout(() => {
@@ -262,21 +524,6 @@ window.resetMainForm = function() {
   document.getElementById('main-form').reset();
 };
 
-// ---- FAQ ----
-document.querySelectorAll('.faq-question').forEach(q => {
-  q.addEventListener('click', () => {
-    const item = q.closest('.faq-item');
-    const isOpen = item.classList.contains('active');
-    document.querySelectorAll('.faq-item').forEach(i => {
-      i.classList.remove('active');
-      i.querySelector('.faq-answer').style.maxHeight = '0';
-    });
-    if (!isOpen) {
-      item.classList.add('active');
-      item.querySelector('.faq-answer').style.maxHeight = '400px';
-    }
-  });
-});
 
 // ---- COUNTER ANIMATION ----
 function animateCounters() {
@@ -331,6 +578,12 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
   renderCourses();
+  renderHero();
+  renderAbout();
+  renderTeachers();
+  renderTestimonials();
+  renderFAQ();
+  renderContact();
   initFadeIn();
   animateCounters();
 });

@@ -613,8 +613,23 @@ function deleteTeacher(id) {
 
 
 // --- COURSES ---
+const DEFAULT_COURSES = [
+  { id: 1, icon: '🕌', tag: 'Boshlang\'ich', title: 'Arab tili — Boshlang\'ich', desc: 'Arabcha alifbo, asosiy grammatika (Sarf va Nahv), kundalik muloqot va qur\'on imlo qoidalari.', features: ['Arabcha alifbo va harflar', 'Asosiy Sarf va Nahv', 'Kundalik muloqot', 'Qur\'on o\'qish asoslari'], price: '350,000 so\'m/oy', course: 'Arab tili (boshlang\'ich)' },
+  { id: 2, icon: '📖', tag: 'O\'rta daraja', title: 'Arab tili — O\'rta daraja', desc: 'Murakkab grammatika, matn tahlili, yozma va og\'zaki muloqotni kuchaytirish.', features: ['Murakkab Nahv qoidalari', 'Matn tahlili', 'Essе yozish', 'Og\'zaki suhbat'], price: '400,000 so\'m/oy', course: 'Arab tili (o\'rta daraja)' },
+  { id: 3, icon: '🇬🇧', tag: 'IELTS', title: 'Ingliz tili — IELTS', desc: 'IELTS imtihoniga to\'liq tayyorlov. Maqsad 6.0 dan 8.0 gacha. Intensiv amaliyot.', features: ['Listening & Reading', 'Writing Task 1 & 2', 'Speaking tayyorlov', 'Mock test sinovlari'], price: '500,000 so\'m/oy', course: 'Ingliz tili — IELTS tayyorlov' },
+  { id: 4, icon: '💬', tag: 'General', title: 'Ingliz tili — Umumiy', desc: 'Kundalik muloqot, biznes ingliz tili, grammatika va talaffuz ustida ishlash.', features: ['Grammar & Vocabulary', 'Speaking skills', 'Listening practice', 'Business English'], price: '400,000 so\'m/oy', course: 'Ingliz tili (umumiy)' },
+  { id: 5, icon: '📜', tag: 'DTM', title: 'Tarix — DTM Tayyorlov', desc: 'O\'zbekiston tarixi va Jahon tarixi bo\'yicha DTM imtihoniga intensiv tayyorlov kursi.', features: ['O\'zbekiston tarixi', 'Jahon tarixi', 'Test ishlash metodikasi', 'Arxiv hujjatlar tahlili'], price: '350,000 so\'m/oy', course: 'Tarix — DTM tayyorlov' },
+  { id: 6, icon: '🎁', tag: 'Bepul', title: 'Bepul Konsultatsiya', desc: 'Qaysi kurs sizga mos ekanligini bilib oling. Tajribali mutaxassis bilan yuzma-yuz suhbat.', features: ['Daraja aniqlash testi', 'Shaxsiy yo\'l xaritasi', 'Kurs tavsiyasi', '30 daqiqa bepul'], price: 'BEPUL', course: 'Bepul konsultatsiya' }
+];
+
+function getCoursesList() {
+  const c = getData('courses');
+  if (!c || c.length === 0) return JSON.parse(JSON.stringify(DEFAULT_COURSES));
+  return c;
+}
+
 function renderCourses() {
-  const courses = getData('courses') || [];
+  const courses = getCoursesList();
   const list = document.getElementById('courses-list');
   list.innerHTML = '';
   
@@ -625,7 +640,7 @@ function renderCourses() {
         <div style="font-size:14px; color:var(--text-secondary); margin-bottom:15px;">${c.desc}</div>
         <div class="grid-2" style="font-size:13px;">
           <div><span class="ni">💰</span> ${c.price || ''}</div>
-          <div><span class="ni">🕐</span> ${c.duration || ''}</div>
+          <div><span class="ni">🏷️</span> ${c.tag || ''}</div>
         </div>
         <div class="card-actions flex-end mt-4">
           <button class="btn btn-secondary btn-sm" onclick="editCourse(${c.id})">Tahrirlash</button>
@@ -637,9 +652,9 @@ function renderCourses() {
 }
 
 function openCourseModal(id = null) {
-  let c = { id: '', title: '', desc: '', price: '', duration: '', icon: '📚' };
+  let c = { id: '', title: '', desc: '', price: '', tag: '', icon: '📚', features: [], course: '' };
   if (id) {
-    const courses = getData('courses') || [];
+    const courses = getCoursesList();
     c = courses.find(x => x.id == id) || c;
   }
   
@@ -659,13 +674,23 @@ function openCourseModal(id = null) {
           <input type="text" class="form-control" id="c-price" value="${c.price}">
         </div>
         <div class="form-group">
-          <label>Davomiyligi</label>
-          <input type="text" class="form-control" id="c-duration" value="${c.duration}">
+          <label>Yorliq (Tag)</label>
+          <input type="text" class="form-control" id="c-tag" value="${c.tag}">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Icon / Emoji</label>
+          <input type="text" class="form-control" id="c-icon" value="${c.icon}">
+        </div>
+        <div class="form-group">
+          <label>Forma uchun nom</label>
+          <input type="text" class="form-control" id="c-course" value="${c.course}" placeholder="Arab tili (boshlang'ich)">
         </div>
       </div>
       <div class="form-group">
-        <label>Icon / Emoji</label>
-        <input type="text" class="form-control" id="c-icon" value="${c.icon}">
+        <label>Xususiyatlar (vergul bilan ajrating)</label>
+        <input type="text" class="form-control" id="c-features" value="${(c.features || []).join(', ')}">
       </div>
       <button type="submit" class="btn btn-primary w-full mt-4">Saqlash</button>
     </form>
@@ -682,8 +707,10 @@ function saveCourse(e, id) {
     title: document.getElementById('c-title').value,
     desc: document.getElementById('c-desc').value,
     price: document.getElementById('c-price').value,
-    duration: document.getElementById('c-duration').value,
-    icon: document.getElementById('c-icon').value || '📚'
+    tag: document.getElementById('c-tag').value,
+    icon: document.getElementById('c-icon').value || '📚',
+    course: document.getElementById('c-course').value,
+    features: document.getElementById('c-features').value.split(',').map(s => s.trim()).filter(Boolean)
   };
   
   if (id) {
@@ -700,12 +727,12 @@ function saveCourse(e, id) {
 
 function editCourse(id) { openCourseModal(id); }
 function deleteCourse(id) {
-  if (confirm("O'chirishni tasdiqlaysizmi?")) {
-    let arr = getData('courses') || [];
+  if (confirm('Rostdan ham bu kursni o\'chirmoqchimisiz?')) {
+    let arr = getCoursesList();
     arr = arr.filter(x => x.id != id);
     setData('courses', arr);
     renderCourses();
-    showToast("O'chirildi");
+    showToast('O\'chirildi', 'error');
   }
 }
 

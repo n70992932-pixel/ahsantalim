@@ -3,591 +3,274 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ahsan Ta'lim | O'quv Markazi — Arab, Ingliz, Tarix</title>
-  <meta name="description" content="Ahsan Ta'lim — Arab tili, Ingliz tili (IELTS) va Tarix fanlaridan professional ta'lim. Tajribali o'qituvchilar, qulay jadval, natijaga kafolat.">
-  <meta name="keywords" content="arab tili kursi, ingliz tili ielts, tarix dtm, o'quv markazi toshkent, ahsan talim">
-  
-  <!-- Open Graph / Telegram / Facebook yuzlari uchun -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ahsantalim.uz/">
-  <meta property="og:title" content="Ahsan Ta'lim - Zamonaviy O'quv Markazi">
-  <meta property="og:description" content="Arab tili, Ingliz tili va Tarix fanlaridan mukammal tayyorgarlik kursi. Biz bilan kelajagingizni quring!">
-  <meta property="og:image" content="https://ahsantalim.uz/logo.jpg?v=2">
-  
-  <!-- Twitter / X uchun -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://ahsantalim.uz/">
-  <meta name="twitter:title" content="Ahsan Ta'lim - Zamonaviy O'quv Markazi">
-  <meta name="twitter:description" content="Arab tili, Ingliz tili va Tarix fanlaridan mukammal tayyorgarlik kursi. Biz bilan kelajagingizni quring!">
-  <meta name="twitter:image" content="https://ahsantalim.uz/logo.jpg?v=2">
-  
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="logo.jpg?v=2" type="image/jpeg">
+  <title>Boshqaruv Paneli | Ahsan Ta'lim</title>
+  <link rel="stylesheet" href="admin.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="logo.jpg" type="image/jpeg">
 </head>
 <body>
 
-<!-- PRELOADER -->
-<div id="preloader">
-  <div class="preloader-inner">
-    <div class="preloader-logo"></div>
-    <p>Ahsan Ta'lim yuklanmoqda...</p>
-  </div>
-</div>
-
-<!-- HEADER -->
-<header id="main-header">
-  <div class="container">
-    <a href="#" class="logo-link">
-      <img src="logo.jpg?v=2" alt="Ahsan Ta'lim Logo" class="logo-img">
-      <div class="logo-text-wrap">
-        <span class="logo-text">AHSAN</span>
-        <span class="logo-tagline">TA'LIM</span>
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen" class="login-wrapper">
+    <div class="login-box">
+      <div class="login-logo">
+        <img src="logo.jpg" alt="Logo">
       </div>
-    </a>
-    <nav id="navbar">
-      <a href="#about">Biz haqimizda</a>
-      <a href="#courses">Kurslar</a>
-      <a href="#teachers">O'qituvchilar</a>
-      <a href="#testimonials">Fikrlar</a>
-      <a href="#faq">FAQ</a>
-      <a href="#contact">Aloqa</a>
+      <h2>Boshqaruv Paneli</h2>
+      <p>Tizimga kirish uchun parolni kiriting.</p>
+      <div class="form-group">
+        <input type="password" id="admin-password" placeholder="Parol...">
+      </div>
+      <button class="btn-gold" id="btn-login" style="width: 100%;">Kirish</button>
+      <p id="login-error" style="color: #ef4444; font-size: 0.85rem; margin-top: 10px; display: none;">Parol xato, qaytadan urinib ko'ring.</p>
+    </div>
+  </div>
+
+  <!-- ADMIN APP -->
+  <div id="admin-app" style="display: none; width: 100%; height: 100%;">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="logo.jpg" alt="Logo" class="sidebar-logo">
+      <div class="sidebar-title">
+        <span>AHSAN</span>
+        <span>ADMIN</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-btn active" data-tab="tab-settings">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+        Asosiy Sozlamalar
+      </button>
+      <button class="nav-btn" data-tab="tab-advantages">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        Afzalliklar
+      </button>
+      <button class="nav-btn" data-tab="tab-courses">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+        Kurslar
+      </button>
+      <button class="nav-btn" data-tab="tab-teachers">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        Ustozlar
+      </button>
+      
+      <div style="margin-top: auto;">
+        <a href="index.html" class="nav-btn" style="color: var(--text-muted); text-decoration: none;">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+          Saytga qaytish
+        </a>
+      </div>
     </nav>
-    <div class="header-cta">
-      <button class="btn-primary open-modal" data-course="">📝 Ro'yxatdan o'tish</button>
-      <button id="menu-toggle" aria-label="Menyu">☰</button>
-    </div>
-  </div>
-</header>
+  </aside>
 
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="container">
-    <div class="hero-grid">
-      <div class="hero-content fade-in">
-        <div class="gold-badge">O'quv Markazi #1 Toshkentda</div>
-        <h1>Kelajagingizga<br><span>Ahsan Ta'lim</span><br>bilan investitsiya qiling</h1>
-        <p>Arab tili, Ingliz tili (IELTS) va Tarix fanlaridan professional ta'lim oling. 500+ muvaffaqiyatli bitiruvchi!</p>
-        <div class="hero-btns">
-          <button class="btn-primary open-modal" data-course="">🎓 Bepul darsga yozilish</button>
-          <a href="#courses" class="btn-secondary">📚 Kurslarni ko'rish</a>
-        </div>
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <span class="num" data-count="500">0</span>
-            <span class="label">Bitiruvchi</span>
-          </div>
-          <div class="hero-stat">
-            <span class="num" data-count="5">0</span>
-            <span class="label">Yil tajriba</span>
-          </div>
-          <div class="hero-stat">
-            <span class="num" data-count="95">0</span>
-            <span class="label">% muvaffaqiyat</span>
-          </div>
-        </div>
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    
+    <!-- TAB 1: ASOSIY SOZLAMALAR -->
+    <section id="tab-settings" class="tab-pane active">
+      <div class="page-header">
+        <h2>Asosiy Sozlamalar</h2>
+        <p>Veb-saytning bosh sahifasi va aloqa ma'lumotlarini o'zgartirish.</p>
       </div>
-      <div class="hero-visual fade-in">
-        <div class="hero-card-wrap">
-          <div class="hero-float f1">
-            <span class="fi-icon">🏆</span>
-            <div class="fi-text">
-              <strong>95% Muvaffaqiyat</strong>
-              <span>IELTS 7.0+ ball</span>
-            </div>
-          </div>
-          <div class="hero-courses-preview">
-            <div class="hero-course-item">
-              <div class="course-icon">🕌</div>
-              <div class="course-info">
-                <h4>Arab tili</h4>
-                <p>Sarf va Nahv, Muloqot</p>
-              </div>
-              <span class="course-badge">Yangi</span>
-            </div>
-            <div class="hero-course-item">
-              <div class="course-icon">🇬🇧</div>
-              <div class="course-info">
-                <h4>Ingliz tili (IELTS)</h4>
-                <p>6.0 dan 8.0 gacha</p>
-              </div>
-              <span class="course-badge">Mashhur</span>
-            </div>
-            <div class="hero-course-item">
-              <div class="course-icon">📜</div>
-              <div class="course-info">
-                <h4>Tarix (DTM)</h4>
-                <p>O'zbekiston va Jahon tarixi</p>
-              </div>
-              <span class="course-badge">DTM</span>
-            </div>
-            <div class="hero-course-item">
-              <div class="course-icon">🎁</div>
-              <div class="course-info">
-                <h4>Bepul konsultatsiya</h4>
-                <p>Imkoniyatlaringizni aniqlang</p>
-              </div>
-              <span class="course-badge">Bepul</span>
-            </div>
-          </div>
-          <div class="hero-float f2">
-            <span class="fi-icon">📞</span>
-            <div class="fi-text">
-              <strong>24/7 Aloqa</strong>
-              <span>Savollaringizga javob</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="container">
-    <div class="about-grid">
-      <div class="about-visual fade-in">
-        <div class="about-img-wrap">
-          <img src="logo.jpg?v=2" alt="Ahsan Ta'lim" class="about-logo-big">
-        </div>
-        <div class="about-badge">
-          <span class="ab-num">5+</span>
-          <span class="ab-label">Yil tajriba</span>
-        </div>
-      </div>
-      <div class="about-content fade-in">
-        <div class="gold-badge">Biz haqimizda</div>
-        <h2 class="section-title">Nima uchun <span>Ahsan Ta'lim?</span></h2>
-        <p class="section-subtitle">Biz har bir o'quvchining muvaffaqiyatini o'z muvaffaqiyatimiz deb bilamiz. Zamonaviy metodlar va tajribali ustoz-o'qituvchilar bilan sizni maqsadingizga yetkazamiz.</p>
-        <div class="about-features">
-          <div class="about-feature">
-            <div class="af-icon">👨‍🏫</div>
-            <div class="af-text">
-              <h4>Tajribali O'qituvchilar</h4>
-              <p>10+ yillik tajribaga ega, soha mutaxassislaridan ta'lim oling</p>
-            </div>
-          </div>
-          <div class="about-feature">
-            <div class="af-icon">📊</div>
-            <div class="af-text">
-              <h4>Natijaga Kafolat</h4>
-              <p>3 oy ichida natija ko'rsata olmasak, pul qaytariladi</p>
-            </div>
-          </div>
-          <div class="about-feature">
-            <div class="af-icon">🕐</div>
-            <div class="af-text">
-              <h4>Qulay Jadval</h4>
-              <p>Ertalab, tushdan keyin va kechki guruhlar mavjud</p>
-            </div>
-          </div>
-          <div class="about-feature">
-            <div class="af-icon">👥</div>
-            <div class="af-text">
-              <h4>Kichik Guruhlar</h4>
-              <p>8-12 kishilik guruhlarda individual e'tibor kafolatlanadi</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- STATS -->
-<section id="stats">
-  <div class="container">
-    <div class="stats-grid">
-      <div class="stat-item fade-in">
-        <span class="stat-num" data-count="500">0</span>
-        <span class="stat-label">Muvaffaqiyatli bitiruvchi</span>
-      </div>
-      <div class="stat-item fade-in">
-        <span class="stat-num" data-count="95">0</span>
-        <span class="stat-label">% muvaffaqiyat darajasi</span>
-      </div>
-      <div class="stat-item fade-in">
-        <span class="stat-num" data-count="5">0</span>
-        <span class="stat-label">Yil bozorda</span>
-      </div>
-      <div class="stat-item fade-in">
-        <span class="stat-num" data-count="4">0</span>
-        <span class="stat-label">Kurs yo'nalishlari</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- COURSES -->
-<section id="courses">
-  <div class="container">
-    <div class="section-header fade-in">
-      <div class="gold-badge">Kurslarimiz</div>
-      <h2 class="section-title">Qaysi fan sizga <span>kerak?</span></h2>
-      <p class="section-subtitle">Har bir kurs maxsus dastur asosida, maqsadli yo'nalishda tuzilgan</p>
-    </div>
-    <div class="courses-grid" id="courses-grid">
-      <!-- Courses loaded by JS -->
-    </div>
-  </div>
-</section>
-
-<!-- TEACHERS -->
-<section id="teachers">
-  <div class="container">
-    <div class="section-header fade-in">
-      <div class="gold-badge">Jamoamiz</div>
-      <h2 class="section-title">Bizning <span>Ustoz-o'qituvchilar</span></h2>
-      <p class="section-subtitle">Soha mutaxassislari sizni muvaffaqiyatga olib boradi</p>
-    </div>
-    <div class="teachers-grid">
-      <div class="teacher-card fade-in">
-        <div class="teacher-avatar">🧑‍🏫</div>
-        <div class="teacher-name">Ustoz Abdulloh</div>
-        <div class="teacher-subject">Arab tili</div>
-        <div class="teacher-exp">Madina universiteti bitiruvchisi • 8 yil tajriba</div>
-        <div class="teacher-tags">
-          <span class="teacher-tag">Sarf</span>
-          <span class="teacher-tag">Nahv</span>
-          <span class="teacher-tag">Muloqot</span>
-        </div>
-      </div>
-      <div class="teacher-card fade-in">
-        <div class="teacher-avatar">👩‍🏫</div>
-        <div class="teacher-name">Muallima Nilufar</div>
-        <div class="teacher-subject">Ingliz tili (IELTS)</div>
-        <div class="teacher-exp">IELTS 8.5 ball • Cambridge sertifikati • 6 yil</div>
-        <div class="teacher-tags">
-          <span class="teacher-tag">Speaking</span>
-          <span class="teacher-tag">Writing</span>
-          <span class="teacher-tag">IELTS</span>
-        </div>
-      </div>
-      <div class="teacher-card fade-in">
-        <div class="teacher-avatar">👨‍🎓</div>
-        <div class="teacher-name">Ustoz Sherzod</div>
-        <div class="teacher-subject">Tarix (DTM)</div>
-        <div class="teacher-exp">Tarix fanlari nomzodi • 10 yil tajriba</div>
-        <div class="teacher-tags">
-          <span class="teacher-tag">O'zbekiston</span>
-          <span class="teacher-tag">Jahon</span>
-          <span class="teacher-tag">DTM</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS -->
-<section id="testimonials">
-  <div class="container">
-    <div class="section-header fade-in">
-      <div class="gold-badge">Bitiruvchilar</div>
-      <h2 class="section-title">Ular nima <span>deydi?</span></h2>
-      <p class="section-subtitle">500+ muvaffaqiyatli o'quvchining fikrlari</p>
-    </div>
-    <div class="testimonials-grid">
-      <div class="testimonial-card fade-in">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"Ahsan Ta'limda arab tilini o'rganib, hozir Madina universitetida tahsil olmoqdaman. Ustoz Abdullohning dars usuli juda samarali!"</p>
-        <div class="testimonial-author">
-          <div class="ta-avatar">👦</div>
-          <div>
-            <div class="ta-name">Muhammadumar, 22 yosh</div>
-            <div class="ta-course">Arab tili kursi</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card fade-in">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"IELTS 7.5 oldim! Muallima Nilufarning metodikasi juda zo'r. 4 oyda shunday natijaga erishganimga o'zim ham ishonmadim."</p>
-        <div class="testimonial-author">
-          <div class="ta-avatar">👧</div>
-          <div>
-            <div class="ta-name">Zulfiya, 19 yosh</div>
-            <div class="ta-course">IELTS kursi</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card fade-in">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"DTM da tarixdan 82 ball oldim va universitetga kirdim! Ustoz Sherzodga juda minnatdorman. Kichik guruh sharofati bor."</p>
-        <div class="testimonial-author">
-          <div class="ta-avatar">👦</div>
-          <div>
-            <div class="ta-name">Jasur, 18 yosh</div>
-            <div class="ta-course">Tarix kursi</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- REGISTER -->
-<section id="register">
-  <div class="container">
-    <div class="section-header fade-in">
-      <div class="gold-badge">Ro'yxatdan o'tish</div>
-      <h2 class="section-title">Bugun <span>boshlaymizmi?</span></h2>
-      <p class="section-subtitle">Bepul konsultatsiya uchun ro'yxatdan o'ting. 24 soat ichida siz bilan bog'lanamiz!</p>
-    </div>
-    <div class="register-wrap fade-in">
-      <div id="reg-form-view">
-        <form id="main-form">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="mf-name">Ism va familiyangiz *</label>
-              <input type="text" id="mf-name" placeholder="Abdulloh Karimov" required>
-            </div>
-            <div class="form-group">
-              <label for="mf-phone">Telefon raqamingiz *</label>
-              <input type="tel" id="mf-phone" placeholder="+998 90 123 45 67" required>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="mf-course">Qaysi kursga qiziqasiz?</label>
-            <select id="mf-course">
-              <option value="">Kursni tanlang...</option>
-              <option>Arab tili (boshlang'ich)</option>
-              <option>Arab tili (o'rta daraja)</option>
-              <option>Ingliz tili — IELTS tayyorlov</option>
-              <option>Ingliz tili (umumiy)</option>
-              <option>Tarix — DTM tayyorlov</option>
-              <option>Bepul konsultatsiya</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="mf-msg">Qo'shimcha so'zlaringiz (ixtiyoriy)</label>
-            <textarea id="mf-msg" placeholder="Savollaringizni yozing..."></textarea>
-          </div>
-          <button type="submit" class="form-submit" id="main-form-btn">
-            📨 Arizani yuborish
-          </button>
-        </form>
-      </div>
-      <div class="form-success" id="reg-success">
-        <div class="fs-icon">🎉</div>
-        <h3>Arizangiz qabul qilindi!</h3>
-        <p>24 soat ichida siz bilan bog'lanamiz. Ahsan Ta'limni tanlaganingiz uchun rahmat!</p>
-        <br>
-        <button class="btn-primary" onclick="resetMainForm()">🔄 Yana yuborish</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section id="faq">
-  <div class="container">
-    <div class="section-header fade-in">
-      <div class="gold-badge">Savollar</div>
-      <h2 class="section-title">Ko'p so'raladigan <span>savollar</span></h2>
-    </div>
-    <div class="faq-list">
-      <div class="faq-item fade-in">
-        <div class="faq-question">
-          Kurslar qaysi darajadan boshlanadi?
-          <div class="faq-arrow">▼</div>
-        </div>
-        <div class="faq-answer">
-          <p>Bizda boshlang'ich, o'rta va yuqori daraja guruhlari mavjud. Siz kelib test topshirasiz va sizga mos guruhga joylashtirilasiz.</p>
-        </div>
-      </div>
-      <div class="faq-item fade-in">
-        <div class="faq-question">
-          Dars jadvali qanday?
-          <div class="faq-arrow">▼</div>
-        </div>
-        <div class="faq-answer">
-          <p>Haftada 3 marta, har bir dars 1.5 soat. Ertalab (9:00-10:30), tushdan keyin (14:00-15:30) va kechki (18:00-19:30) guruhlar mavjud.</p>
-        </div>
-      </div>
-      <div class="faq-item fade-in">
-        <div class="faq-question">
-          Narxlar qancha?
-          <div class="faq-arrow">▼</div>
-        </div>
-        <div class="faq-answer">
-          <p>Kurs narxi oyiga 350,000 so'mdan boshlanadi. Birinchi hafta bepul sinov darsi mavjud. To'liq narx uchun biz bilan bog'laning.</p>
-        </div>
-      </div>
-      <div class="faq-item fade-in">
-        <div class="faq-question">
-          Sertifikat beriladimi?
-          <div class="faq-arrow">▼</div>
-        </div>
-        <div class="faq-answer">
-          <p>Ha! Har bir kursni muvaffaqiyatli tugatgandan so'ng rasmiy sertifikat beriladi. IELTS kursi bitiruvchilariga maxsus tavsiyanomalari ham tayyorlanadi.</p>
-        </div>
-      </div>
-      <div class="faq-item fade-in">
-        <div class="faq-question">
-          Onlayn dars mavjudmi?
-          <div class="faq-arrow">▼</div>
-        </div>
-        <div class="faq-answer">
-          <p>Ha, Zoom orqali onlayn formatda ham dars o'tkaziladi. Sifat jihatidan offline dars bilan bir xil darajada ta'minlanadi.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="container">
-    <div class="section-header fade-in">
-      <div class="gold-badge">Aloqa</div>
-      <h2 class="section-title">Biz bilan <span>bog'laning</span></h2>
-    </div>
-    <div class="contact-grid">
-      <div class="contact-info fade-in">
-        <p>Savollaringiz bormi? Biz doimo yordamga tayyormiz!</p>
-        <div class="contact-items">
-          <div class="contact-item">
-            <div class="ci-icon">📍</div>
-            <div class="ci-text">
-              <h4>Manzil</h4>
-              <p>Toshkent shahar, Mirzo Ulug'bek tumani</p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="ci-icon">📞</div>
-            <div class="ci-text">
-              <h4>Telefon</h4>
-              <a href="tel:+998901234567">+998 90 123 45 67</a>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="ci-icon">⏰</div>
-            <div class="ci-text">
-              <h4>Ish vaqti</h4>
-              <p>Du-Shan: 08:00 — 21:00</p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="ci-icon">💬</div>
-            <div class="ci-text">
-              <h4>Telegram</h4>
-              <a href="https://t.me/ahsantalim" target="_blank">@ahsantalim</a>
-            </div>
-          </div>
-        </div>
-        <div class="social-links">
-          <a href="#" class="social-link" title="Telegram">✈️</a>
-          <a href="#" class="social-link" title="Instagram">📸</a>
-          <a href="#" class="social-link" title="YouTube">▶️</a>
-          <a href="#" class="social-link" title="Facebook">👥</a>
-        </div>
-      </div>
-      <div class="fade-in">
-        <div class="map-wrap">
-          📍 Toshkent, Mirzo Ulug'bek tumani
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="footer-logo">
-          <img src="logo.jpg?v=2" alt="Ahsan Ta'lim">
-          <div class="logo-text-wrap">
-            <span class="logo-text">AHSAN</span>
-            <span class="logo-tagline">TA'LIM</span>
-          </div>
-        </div>
-        <p>Kelajagingizga to'g'ri ta'lim bilan investitsiya qiling. Bizda har bir o'quvchi g'olibdir!</p>
-      </div>
-      <div class="footer-col">
-        <h4>Kurslar</h4>
-        <ul>
-          <li><a href="#courses">Arab tili</a></li>
-          <li><a href="#courses">Ingliz tili</a></li>
-          <li><a href="#courses">IELTS tayyorlov</a></li>
-          <li><a href="#courses">Tarix (DTM)</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Sahifalar</h4>
-        <ul>
-          <li><a href="#about">Biz haqimizda</a></li>
-          <li><a href="#teachers">O'qituvchilar</a></li>
-          <li><a href="#testimonials">Bitiruvchilar</a></li>
-          <li><a href="#faq">FAQ</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Aloqa</h4>
-        <ul>
-          <li><a href="tel:+998901234567">+998 90 123 45 67</a></li>
-          <li><a href="https://t.me/ahsantalim">Telegram</a></li>
-          <li><a href="#contact">Manzil</a></li>
-          <li><a href="admin.html">Admin panel</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2025 Ahsan Ta'lim. Barcha huquqlar himoyalangan.</span>
-      <span>❤️ bilan yaratildi</span>
-    </div>
-  </div>
-</footer>
-
-<!-- MODAL -->
-<div class="modal-overlay" id="reg-modal">
-  <div class="modal-box">
-    <button class="modal-close" id="modal-close-btn">✕</button>
-    <div class="gold-badge">Ro'yxatdan o'tish</div>
-    <h2 class="modal-title">Kursga yozilish</h2>
-    <p class="modal-subtitle">Ma'lumotlaringizni qoldiring, biz sizga 1 soat ichida qo'ng'iroq qilamiz!</p>
-    <div id="modal-form-view">
-      <select id="modal-course-selected">
-        <option value="">Kursni tanlang...</option>
-        <option>Arab tili (boshlang'ich)</option>
-        <option>Arab tili (o'rta daraja)</option>
-        <option>Ingliz tili — IELTS tayyorlov</option>
-        <option>Ingliz tili (umumiy)</option>
-        <option>Tarix — DTM tayyorlov</option>
-        <option>Bepul konsultatsiya</option>
-      </select>
-      <form id="modal-form">
+      
+      <div class="card">
+        <h3>Bosh sahifa (Hero)</h3>
         <div class="form-group">
-          <label for="m-name">Ism va familiyangiz *</label>
-          <input type="text" id="m-name" placeholder="Abdulloh Karimov" required>
+          <label>Nishon (Badge) yozuvi</label>
+          <input type="text" id="s-hero-badge" placeholder="Masalan: Zamonaviy va Tizimli Ta'lim">
         </div>
         <div class="form-group">
-          <label for="m-phone">Telefon raqamingiz *</label>
-          <input type="tel" id="m-phone" placeholder="+998 90 123 45 67" required>
+          <label>Asosiy sarlavha (Title)</label>
+          <textarea id="s-hero-title" rows="2" placeholder="HTML teglar ham ishlata olasiz (<span class='text-gold'></span>)"></textarea>
         </div>
-        <button type="submit" class="form-submit" id="modal-form-btn">
-          📨 Arizani yuborish
-        </button>
+        <div class="form-group">
+          <label>Qisqacha ta'rif (Description)</label>
+          <textarea id="s-hero-desc" rows="3"></textarea>
+        </div>
+      </div>
+      
+      <div class="card mt-4">
+        <h3>Aloqa va Manzil (Kontakt)</h3>
+        <div class="form-group">
+          <label>Telefon raqamlar (har birini yangi qatorda yozish uchun <br> ishlating)</label>
+          <textarea id="s-contact-phones" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Manzil</label>
+          <textarea id="s-contact-address" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Ish vaqti</label>
+          <textarea id="s-contact-hours" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <h3>Ijtimoiy Tarmoqlar & Footer</h3>
+        <div class="form-group">
+          <label>Telegram havolasi</label>
+          <input type="text" id="s-social-tg">
+        </div>
+        <div class="form-group">
+          <label>Instagram havolasi</label>
+          <input type="text" id="s-social-ig">
+        </div>
+        <div class="form-group">
+          <label>Footer uchun qisqacha ma'lumot</label>
+          <textarea id="s-footer-desc" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="card mt-4" style="border-color: rgba(245,197,24,0.3);">
+        <h3 style="color: var(--gold);">Telegram Bot Sozlamalari (Arizalar uchun)</h3>
+        <div class="form-group">
+          <label>Bot Token</label>
+          <input type="text" id="s-tg-token" placeholder="123456789:ABCDefgh...">
+        </div>
+        <div class="form-group">
+          <label>Chat ID</label>
+          <input type="text" id="s-tg-chat" placeholder="-1001234567890">
+        </div>
+      </div>
+
+      <div class="mt-4 text-right">
+        <button class="btn-gold" id="btn-save-settings">Saqlash</button>
+      </div>
+    </section>
+
+    <!-- TAB 2: AFZALLIKLAR -->
+    <section id="tab-advantages" class="tab-pane">
+      <div class="page-header">
+        <h2>Afzalliklar</h2>
+        <p>Bosh sahifadagi 3 ta ustunlik ma'lumotlarini o'zgartirish.</p>
+      </div>
+      <div id="adv-container">
+        <!-- JS render -->
+      </div>
+      <div class="mt-4 text-right">
+        <button class="btn-gold" id="btn-save-adv">Saqlash</button>
+      </div>
+    </section>
+
+    <!-- TAB 3: KURSLAR -->
+    <section id="tab-courses" class="tab-pane">
+      <div class="page-header flex-between">
+        <div>
+          <h2>Kurslar</h2>
+          <p>Mavjud kurslarni tahrirlash yoki yangisini qo'shish.</p>
+        </div>
+        <button class="btn-gold" onclick="openCourseModal()">+ Yangi Kurs</button>
+      </div>
+      <div class="grid-list" id="courses-list">
+        <!-- JS render -->
+      </div>
+    </section>
+
+    <!-- TAB 4: USTOZLAR -->
+    <section id="tab-teachers" class="tab-pane">
+      <div class="page-header flex-between">
+        <div>
+          <h2>Ustozlar</h2>
+          <p>O'quv markazidagi ustozlarni tahrirlash yoki yangisini qo'shish.</p>
+        </div>
+        <button class="btn-gold" onclick="openTeacherModal()">+ Yangi Ustoz</button>
+      </div>
+      <div class="grid-list" id="teachers-list">
+        <!-- JS render -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: KURS QO'SHISH/TAHRIRLASH -->
+  <div class="modal-overlay" id="course-modal">
+    <div class="modal-box">
+      <h3 class="modal-title" id="course-modal-title">Kurs qo'shish</h3>
+      <form id="course-form">
+        <input type="hidden" id="c-index">
+        <div class="form-group">
+          <label>Sarlavha (Katta matn)</label>
+          <input type="text" id="c-title" required>
+        </div>
+        <div class="form-group">
+          <label>Kategoriya (Filtr uchun, Masalan: Arab tili)</label>
+          <input type="text" id="c-category" required>
+        </div>
+        <div class="form-group">
+          <label>Nishon (Masalan: Boshlang'ich, IELTS)</label>
+          <input type="text" id="c-badge">
+        </div>
+        <div class="form-group">
+          <label>Ikonka yozuvi (Katta sariq yozuv)</label>
+          <input type="text" id="c-iconText">
+        </div>
+        <div class="form-group">
+          <label>Ta'rif (Qisqacha)</label>
+          <textarea id="c-desc" rows="3" required></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Davomiyligi (Masalan: 3 oy)</label>
+            <input type="text" id="c-duration">
+          </div>
+          <div class="form-group">
+            <label>Jadval (Haftada 3 marta)</label>
+            <input type="text" id="c-freq">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Narxi (Oyiga 300,000 so'm)</label>
+          <input type="text" id="c-price">
+        </div>
+        <div class="flex-between mt-4">
+          <button type="button" class="btn-dark" onclick="closeModals()">Bekor qilish</button>
+          <button type="submit" class="btn-gold">Saqlash</button>
+        </div>
       </form>
     </div>
-    <div class="form-success" id="modal-success">
-      <div class="fs-icon">🎉</div>
-      <h3>Muvaffaqiyat!</h3>
-      <p>Arizangiz qabul qilindi. 1 soat ichida qo'ng'iroq qilamiz!</p>
+  </div>
+
+  <!-- MODAL: USTOZ QO'SHISH/TAHRIRLASH -->
+  <div class="modal-overlay" id="teacher-modal">
+    <div class="modal-box">
+      <h3 class="modal-title" id="teacher-modal-title">Ustoz qo'shish</h3>
+      <form id="teacher-form">
+        <input type="hidden" id="t-index">
+        <div class="form-group">
+          <label>F.I.SH</label>
+          <input type="text" id="t-name" required>
+        </div>
+        <div class="form-group">
+          <label>Fani (Masalan: Arab tili)</label>
+          <input type="text" id="t-subject" required>
+        </div>
+        <div class="form-group">
+          <label>Tajribasi (Masalan: 5 yillik tajriba)</label>
+          <input type="text" id="t-exp">
+        </div>
+        <div class="form-group">
+          <label>Rasmi (Fayl tanlang)</label>
+          <input type="file" id="t-image-file" accept="image/*">
+          <input type="hidden" id="t-image-base64">
+          <div id="t-image-preview" style="margin-top:10px; display:none;">
+            <img src="" alt="Preview" style="width:100px; height:100px; object-fit:cover; border-radius:50%; border:2px solid var(--gold);">
+          </div>
+        </div>
+        <div class="flex-between mt-4">
+          <button type="button" class="btn-dark" onclick="closeModals()">Bekor qilish</button>
+          <button type="submit" class="btn-gold">Saqlash</button>
+        </div>
+      </form>
     </div>
   </div>
-</div>
 
-<!-- NOTIFY -->
-<div class="notify" id="notify">
-  <div class="notify-icon" id="notify-icon"></div>
-  <div class="notify-text">
-    <strong id="notify-title"></strong>
-    <span id="notify-msg"></span>
   </div>
-</div>
+  <!-- /ADMIN APP -->
 
-<script src="app.js"></script>
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="toast">Saqlandi!</div>
+
+  <script src="admin.js"></script>
 </body>
 </html>

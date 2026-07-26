@@ -1,7 +1,7 @@
 // ============================================
 // AHSAN TA'LIM — Main JavaScript
 // Telegram: To'g'ridan-to'g'ri API
-// ============================================   
+// ============================================
 
 // ---- TELEGRAM SOZLAMALARI ----
 // Admin panel orqali o'rnatiladi (localStorage)
@@ -350,9 +350,7 @@ function renderCourses() {
   const grid = document.getElementById('courses-grid');
   if (!grid) return;
   
-  // LocalStorage'dan ham kurslarni olish (admin qo'shishi uchun)
-  const savedCourses = JSON.parse(localStorage.getItem('courses') || '[]');
-  const allCourses = [...COURSES, ...savedCourses];
+  const allCourses = getStoredData('courses', COURSES);
   
   grid.innerHTML = allCourses.map(c => `
     <div class="course-card fade-in">

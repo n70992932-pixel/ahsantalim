@@ -328,8 +328,8 @@ document.getElementById('t-image-file')?.addEventListener('change', function(e) 
     const img = new Image();
     img.onload = function() {
       const canvas = document.createElement('canvas');
-      const MAX_WIDTH = 300;
-      const MAX_HEIGHT = 300;
+      const MAX_WIDTH = 800;
+      const MAX_HEIGHT = 800;
       let width = img.width;
       let height = img.height;
 
@@ -349,7 +349,7 @@ document.getElementById('t-image-file')?.addEventListener('change', function(e) 
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, width, height);
       
-      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
       document.getElementById('t-image-base64').value = dataUrl;
       document.getElementById('t-image-preview').style.display = 'block';
       document.querySelector('#t-image-preview img').src = dataUrl;

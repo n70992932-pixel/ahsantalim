@@ -3,22 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ahsan Ta'lim | Admin Panel</title>
+  <title>Ahsan Ta'lim | Boshqaruv Paneli</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="admin.css">
-  <link rel="icon" href="logo.jpg" type="image/jpeg">
 </head>
 <body>
 
   <!-- LOGIN PAGE -->
   <div id="login-page">
     <div class="login-box">
-      <div class="login-logo">
-        <img src="logo.jpg" alt="Logo">
-        <div>
-          <div style="font-weight: 800; font-size: 1.1rem; letter-spacing: 1px;">AHSAN</div>
-          <div style="font-size: 0.7rem; color: var(--gold); letter-spacing: 2px;">TA'LIM</div>
-        </div>
-      </div>
       <h2 class="login-title">Xush kelibsiz</h2>
       <p class="login-sub">Boshqaruv paneliga kirish uchun parolni kiriting</p>
       
@@ -34,243 +29,348 @@
   </div>
 
   <!-- ADMIN LAYOUT -->
-  <div id="admin-app">
-    <div class="admin-wrap">
+  <div id="admin-app" style="display: none;">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-text">
+          <div class="lt">AHSAN</div>
+          <div class="ls">TA'LIM ADMIN</div>
+        </div>
+      </div>
       
-      <!-- SIDEBAR -->
-      <aside class="sidebar" id="sidebar">
-        <div class="sidebar-logo">
-          <img src="logo.jpg" alt="Logo">
-          <div class="sidebar-logo-text">
-            <div class="lt">AHSAN</div>
-            <div class="ls">TA'LIM ADMIN</div>
-          </div>
+      <div class="sidebar-nav">
+        <div class="nav-label">Asosiy</div>
+        <div class="nav-item active" data-page="dashboard"><span class="ni">📊</span> Dashboard</div>
+        <div class="nav-item" data-page="applications">
+          <span class="ni">📋</span> Arizalar
+          <span class="nav-badge" id="nav-new-count">0</span>
         </div>
         
-        <div class="sidebar-nav">
-          <div class="nav-label">Asosiy</div>
-          <div class="nav-item active" data-page="dashboard">
-            <span class="ni">📊</span> Dashboard
-          </div>
-          <div class="nav-item" data-page="applications">
-            <span class="ni">📨</span> Arizalar
-            <span class="nav-badge" id="nav-new-count">0</span>
-          </div>
-          
-          <div class="nav-label">Boshqaruv</div>
-          <div class="nav-item" data-page="courses">
-            <span class="ni">📚</span> Kurslar
-          </div>
-          <div class="nav-item" data-page="settings">
-            <span class="ni">⚙️</span> Sozlamalar
-          </div>
-        </div>
+        <div class="nav-label">Sayt Bo'limlari</div>
+        <div class="nav-item" data-page="hero"><span class="ni">🏠</span> Hero bo'limi</div>
+        <div class="nav-item" data-page="about"><span class="ni">ℹ️</span> Biz haqimizda</div>
+        <div class="nav-item" data-page="teachers"><span class="ni">👨‍🏫</span> Ustozlar</div>
+        <div class="nav-item" data-page="courses"><span class="ni">📚</span> Kurslar</div>
+        <div class="nav-item" data-page="testimonials"><span class="ni">💬</span> Fikrlar</div>
+        <div class="nav-item" data-page="faq"><span class="ni">❓</span> FAQ</div>
+        <div class="nav-item" data-page="contact"><span class="ni">📞</span> Aloqa</div>
         
-        <div class="sidebar-footer">
-          <button class="logout-btn" id="logout-btn">
-            <span>🚪</span> Tizimdan chiqish
-          </button>
-        </div>
-      </aside>
+        <div class="nav-label">Tizim</div>
+        <div class="nav-item" data-page="settings"><span class="ni">⚙️</span> Sozlamalar</div>
+      </div>
+      
+      <div class="sidebar-footer">
+        <button class="logout-btn" id="logout-btn">
+          <span>🚪</span> Tizimdan chiqish
+        </button>
+      </div>
+    </aside>
 
-      <!-- MAIN CONTENT -->
-      <main class="admin-content">
-        <header class="admin-topbar">
-          <div class="topbar-left">
+    <!-- MAIN CONTENT -->
+    <main class="admin-content">
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button id="mobile-menu-btn">☰</button>
+          <div>
             <h1 id="page-title">Dashboard</h1>
             <p id="page-subtitle">Umumiy statistika va ma'lumotlar</p>
           </div>
-          <div class="topbar-right">
-            <a href="index.html" target="_blank" class="topbar-btn">🌐 Saytga o'tish</a>
-          </div>
-        </header>
+        </div>
+        <div class="topbar-right">
+          <a href="index.html" target="_blank" class="topbar-btn">🌐 Saytga o'tish</a>
+        </div>
+      </header>
 
-        <div class="admin-main">
+      <div class="admin-main">
+        
+        <!-- DASHBOARD PAGE -->
+        <div class="admin-page active" id="page-dashboard">
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="stat-card-icon">📨</div>
+              <div class="stat-card-num" id="stat-new">0</div>
+              <div class="stat-card-label">Yangi arizalar</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-icon">📞</div>
+              <div class="stat-card-num" id="stat-called">0</div>
+              <div class="stat-card-label">Bog'lanildi</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-icon">🎓</div>
+              <div class="stat-card-num" id="stat-enrolled">0</div>
+              <div class="stat-card-label">Qabul qilindi</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-icon">👨‍🏫</div>
+              <div class="stat-card-num" id="stat-teachers">0</div>
+              <div class="stat-card-label">Ustozlar</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-icon">📚</div>
+              <div class="stat-card-num" id="stat-courses">0</div>
+              <div class="stat-card-label">Kurslar</div>
+            </div>
+          </div>
           
-          <!-- DASHBOARD PAGE -->
-          <div class="admin-page active" id="page-dashboard">
-            <div class="stats-row">
-              <div class="stat-card">
-                <div class="stat-card-top">
-                  <div class="stat-card-icon">📨</div>
-                  <div class="stat-card-badge">+ Yangi</div>
+          <div class="table-wrap mt-4">
+            <div class="table-header">
+              <h3 class="section-title">So'nggi arizalar</h3>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Ism</th>
+                  <th>Telefon</th>
+                  <th>Kurs</th>
+                  <th>Holati</th>
+                  <th>Vaqt</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-recent-table"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- APPLICATIONS PAGE -->
+        <div class="admin-page" id="page-applications">
+          <div class="table-wrap">
+            <div class="table-header flex-between">
+              <input type="text" class="form-control search-input" id="app-search" placeholder="Ism yoki telefon...">
+              <select class="form-control w-auto" id="app-filter">
+                <option value="all">Barcha holatlar</option>
+                <option value="new">Yangi</option>
+                <option value="called">Bog'lanildi</option>
+                <option value="enrolled">Qabul qilindi</option>
+                <option value="cancelled">Bekor qilindi</option>
+              </select>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>O'quvchi</th>
+                  <th>Kurs & Xabar</th>
+                  <th>Holati</th>
+                  <th>Amallar</th>
+                </tr>
+              </thead>
+              <tbody id="app-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- HERO PAGE -->
+        <div class="admin-page" id="page-hero">
+          <form id="hero-form" class="admin-form">
+            <div class="form-group">
+              <label>Kichik matn (Badge)</label>
+              <input type="text" class="form-control" id="hero-badge" required>
+            </div>
+            <div class="form-group">
+              <label>Asosiy Sarlavha</label>
+              <input type="text" class="form-control" id="hero-title" required>
+            </div>
+            <div class="form-group">
+              <label>Qisqacha ta'rif</label>
+              <textarea class="form-control" id="hero-desc" rows="3" required></textarea>
+            </div>
+            
+            <h4 class="mt-4 mb-2">Statistikalar</h4>
+            <div class="stats-edit-grid">
+              <div class="form-card">
+                <label>Statistika 1 raqami va matni</label>
+                <div class="flex-gap">
+                  <input type="number" class="form-control w-30" id="hero-stat1-num" required>
+                  <input type="text" class="form-control w-70" id="hero-stat1-label" required>
                 </div>
-                <div class="stat-card-num" id="stat-new">0</div>
-                <div class="stat-card-label">Yangi arizalar</div>
               </div>
-              <div class="stat-card">
-                <div class="stat-card-top">
-                  <div class="stat-card-icon">📞</div>
+              <div class="form-card">
+                <label>Statistika 2 raqami va matni</label>
+                <div class="flex-gap">
+                  <input type="number" class="form-control w-30" id="hero-stat2-num" required>
+                  <input type="text" class="form-control w-70" id="hero-stat2-label" required>
                 </div>
-                <div class="stat-card-num" id="stat-called">0</div>
-                <div class="stat-card-label">Bog'lanildi</div>
               </div>
-              <div class="stat-card">
-                <div class="stat-card-top">
-                  <div class="stat-card-icon">🎓</div>
+              <div class="form-card">
+                <label>Statistika 3 raqami va matni</label>
+                <div class="flex-gap">
+                  <input type="number" class="form-control w-30" id="hero-stat3-num" required>
+                  <input type="text" class="form-control w-70" id="hero-stat3-label" required>
                 </div>
-                <div class="stat-card-num" id="stat-enrolled">0</div>
-                <div class="stat-card-label">Qabul qilindi</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-card-top">
-                  <div class="stat-card-icon">📚</div>
-                </div>
-                <div class="stat-card-num" id="stat-courses">6</div>
-                <div class="stat-card-label">Faol kurslar</div>
               </div>
             </div>
             
-            <div class="table-wrap">
-              <div class="table-header">
-                <div class="table-title">So'nggi arizalar</div>
-                <button class="table-btn" onclick="switchPage('applications')">Barchasini ko'rish →</button>
-              </div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Ism</th>
-                    <th>Telefon</th>
-                    <th>Kurs</th>
-                    <th>Holati</th>
-                    <th>Vaqt</th>
-                  </tr>
-                </thead>
-                <tbody id="dashboard-recent-table">
-                  <!-- JS orqali to'ldiriladi -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- APPLICATIONS PAGE -->
-          <div class="admin-page" id="page-applications">
-            <div class="table-wrap">
-              <div class="table-header">
-                <input type="text" class="table-search" id="app-search" placeholder="Ism yoki telefon orqali qidirish...">
-                <div class="table-actions">
-                  <select class="table-btn" id="app-filter">
-                    <option value="all">Barcha holatlar</option>
-                    <option value="new">Yangi</option>
-                    <option value="called">Bog'lanildi</option>
-                    <option value="enrolled">Qabul qilindi</option>
-                    <option value="cancelled">Bekor qilindi</option>
-                  </select>
-                </div>
-              </div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>O'quvchi ma'lumoti</th>
-                    <th>Kurs & Xabar</th>
-                    <th>Holati</th>
-                    <th>Amallar</th>
-                  </tr>
-                </thead>
-                <tbody id="app-table-body">
-                  <!-- JS orqali to'ldiriladi -->
-                </tbody>
-              </table>
-              <div id="app-empty" class="empty-state" style="display: none;">
-                <div class="es-icon">📭</div>
-                <h3>Arizalar topilmadi</h3>
-                <p>Hozircha bu yerda hech narsa yo'q.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- COURSES PAGE -->
-          <div class="admin-page" id="page-courses">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-              <p style="color: var(--text2);">Saytdagi kurslarni shu yerdan boshqaring (Tez kunda qo'shish funksiyasi chiqadi)</p>
-              <button class="topbar-btn primary" onclick="alert('Yangi kurs qo\'shish keyingi yangilanishda qo\'shiladi!')">+ Yangi kurs</button>
-            </div>
-            <div class="courses-admin-grid" id="courses-admin-list">
-              <!-- JS orqali to'ldiriladi -->
-            </div>
-          </div>
-
-          <!-- SETTINGS PAGE -->
-          <div class="admin-page" id="page-settings">
-            <div class="settings-grid">
-              
-              <!-- Telegram Settings -->
-              <div class="settings-card">
-                <h3><span>💬</span> Telegram Bot Sozlamalari</h3>
-                <form id="tg-settings-form">
-                  <div class="settings-group">
-                    <label>Bot Token (BotFather'dan)</label>
-                    <input type="password" id="set-tg-token" placeholder="Masalan: 123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11">
-                    <div class="settings-hint">Arizalar shu bot orqali boradi</div>
-                  </div>
-                  <div class="settings-group">
-                    <label>Chat ID (Yoki kanal ID)</label>
-                    <input type="text" id="set-tg-chat" placeholder="Masalan: 123456789">
-                    <div class="settings-hint">Bot ushbu ID ga xabar yuboradi</div>
-                  </div>
-                  <button type="submit" class="settings-save">Saqlash</button>
-                </form>
-              </div>
-              
-              <!-- Admin Settings -->
-              <div class="settings-card">
-                <h3><span>🔒</span> Xavfsizlik</h3>
-                <form id="pwd-settings-form">
-                  <div class="settings-group">
-                    <label>Joriy parol</label>
-                    <input type="password" id="set-pwd-old" required>
-                  </div>
-                  <div class="settings-group">
-                    <label>Yangi parol</label>
-                    <input type="password" id="set-pwd-new" required>
-                  </div>
-                  <button type="submit" class="settings-save">Parolni o'zgartirish</button>
-                </form>
-              </div>
-              
-              <!-- Danger Zone -->
-              <div class="settings-card settings-danger">
-                <h3><span>⚠️</span> Xavfli hudud</h3>
-                <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 20px;">Barcha arizalarni tizimdan butunlay o'chirib tashlash. Bu amalni ortga qaytarib bo'lmaydi!</p>
-                <button class="danger-btn" onclick="clearAllData()">🗑 Barcha arizalarni o'chirish</button>
-              </div>
-              
-            </div>
-          </div>
-
+            <button type="submit" class="btn btn-primary mt-4">Saqlash</button>
+          </form>
         </div>
-      </main>
+
+        <!-- ABOUT PAGE -->
+        <div class="admin-page" id="page-about">
+          <form id="about-form" class="admin-form">
+            <div class="form-group">
+              <label>Sarlavha</label>
+              <input type="text" class="form-control" id="about-title" required>
+            </div>
+            <div class="form-group">
+              <label>Ta'rif</label>
+              <textarea class="form-control" id="about-desc" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+              <label>Tajriba (yillar)</label>
+              <input type="text" class="form-control" id="about-years" required>
+            </div>
+            
+            <h4 class="mt-4 mb-2">Afzalliklar (4 ta)</h4>
+            <div id="about-features-container"></div>
+            
+            <button type="submit" class="btn btn-primary mt-4">Saqlash</button>
+          </form>
+        </div>
+
+        <!-- TEACHERS PAGE -->
+        <div class="admin-page" id="page-teachers">
+          <div class="flex-between mb-4">
+            <h3 class="section-title">Ustozlar ro'yxati</h3>
+            <button class="btn btn-primary" onclick="openTeacherModal()">+ Yangi ustoz</button>
+          </div>
+          <div class="grid-cards" id="teachers-list"></div>
+        </div>
+
+        <!-- COURSES PAGE -->
+        <div class="admin-page" id="page-courses">
+          <div class="flex-between mb-4">
+            <h3 class="section-title">Kurslar ro'yxati</h3>
+            <button class="btn btn-primary" onclick="openCourseModal()">+ Yangi kurs</button>
+          </div>
+          <div class="grid-cards" id="courses-list"></div>
+        </div>
+
+        <!-- TESTIMONIALS PAGE -->
+        <div class="admin-page" id="page-testimonials">
+          <div class="flex-between mb-4">
+            <h3 class="section-title">O'quvchilar fikrlari</h3>
+            <button class="btn btn-primary" onclick="openTestimonialModal()">+ Yangi fikr</button>
+          </div>
+          <div class="grid-cards" id="testimonials-list"></div>
+        </div>
+
+        <!-- FAQ PAGE -->
+        <div class="admin-page" id="page-faq">
+          <div class="flex-between mb-4">
+            <h3 class="section-title">Ko'p beriladigan savollar</h3>
+            <button class="btn btn-primary" onclick="openFaqModal()">+ Yangi savol</button>
+          </div>
+          <div class="faq-list" id="faq-list"></div>
+        </div>
+
+        <!-- CONTACT PAGE -->
+        <div class="admin-page" id="page-contact">
+          <form id="contact-form" class="admin-form">
+            <div class="form-group">
+              <label>Manzil</label>
+              <input type="text" class="form-control" id="contact-address" required>
+            </div>
+            <div class="form-group">
+              <label>Telefon raqam</label>
+              <input type="text" class="form-control" id="contact-phone" required>
+            </div>
+            <div class="form-group">
+              <label>Ish vaqti</label>
+              <input type="text" class="form-control" id="contact-hours" required>
+            </div>
+            <div class="form-group">
+              <label>Telegram (masalan: @ahsantalim)</label>
+              <input type="text" class="form-control" id="contact-tg" required>
+            </div>
+            <div class="form-group">
+              <label>Telegram Havola (URL)</label>
+              <input type="url" class="form-control" id="contact-link" required>
+            </div>
+            <button type="submit" class="btn btn-primary mt-4">Saqlash</button>
+          </form>
+        </div>
+
+        <!-- SETTINGS PAGE -->
+        <div class="admin-page" id="page-settings">
+          <div class="grid-2">
+            <div class="form-card">
+              <h4>💬 Telegram Bot Sozlamalari</h4>
+              <form id="tg-settings-form">
+                <div class="form-group">
+                  <label>Bot Token</label>
+                  <input type="password" class="form-control" id="set-tg-token">
+                </div>
+                <div class="form-group">
+                  <label>Chat ID</label>
+                  <input type="text" class="form-control" id="set-tg-chat">
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Saqlash</button>
+              </form>
+            </div>
+            
+            <div class="form-card">
+              <h4>🔒 Xavfsizlik</h4>
+              <form id="pwd-settings-form">
+                <div class="form-group">
+                  <label>Joriy parol</label>
+                  <input type="password" class="form-control" id="set-pwd-old" required>
+                </div>
+                <div class="form-group">
+                  <label>Yangi parol</label>
+                  <input type="password" class="form-control" id="set-pwd-new" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Parolni o'zgartirish</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- MODALS -->
+  <div class="modal-overlay" id="generic-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modal-title">Sarlavha</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- JS dynamic content -->
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal-overlay" id="status-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Holatni o'zgartirish</h3>
+        <button class="modal-close" onclick="closeStatusModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="status-modal-id">
+        <div class="form-group">
+          <label>Yangi holatni tanlang:</label>
+          <select class="form-control" id="status-modal-select">
+            <option value="new">Yangi</option>
+            <option value="called">Bog'lanildi</option>
+            <option value="enrolled">Qabul qilindi</option>
+            <option value="cancelled">Bekor qilindi</option>
+          </select>
+        </div>
+        <div class="flex-end gap-2 mt-4">
+          <button class="btn btn-secondary" onclick="closeStatusModal()">Bekor qilish</button>
+          <button class="btn btn-primary" onclick="saveStatus()">Saqlash</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- NOTIFICATIONS -->
-  <div class="a-notify" id="a-notify">
-    <span id="a-notify-msg">Saqlandi</span>
-  </div>
+  <div class="toast" id="toast">Saqlandi</div>
 
-  <!-- CHANGE STATUS MODAL -->
-  <div class="admin-modal-overlay" id="status-modal">
-    <div class="admin-modal">
-      <button class="admin-modal-close" onclick="closeStatusModal()">✕</button>
-      <h3>Holatni o'zgartirish</h3>
-      <input type="hidden" id="status-modal-id">
-      <div class="modal-form-group">
-        <label>Yangi holatni tanlang:</label>
-        <select id="status-modal-select">
-          <option value="new">Yangi (Sariq)</option>
-          <option value="called">Bog'lanildi (Yashil)</option>
-          <option value="enrolled">Qabul qilindi (Ko'k)</option>
-          <option value="cancelled">Bekor qilindi (Qizil)</option>
-        </select>
-      </div>
-      <div class="modal-btns">
-        <button class="modal-btn-cancel" onclick="closeStatusModal()">Bekor qilish</button>
-        <button class="modal-btn-save" onclick="saveStatus()">Saqlash</button>
-      </div>
-    </div>
-  </div>
-
-<script src="admin.js"></script>
+  <script src="admin.js"></script>
 </body>
 </html>

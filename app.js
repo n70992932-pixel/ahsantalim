@@ -237,7 +237,7 @@ function renderTeachers() {
         <div class="teacher-subject">${t.subject}</div>
         <div class="teacher-exp">${t.exp}</div>
         <div class="teacher-tags">
-          ${t.tags.map(tag => `<span class="teacher-tag">${tag}</span>`).join('')}
+          ${(t.tags || []).map(tag => `<span class="teacher-tag">${tag}</span>`).join('')}
         </div>
       </div>
     `;
@@ -354,16 +354,15 @@ function renderCourses() {
   
   grid.innerHTML = allCourses.map(c => `
     <div class="course-card fade-in">
-      <div class="cc-icon">${c.icon}</div>
-      <div class="cc-tag">${c.tag}</div>
-      <div class="cc-title">${c.title}</div>
-      <div class="cc-desc">${c.desc}</div>
+      <div class="cc-icon">${c.icon || '📚'}</div>
+      <div class="cc-tag">${c.tag || ''}</div>
+      <div class="cc-title">${c.title || ''}</div>
       <ul class="cc-features">
-        ${c.features.map(f => `<li>${f}</li>`).join('')}
+        ${(c.features || []).map(f => `<li>${f}</li>`).join('')}
       </ul>
       <div class="cc-footer">
-        <div class="cc-price">${c.price}</div>
-        <button class="cc-btn open-modal" data-course="${c.course}">Yozilish →</button>
+        <div class="cc-price">${c.price || ''}</div>
+        <button class="cc-btn open-modal" data-course="${c.course || c.title || ''}">Yozilish →</button>
       </div>
     </div>
   `).join('');

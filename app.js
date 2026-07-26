@@ -1,7 +1,7 @@
 // ============================================
 // AHSAN TA'LIM — Main JavaScript
 // Telegram: To'g'ridan-to'g'ri API
-// ============================================
+// ============================================   
 
 // ---- TELEGRAM SOZLAMALARI ----
 // Admin panel orqali o'rnatiladi (localStorage)

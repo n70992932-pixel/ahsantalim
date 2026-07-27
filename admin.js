@@ -1,7 +1,10 @@
 // --- INITIALIZATION ---
-document.addEventListener('DOMContentLoaded', () => {
-  checkLogin();
+document.addEventListener('DOMContentLoaded', async () => {
+  if (window.loadDataFromFirebase) {
+    await window.loadDataFromFirebase();
+  }
   initDefaultData();
+  checkLogin();
   bindEvents();
 });
 
@@ -71,21 +74,29 @@ const defaultData = {
 };
 
 function initDefaultData() {
+  if (!window.siteDataCache) window.siteDataCache = {};
   for (let key in defaultData) {
-    if (!localStorage.getItem(key)) {
-      localStorage.setItem(key, typeof defaultData[key] === 'string' ? defaultData[key] : JSON.stringify(defaultData[key]));
+    if (window.siteDataCache[key] === undefined) {
+      window.siteDataCache[key] = defaultData[key];
+      // We don't necessarily need to push defaults to Firebase immediately, 
+      // they will be saved when the admin edits something.
     }
   }
 }
 
 function getData(key, isJson = true) {
-  const val = localStorage.getItem(key);
-  if (!val) return null;
-  return isJson ? JSON.parse(val) : val;
+  if (window.siteDataCache && window.siteDataCache[key] !== undefined) {
+    return window.siteDataCache[key];
+  }
+  return null;
 }
 
 function setData(key, val, isJson = true) {
-  localStorage.setItem(key, isJson ? JSON.stringify(val) : val);
+  if (window.saveDataToFirebase) {
+    window.saveDataToFirebase(key, val);
+  } else if (window.siteDataCache) {
+    window.siteDataCache[key] = val;
+  }
 }
 
 // --- AUTH ---

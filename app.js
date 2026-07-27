@@ -447,12 +447,16 @@ const text = `📚 <b>YANGI ARIZA — Ahsan Ta'lim</b>
 🕐 <b>Vaqt:</b> ${time}`;
 
   try {
-    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' })
+    const chatIds = chatId.split(',').map(id => id.trim()).filter(id => id).slice(0, 5);
+    const promises = chatIds.map(id => {
+      return fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: id, text, parse_mode: 'HTML' })
+      });
     });
-    return await res.json();
+    const results = await Promise.all(promises);
+    return { ok: results.some(r => r.ok) };
   } catch {
     return { ok: false };
   }

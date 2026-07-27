@@ -308,6 +308,7 @@ function renderApplications() {
         <td>
           <div style="font-weight:600">${app.name}</div>
           <div style="font-size:13px; color:var(--text-secondary)">${app.phone}</div>
+          <div style="font-size:12px; color:var(--text-secondary); margin-top:5px;">${app.age ? 'Yosh: ' + app.age : ''} ${app.gender ? ' | Jins: ' + app.gender : ''}</div>
           <div style="font-size:12px; color:var(--text-secondary); margin-top:5px;">${formatDate(app.date)}</div>
         </td>
         <td>

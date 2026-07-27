@@ -583,4 +583,10 @@ document.addEventListener('DOMContentLoaded', () => {
   renderContact();
   initFadeIn();
   animateCounters();
+  
+  // Telegram Web App Init
+  if (window.Telegram && window.Telegram.WebApp) {
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
+  }
 });

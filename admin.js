@@ -1000,10 +1000,66 @@ function savePassword(e) {
   
   if (oldP === correctPwd) {
     setData('admin_pwd', newP, false);
+    showToast("Parol muvaffaqiyatli o'zgartirildi!");
     document.getElementById('set-pwd-old').value = '';
     document.getElementById('set-pwd-new').value = '';
-    showToast('Parol o\'zgartirildi');
   } else {
-    alert("Joriy parol noto'g'ri kiritildi!");
+    showToast("Joriy parol xato!", true);
+  }
+}
+
+async function sendToGroup() {
+  const token = getData('tg_token', false);
+  const chat_id = document.getElementById('group-chat-id').value.trim();
+  const text = document.getElementById('group-message').value.trim();
+  
+  if (!token) {
+    showToast('Oldin Telegram Bot Tokenni sozlamalarda saqlang!', true);
+    return;
+  }
+  if (!chat_id) {
+    showToast('Guruh ID yoki Username ni kiriting', true);
+    return;
+  }
+  
+  const siteUrl = window.location.origin;
+  
+  const payload = {
+    chat_id: chat_id,
+    text: text,
+    reply_markup: {
+      inline_keyboard: [[
+        {
+          text: "📝 Saytga kirish va Ro'yxatdan o'tish",
+          web_app: { url: siteUrl }
+        }
+      ]]
+    }
+  };
+  
+  const btn = document.querySelector('button[onclick="sendToGroup()"]');
+  const oldText = btn.innerText;
+  btn.innerText = 'Yuborilmoqda...';
+  btn.disabled = true;
+  
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    
+    const data = await res.json();
+    if (data.ok) {
+      showToast('Xabar guruhga muvaffaqiyatli yuborildi!');
+      document.getElementById('group-chat-id').value = '';
+    } else {
+      showToast('Xatolik: ' + data.description, true);
+    }
+  } catch (err) {
+    showToast('Xatolik yuz berdi: ' + err.message, true);
+  } finally {
+    btn.innerText = oldText;
+    btn.disabled = false;
   }
 }

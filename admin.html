@@ -326,6 +326,29 @@
               </form>
             </div>
           </div>
+          
+          <div class="form-card" style="margin-top: 24px;">
+            <h4>📢 Guruhga tugmali xabar yuborish (Saytni ulash)</h4>
+            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">
+              Guruhdagi a'zolar osongina ro'yxatdan o'tishi uchun telegram guruhga saytingiz tugmasi bor xabarni yuboring va uni guruhda <b>Qadab (Pin qilib)</b> qo'ying. <br>
+              <i>Eslatma: Botingizni guruhga a'zo qilib (yoki admin qilib) qo'shgan bo'lishingiz shart!</i>
+            </p>
+            <form id="send-group-form">
+              <div class="grid-2">
+                <div class="form-group">
+                  <label>Guruh ID yoki Username (masalan: @ahsantalim_guruh yoki -100123456)</label>
+                  <input type="text" class="form-control" id="group-chat-id" required>
+                </div>
+                <div class="form-group">
+                  <label>Xabar matni</label>
+                  <textarea class="form-control" id="group-message" required style="min-height: 80px;">AHSAN TA'LIM markazining onlayn qabulxonasi!
+
+👇 Quyidagi tugmani bosib ro'yxatdan o'ting va biz sizga tez orada aloqaga chiqamiz!</textarea>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary mt-2" onclick="sendToGroup()">Xabarni Guruhga Yuborish</button>
+            </form>
+          </div>
         </div>
 
       </div>

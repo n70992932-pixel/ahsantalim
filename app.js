@@ -428,35 +428,18 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal
 
 // ---- TELEGRAM YUBORISH ----
 async function sendToTelegram(data) {
-  const { token, chatId } = getTgSettings();
-  
-  if (!token || !chatId) {
-    // Token yo'q bo'lsa, faqat localStorage'ga saqlaydi
-    return { ok: true, offline: true };
-  }
-  
-  const time = new Date().toLocaleString('uz-UZ', { timeZone: 'Asia/Tashkent' });
-const text = `📚 <b>YANGI ARIZA — Ahsan Ta'lim</b>
-
-👤 <b>Ism:</b> ${data.name}
-📞 <b>Telefon:</b> ${data.phone}
-🎂 <b>Yosh:</b> ${data.age || '—'}
-👫 <b>Jins:</b> ${data.gender || '—'}
-🎓 <b>Kurs:</b> ${data.course}
-💬 <b>Izoh:</b> ${data.msg || '—'}
-🕐 <b>Vaqt:</b> ${time}`;
-
   try {
-    const chatIds = chatId.split(',').map(id => id.trim()).filter(id => id).slice(0, 5);
-    const promises = chatIds.map(id => {
-      return fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: id, text, parse_mode: 'HTML' })
-      });
+    const res = await fetch('/api/send-telegram', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        studentName: data.name,
+        studentPhone: data.phone,
+        course: data.course
+      })
     });
-    const results = await Promise.all(promises);
-    return { ok: results.some(r => r.ok) };
+    const result = await res.json();
+    return { ok: result.ok };
   } catch {
     return { ok: false };
   }

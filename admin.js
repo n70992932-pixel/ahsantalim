@@ -191,7 +191,7 @@ function bindEvents() {
   document.getElementById('about-form').addEventListener('submit', saveAbout);
   document.getElementById('contact-form').addEventListener('submit', saveContact);
   document.getElementById('tg-settings-form').addEventListener('submit', saveTgSettings);
-  document.getElementById('pwd-settings-form').addEventListener('submit', savePassword);
+  // document.getElementById('pwd-settings-form').addEventListener('submit', savePassword);
 }
 
 function loadPage(pageId) {
@@ -1002,21 +1002,6 @@ function saveTgSettings(e) {
   showToast('Telegram sozlamalari saqlandi');
 }
 
-function savePassword(e) {
-  e.preventDefault();
-  const oldP = document.getElementById('set-pwd-old').value;
-  const newP = document.getElementById('set-pwd-new').value;
-  const correctPwd = getData('admin_pwd', false) || 'admin';
-  
-  if (oldP === correctPwd) {
-    setData('admin_pwd', newP, false);
-    showToast("Parol muvaffaqiyatli o'zgartirildi!");
-    document.getElementById('set-pwd-old').value = '';
-    document.getElementById('set-pwd-new').value = '';
-  } else {
-    showToast("Joriy parol xato!", true);
-  }
-}
 
 async function sendToGroup() {
   const chat_id = document.getElementById('group-chat-id').value.trim();

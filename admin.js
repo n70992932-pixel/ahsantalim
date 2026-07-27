@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await window.loadDataFromFirebase();
   }
   initDefaultData();
-  checkLogin();
+  renderDashboard();
   bindEvents();
 });
 
@@ -126,32 +126,44 @@ function setData(key, val, isJson = true) {
 }
 
 // --- AUTH ---
-function checkLogin() {
-  if (sessionStorage.getItem('admin_logged') === 'true') {
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
     document.getElementById('login-page').style.display = 'none';
     document.getElementById('admin-app').style.display = 'flex';
-    loadPage('dashboard');
+    if (!document.querySelector('.nav-item.active')) {
+      loadPage('dashboard');
+    }
   } else {
     document.getElementById('login-page').style.display = 'flex';
     document.getElementById('admin-app').style.display = 'none';
   }
-}
+});
 
-document.getElementById('login-form').addEventListener('submit', (e) => {
+document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const pwd = document.getElementById('admin-pwd').value;
-  const correctPwd = getData('admin_pwd', false) || 'admin';
-  if (pwd === correctPwd) {
-    sessionStorage.setItem('admin_logged', 'true');
-    checkLogin();
-  } else {
-    document.getElementById('login-error').style.display = 'block';
+  const email = document.getElementById('login-email').value;
+  const pwd = document.getElementById('login-pwd').value;
+  const btn = document.getElementById('login-btn');
+  const errorDiv = document.getElementById('login-error');
+  
+  errorDiv.style.display = 'none';
+  btn.innerText = 'Kirilmoqda...';
+  btn.disabled = true;
+  
+  try {
+    await firebase.auth().signInWithEmailAndPassword(email, pwd);
+  } catch (err) {
+    console.error(err);
+    errorDiv.innerText = "Email yoki parol xato!";
+    errorDiv.style.display = 'block';
+  } finally {
+    btn.innerText = 'Tizimga kirish';
+    btn.disabled = false;
   }
 });
 
 document.getElementById('logout-btn').addEventListener('click', () => {
-  sessionStorage.removeItem('admin_logged');
-  checkLogin();
+  firebase.auth().signOut();
 });
 
 // --- NAVIGATION ---

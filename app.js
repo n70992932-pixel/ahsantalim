@@ -7,8 +7,8 @@
 // Admin panel orqali o'rnatiladi (localStorage)
 function getTgSettings() {
   return {
-    token: localStorage.getItem('tg_token') || '',
-    chatId: localStorage.getItem('tg_chat_id') || ''
+    token: window.siteDataCache?.tg_token || '',
+    chatId: window.siteDataCache?.tg_chat_id || ''
   };
 }
 
@@ -174,8 +174,10 @@ const DEFAULT_CONTACT = {
 };
 
 function getStoredData(key, defaultValue) {
-  const stored = localStorage.getItem(key);
-  return stored ? JSON.parse(stored) : defaultValue;
+  if (window.siteDataCache && window.siteDataCache[key]) {
+    return window.siteDataCache[key];
+  }
+  return defaultValue;
 }
 
 function renderHero() {
@@ -454,15 +456,17 @@ async function sendToTelegram(data) {
   }
 }
 
-function saveApplication(data) {
-  const apps = JSON.parse(localStorage.getItem('applications') || '[]');
+async function saveApplication(data) {
+  const apps = getStoredData('applications', []);
   apps.unshift({
     id: Date.now(),
     ...data,
     status: 'new',
     date: new Date().toISOString()
   });
-  localStorage.setItem('applications', JSON.stringify(apps));
+  if (window.saveDataToFirebase) {
+    await window.saveDataToFirebase('applications', apps);
+  }
 }
 
 // ---- MODAL FORM ----
@@ -572,8 +576,11 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-// ---- INIT ----
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  if (window.loadDataFromFirebase) {
+    await window.loadDataFromFirebase();
+  }
+  
   renderCourses();
   renderHero();
   renderAbout();

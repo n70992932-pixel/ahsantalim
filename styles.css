@@ -445,7 +445,7 @@ button { cursor: pointer; border: none; outline: none; font-family: inherit; }
 
 /* ========== CONTACT ========== */
 #contact { padding: 100px 0; background: var(--bg-secondary); }
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+.contact-grid { max-width: 600px; margin: 0 auto; display: grid; gap: 40px; align-items: start; }
 .contact-info {}
 .contact-info p { color: var(--text-secondary); margin-bottom: 36px; }
 .contact-items { display: flex; flex-direction: column; gap: 20px; }

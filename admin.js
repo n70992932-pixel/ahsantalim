@@ -991,7 +991,6 @@ function saveContact(e) {
 
 // --- SETTINGS ---
 function renderSettings() {
-  document.getElementById('set-tg-token').value = getData('tg_token', false) || '';
   document.getElementById('set-tg-chat').value = getData('tg_chat_id', false) || '';
   document.getElementById('set-pwd-old').value = '';
   document.getElementById('set-pwd-new').value = '';
@@ -999,7 +998,6 @@ function renderSettings() {
 
 function saveTgSettings(e) {
   e.preventDefault();
-  setData('tg_token', document.getElementById('set-tg-token').value, false);
   setData('tg_chat_id', document.getElementById('set-tg-chat').value, false);
   showToast('Telegram sozlamalari saqlandi');
 }
@@ -1021,14 +1019,10 @@ function savePassword(e) {
 }
 
 async function sendToGroup() {
-  const token = getData('tg_token', false);
   const chat_id = document.getElementById('group-chat-id').value.trim();
   const text = document.getElementById('group-message').value.trim();
   
-  if (!token) {
-    showToast('Oldin Telegram Bot Tokenni sozlamalarda saqlang!', true);
-    return;
-  }
+
   if (!chat_id) {
     showToast('Guruh ID yoki Username ni kiriting', true);
     return;
@@ -1055,7 +1049,7 @@ async function sendToGroup() {
   btn.disabled = true;
   
   try {
-    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    const res = await fetch('/api/admin-send', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(payload)

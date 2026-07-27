@@ -72,7 +72,7 @@
         <h1 id="hero-title">Kelajagingizga<br><span>Ahsan Ta'lim</span><br>bilan investitsiya qiling</h1>
         <p id="hero-desc">Arab tili, Ingliz tili (IELTS) va Tarix fanlaridan professional ta'lim oling. 500+ muvaffaqiyatli bitiruvchi!</p>
         <div class="hero-btns">
-          <button class="btn-primary open-modal" data-course="">🎓 Bepul darsga yozilish</button>
+          <button class="btn-primary open-modal" data-course="">🎓 Bepul konsultatsiya olish</button>
           <a href="#courses" class="btn-secondary">📚 Kurslarni ko'rish</a>
         </div>
         <div class="hero-stats" id="hero-stats-wrap">
@@ -326,11 +326,8 @@
           <a href="#" class="social-link" title="YouTube">▶️</a>
           <a href="#" class="social-link" title="Facebook">👥</a>
         </div>
-      </div>
-      <div class="fade-in">
-        <div class="map-wrap">
-          📍 Toshkent, Mirzo Ulug'bek tumani
-        </div>
+      <div class="fade-in contact-logo-wrap" style="display:flex; justify-content:center; align-items:center; height:100%;">
+        <img src="logo.jpg" alt="Ahsan Ta'lim Logo" class="contact-big-logo" style="max-width:300px; width:100%; border-radius:15px; border: 2px solid var(--gold);">
       </div>
     </div>
   </div>
@@ -406,6 +403,18 @@
         <div class="form-group">
           <label for="m-name">Ism va familiyangiz *</label>
           <input type="text" id="m-name" placeholder="Abdulloh Karimov" required>
+        </div>
+        <div class="form-group">
+          <label for="m-age">Yoshingiz *</label>
+          <input type="number" id="m-age" placeholder="Masalan: 18" min="5" max="100" required>
+        </div>
+        <div class="form-group">
+          <label for="m-gender">Jinsingiz *</label>
+          <select id="m-gender" required>
+            <option value="">Tanlang...</option>
+            <option value="Erkak">Erkak</option>
+            <option value="Ayol">Ayol</option>
+          </select>
         </div>
         <div class="form-group">
           <label for="m-phone">Telefon raqamingiz *</label>

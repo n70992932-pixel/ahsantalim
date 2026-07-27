@@ -46,18 +46,44 @@ const defaultData = {
   site_testimonials: [
     {
       id: 1,
-      name: "Muhammadumar, 22 yosh",
-      course: "Arab tili kursi",
-      text: "Ahsan Ta'limda arab tilini o'rganib qisqa vaqt ichida natijaga erishdim.",
+      name: "Muhammadumar",
+      course: "IELTS 7.5",
+      text: "Ahsan Ta'limda 6 oy o'qib, IELTSdan 7.5 oldim. O'qituvchilarning yondashuvi juda professional.",
       stars: 5,
       emoji: "👦"
+    },
+    {
+      id: 2,
+      name: "Oysha",
+      course: "Arab tili",
+      text: "Arab tilida o'qish va yozishni atigi 2 oyda to'liq o'zlashtirdim. Katta rahmat!",
+      stars: 5,
+      emoji: "🧕"
+    },
+    {
+      id: 3,
+      name: "Javohir",
+      course: "Tarix (DTM)",
+      text: "Tarix fanidan tayyorlanish shunchalik qiziqarli bo'ladi deb o'ylamagandim. Imtihondan 100% natija qildim.",
+      stars: 5,
+      emoji: "👨‍🎓"
     }
   ],
   site_faq: [
     {
       id: 1,
       question: "Kurslar qaysi darajadan boshlanadi?",
-      answer: "Bizda boshlang'ich, o'rta va yuqori daraja guruhlari mavjud."
+      answer: "Bizda boshlang'ich (Beginner) darajadan tortib, yuqori darajagacha bo'lgan guruhlar mavjud. Har bir o'quvchi daraja aniqlash testidan o'tadi."
+    },
+    {
+      id: 2,
+      question: "Darslar haftada necha kun bo'ladi?",
+      answer: "Darslar haftada 3 marta, har bir dars 1.5 soatdan davom etadi. Bundan tashqari yakshanba kungi qo'shimcha 'Speaking club' va amaliyot darslari ham mavjud."
+    },
+    {
+      id: 3,
+      question: "Oflayn darslar qayerda o'tiladi?",
+      answer: "Oflayn darslarimiz Toshkent shahridagi zamonaviy va barcha sharoitlarga ega shinam o'quv xonalarimizda bo'lib o'tadi."
     }
   ],
   site_contact: {

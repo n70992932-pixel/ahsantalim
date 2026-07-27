@@ -436,10 +436,12 @@ async function sendToTelegram(data) {
   }
   
   const time = new Date().toLocaleString('uz-UZ', { timeZone: 'Asia/Tashkent' });
-  const text = `📚 <b>YANGI ARIZA — Ahsan Ta'lim</b>
+const text = `📚 <b>YANGI ARIZA — Ahsan Ta'lim</b>
 
 👤 <b>Ism:</b> ${data.name}
 📞 <b>Telefon:</b> ${data.phone}
+🎂 <b>Yosh:</b> ${data.age || '—'}
+👫 <b>Jins:</b> ${data.gender || '—'}
 🎓 <b>Kurs:</b> ${data.course}
 💬 <b>Izoh:</b> ${data.msg || '—'}
 🕐 <b>Vaqt:</b> ${time}`;
@@ -475,6 +477,8 @@ document.getElementById('modal-form')?.addEventListener('submit', async (e) => {
   const btn = document.getElementById('modal-form-btn');
   const name = document.getElementById('m-name').value.trim();
   const phone = document.getElementById('m-phone').value.trim();
+  const age = document.getElementById('m-age') ? document.getElementById('m-age').value : '';
+  const gender = document.getElementById('m-gender') ? document.getElementById('m-gender').value : '';
   const course = document.getElementById('modal-course-selected').value;
   
   if (!name || !phone) return;
@@ -482,7 +486,7 @@ document.getElementById('modal-form')?.addEventListener('submit', async (e) => {
   btn.textContent = '⏳ Yuborilmoqda...';
   btn.disabled = true;
   
-  const data = { name, phone, course: course || 'Ko\'rsatilmagan', msg: '' };
+  const data = { name, phone, age, gender, course: course || 'Ko\'rsatilmagan', msg: '' };
   saveApplication(data);
   await sendToTelegram(data);
   

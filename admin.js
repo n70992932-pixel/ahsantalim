@@ -190,7 +190,6 @@ function bindEvents() {
   document.getElementById('hero-form').addEventListener('submit', saveHero);
   document.getElementById('about-form').addEventListener('submit', saveAbout);
   document.getElementById('contact-form').addEventListener('submit', saveContact);
-  document.getElementById('tg-settings-form').addEventListener('submit', saveTgSettings);
   // document.getElementById('pwd-settings-form').addEventListener('submit', savePassword);
 }
 
@@ -991,15 +990,8 @@ function saveContact(e) {
 
 // --- SETTINGS ---
 function renderSettings() {
-  document.getElementById('set-tg-chat').value = getData('tg_chat_id', false) || '';
   document.getElementById('set-pwd-old').value = '';
   document.getElementById('set-pwd-new').value = '';
-}
-
-function saveTgSettings(e) {
-  e.preventDefault();
-  setData('tg_chat_id', document.getElementById('set-tg-chat').value, false);
-  showToast('Telegram sozlamalari saqlandi');
 }
 
 

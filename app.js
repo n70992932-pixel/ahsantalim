@@ -435,7 +435,10 @@ async function sendToTelegram(data) {
       body: JSON.stringify({
         studentName: data.name,
         studentPhone: data.phone,
-        course: data.course
+        course: data.course,
+        age: data.age,
+        gender: data.gender,
+        msg: data.msg
       })
     });
     const result = await res.json();
@@ -446,15 +449,17 @@ async function sendToTelegram(data) {
 }
 
 async function saveApplication(data) {
-  const apps = getStoredData('applications', []);
-  apps.unshift({
-    id: Date.now(),
-    ...data,
-    status: 'new',
-    date: new Date().toISOString()
-  });
-  if (window.saveDataToFirebase) {
-    await window.saveDataToFirebase('applications', apps);
+  try {
+    const docData = {
+      ...data,
+      status: 'new',
+      date: new Date().toISOString()
+    };
+    if (window.firebase && window.firebase.firestore) {
+      await window.firebase.firestore().collection('applications').add(docData);
+    }
+  } catch (e) {
+    console.error("Firestore xatosi:", e);
   }
 }
 
